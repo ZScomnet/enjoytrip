@@ -18,6 +18,6 @@ Frontend : Vue.js (예정)
 ---
 DataBase : MySQL (5.7)
 
-E-R Diagram (예정)
+E-R Diagram <br>
+![ER-Diagram](https://user-images.githubusercontent.com/119915194/235425603-4e873488-da1b-4654-bd35-c051ab7289a8.PNG) <br>
 
----
