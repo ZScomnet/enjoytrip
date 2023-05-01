@@ -5,16 +5,20 @@ spring:
     username: ssafy
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-    data: classpath*:/data.sql
-
+#    data: classpath:data.sql, classpath:sido_data.sql
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
-        show_sql:
-        format_sql:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        format_sql: true
+        use_sql_comments: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      encoding: UTF-8
 
 logging.level:
   org.hibernate.SQL: debug
