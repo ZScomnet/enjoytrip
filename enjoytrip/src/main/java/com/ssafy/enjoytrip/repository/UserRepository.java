@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface UserRepository {
     public List<User> getAllUser();
-//    public MemberDto getMemberInfoById(Long id);
-//
+    public MemberDto getMemberInfoById(Long id);
+
 //    public void signIn();
 //    public void updateInfo(MemberDto memberDto);
 //    public void updatePassword();
