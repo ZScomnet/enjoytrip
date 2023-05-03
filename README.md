@@ -15,7 +15,7 @@ Backend : SpringBoot (Gradle - Groovy)
 > - MySQL-Connector : 'com.mysql:mysql-connector-j'
 
 ---
-Frontend : Vue.js (예정)
+Frontend : Vue.js (npm)
 > Version : 2.x<br>
 > IDE : VScode<br>
 > PORT : 5000
