@@ -1,37 +1,37 @@
-//package com.ssafy.enjoytrip.util;
-//
-//import io.jsonwebtoken.Claims;
-//import io.jsonwebtoken.Jwts;
-//import io.jsonwebtoken.SignatureAlgorithm;
-//
-//import java.util.Date;
-//
-//public class JwtUtil {
-//
-//    private static final String SECRET_KEY = "secret"; // 시크릿 키
-//
-//    // 토큰 생성
-//    public static String generateToken(String subject) {
-//        return Jwts.builder()
-//                .setSubject(subject)
-//                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1시간
-//                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-//                .compact();
-//    }
-//
-//    // 토큰 검증
-//    public static boolean validateToken(String token) {
-//        try {
-//            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
-//
-//    // 토큰에서 사용자 아이디 추출
-//    public static String extractSubject(String token) {
-//        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-//        return claims.getSubject();
-//    }
-//}
+package com.ssafy.enjoytrip.util;
+
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
+
+import java.util.Date;
+
+@Component
+public class JwtUtil {
+    private static final String secretKey = "EnjoyTripSecretKey"; // JWT secret key
+    private final long validateSeconds = 3600000L; // JWT 수명 (1시간)
+    public String createToken(String username){
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + validateSeconds);
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256,secretKey)
+                .compact();
+    }
+
+    public String getUsernameFromToken(String token){
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+    }
+    public static boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+}
