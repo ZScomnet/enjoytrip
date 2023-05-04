@@ -24,7 +24,12 @@ public class JwtUtil {
     }
 
     public String getUsernameFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().
+                setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
     public static boolean validateToken(String token) {
         try {

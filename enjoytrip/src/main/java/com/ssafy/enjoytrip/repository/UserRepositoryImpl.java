@@ -18,41 +18,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository{
     private final EntityManager em;
-    public List<User> getAllUser(){
-        return em.createQuery("select u from User u", User.class).getResultList();
-    }
 
-    public MemberDto getMemberInfoById(Long id){
-        Member member = em.find(Member.class,id);
-        MemberDto memberDto = new MemberDto(
-            member.getUsername(),
-            member.getAddress(),
-            member.getAge(),
-            member.getPhone_number()
-        );
-        return memberDto;
-    }
-
-    public MemberDto getMemberInfoByEmail(String email){
-        try {
-            Member member = em.createQuery("select m from Member m where m.email = :email", Member.class)
-                    .setParameter("email", email)
-                    .getSingleResult();
-            MemberDto memberDto = new MemberDto(
-                    member.getUsername(),
-                    member.getAddress(),
-                    member.getAge(),
-                    member.getPhone_number()
-            );
-            return memberDto;
-        }catch(NoResultException e){
-            e.printStackTrace();
-            return null;
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    public MemberDto getMemberInfoByEmail(String email){
+//        try {
+//            Member member = em.createQuery("select m from Member m where m.email = :email", Member.class)
+//                    .setParameter("email", email)
+//                    .getSingleResult();
+//            MemberDto memberDto = new MemberDto(
+//                    member.getUsername(),
+//                    member.getAddress(),
+//                    member.getAge(),
+//                    member.getPhone_number()
+//            );
+//            return memberDto;
+//        }catch(NoResultException e){
+//            e.printStackTrace();
+//            return null;
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
     public MemberDto login(SignInDto signInDto){
         Member member = em.createQuery("select m from Member m where m.email= :email and m.password= :password",Member.class)
                 .setParameter("email",signInDto.getEmail())
