@@ -14,12 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
-    public List<User> getAllUser(){
-        return userRepository.getAllUser();
-    }
-    public MemberDto getMemberInfoById(Long id){
-        return userRepository.getMemberInfoById(id);
-    }
+//    public List<User> getAllUser(){
+//        return userRepository.getAllUser();
+//    }
+//    public MemberDto getMemberInfoById(Long id){
+//        return userRepository.getMemberInfoById(id);
+//    }
 
     public MemberDto getMemberInfoByEmail(String email){
         return userRepository.getMemberInfoByEmail(email);

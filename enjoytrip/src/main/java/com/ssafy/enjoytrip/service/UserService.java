@@ -8,8 +8,8 @@ import com.ssafy.enjoytrip.model.User;
 import java.util.List;
 
 public interface UserService {
-    public List<User> getAllUser();
-    public MemberDto getMemberInfoById(Long id);
+//    public List<User> getAllUser();
+//    public MemberDto getMemberInfoById(Long id);
     public MemberDto getMemberInfoByEmail(String email);
     public MemberDto login(SignInDto signInDto);
 

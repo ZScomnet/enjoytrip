@@ -13,32 +13,33 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository{
     private final EntityManager em;
 
-//    public MemberDto getMemberInfoByEmail(String email){
-//        try {
-//            Member member = em.createQuery("select m from Member m where m.email = :email", Member.class)
-//                    .setParameter("email", email)
-//                    .getSingleResult();
-//            MemberDto memberDto = new MemberDto(
-//                    member.getUsername(),
-//                    member.getAddress(),
-//                    member.getAge(),
-//                    member.getPhone_number()
-//            );
-//            return memberDto;
-//        }catch(NoResultException e){
-//            e.printStackTrace();
-//            return null;
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public Optional<User> getMemberInfoByEmail(String email){
+        try {
+            Member member = em.createQuery("select m from Member m where m.email = :email", Member.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            MemberDto memberDto = new MemberDto(
+                    member.getUsername(),
+                    member.getAddress(),
+                    member.getAge(),
+                    member.getPhone_number()
+            );
+            return null;
+        }catch(NoResultException e){
+            e.printStackTrace();
+            return null;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
     public MemberDto login(SignInDto signInDto){
         Member member = em.createQuery("select m from Member m where m.email= :email and m.password= :password",Member.class)
                 .setParameter("email",signInDto.getEmail())
