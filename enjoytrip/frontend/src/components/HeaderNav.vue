@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container px-4 px-lg-5">
-      <a @click="home" href="#" class="navbar-brand">Main Logo</a>
+      <router-link to="/home" class="navbar-brand">Main Logo</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -15,7 +15,7 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a @click="plan" class="nav-link" href="#">플랜</a>
+            <router-link class="nav-link" to="/plan">플랜</router-link>
           </li>
           <li class="nav-item">
             <a @click="board" class="nav-link" href="#">게시판</a>
@@ -40,28 +40,23 @@ export default {
   methods: {
     home() {
       console.log("home");
-      this.$emit("event", "home");
     },
     plan() {
       console.log("plan");
-      this.$emit("event", "plan");
     },
     board() {
       console.log("board");
-      this.$emit("event", "board");
     },
     tour() {
       console.log("tour");
-      this.$emit("event", "tour");
     },
     logout() {
       console.log("logout");
-      this.$emit("event", "logout");
     },
   },
 };
 </script>
 
 <style>
-@import "../../assets/css/styles.css";
+@import "../assets/css/styles.css";
 </style>
