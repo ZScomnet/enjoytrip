@@ -7,10 +7,8 @@ import com.ssafy.enjoytrip.service.AttractionService;
 import com.ssafy.enjoytrip.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/attraction")
+@CrossOrigin("*")
 public class AttractionController {
     private final AttractionService attractionService;
     @GetMapping
@@ -37,6 +36,13 @@ public class AttractionController {
     @GetMapping("/type/{type}")
     public List<AttractionInfo> getTypeAttraction(@PathVariable long type){
         return attractionService.getTypeAttraction(type);
+    }
+
+    @PutMapping("/plan/{plan_id}")
+    public void updateLike(@PathVariable int plan_id,@RequestBody Long user_id){
+        System.out.println("userid : "+user_id);
+        attractionService.like(plan_id);
+        attractionService.insertlikes(plan_id,user_id);
     }
 
 }
