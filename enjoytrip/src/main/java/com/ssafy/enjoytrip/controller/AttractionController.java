@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/attraction")
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5000/")
 public class AttractionController {
     private final AttractionService attractionService;
     @GetMapping
@@ -40,8 +40,8 @@ public class AttractionController {
 
     @PutMapping("/plan/{plan_id}")
     public void updateLike(@PathVariable int plan_id,@RequestBody Long user_id){
-        System.out.println("userid : "+user_id);
         attractionService.like(plan_id);
+        System.out.println("userid : "+user_id);
         attractionService.insertlikes(plan_id,user_id);
     }
 
