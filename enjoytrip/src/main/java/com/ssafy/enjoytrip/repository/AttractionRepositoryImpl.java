@@ -1,10 +1,12 @@
 package com.ssafy.enjoytrip.repository;
 
 import com.ssafy.enjoytrip.model.AttractionInfo;
+import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,6 +39,27 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 
         return typeAttraction;
     }
+
+    @Transactional
+    public void like(int plan_id){
+        String jpql = "UPDATE Plan  pl SET pl.likes = pl.likes+1 WHERE pl.plan_id =:planId"; // 앞에 :가 붙은 변수에 파라미터를 바인딩 받는다
+        em.createQuery(jpql)
+                .setParameter("planId", plan_id)
+                .executeUpdate();
+//        jpql = //user_id랑 plan_id 묶은 테이블에 삽입 나중에 유저 아이디 가지고
+        //플랜 아이디 참조해서 plan테이블 접근 후 데이터 가져오기
+        em.clear();
+    }
+    @Transactional
+
+    public void insertlikes(int plan_id, Long user_id){
+        String jpql = "INSERT INTO likes (plan_id, user_id) VALUES(?,?)";
+        System.out.println("sql 처리 됨?");
+        em.createNativeQuery(jpql).setParameter(1,plan_id)
+                .setParameter(2, user_id).executeUpdate();
+        em.clear();
+    }
+
 
 
 }

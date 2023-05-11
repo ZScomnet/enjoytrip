@@ -13,5 +13,13 @@ public interface AttractionRepository {
 
     public List<AttractionInfo> getTypeAttraction(long type);
 
+//    public void insertPlan(long type);
+//
+//    public void insertPlanInfo(long type);
+
+    public void like(int plan_id);
+
+    public void insertlikes(int plan_id, Long user_id);
+
 
 }

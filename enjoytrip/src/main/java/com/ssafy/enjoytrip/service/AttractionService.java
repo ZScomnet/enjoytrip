@@ -13,5 +13,8 @@ public interface AttractionService {
 
     public List<AttractionInfo> getTypeAttraction(long type);
 
+    public void like(int plan_id);
+
+    public void insertlikes(int plan_id, Long user_id);
 
 }

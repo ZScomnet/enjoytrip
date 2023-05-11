@@ -28,5 +28,10 @@ public class AttractionServiceImpl implements AttractionService{
         return attractionRepository.getTypeAttraction(type);
     }
 
-
+    public void like(int plan_id){
+        attractionRepository.like(plan_id);
+    }
+    public void insertlikes(int plan_id, Long user_id){
+        attractionRepository.insertlikes(plan_id,user_id);
+    }
 }
