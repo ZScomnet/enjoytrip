@@ -27,11 +27,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     }
 
     public AttractionInfo getDetailAttraction(long content_id){
-        String jpql = "select ai from AttractionInfo ai where ai.id=:contentName"; // 앞에 :가 붙은 변수에 파라미터를 바인딩 받는다.
-        AttractionInfo singleattraction = em.createQuery(jpql, AttractionInfo.class)
-                .setParameter("contentName", content_id).getSingleResult();
-
-        return singleattraction;
+        return em.find(AttractionInfo.class, content_id);
     }
 
     public List<AttractionInfo> getTypeAttraction(long type){
