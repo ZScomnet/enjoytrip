@@ -1,10 +1,13 @@
 <template>
   <div id="kakao_map">
-    <div id="map"></div>
+    <div id="map" class="map"></div>
+    <LeftBar class="side-bar" />
   </div>
 </template>
 
 <script>
+import LeftBar from "./Plan/LeftBar.vue";
+import axios from "axios";
 export default {
   name: "KakaoMap",
   data() {
@@ -15,7 +18,11 @@ export default {
       nativeAppKey: "9d29d54a5264a72919fa63d8292496d2",
       adminKey: "6cba4894e7a3c252933edb6d1e69a1e1",
       kakaomap: null,
+      attractions: [],
     };
+  },
+  components: {
+    LeftBar,
   },
   methods: {
     initMap() {
@@ -24,6 +31,7 @@ export default {
       const options = {
         // 처음 지도의 위치를 lat, lng(위도, 경도) 값으로 설정한다.
         center: new kakao.maps.LatLng(33.450701, 126.570667),
+
         level: 8,
       };
 
@@ -40,6 +48,10 @@ export default {
       /* eslint를 사용한다면 kakao 변수가 선언되지 않았다고
        * 오류를 내기 때문에 아래 줄과 같이 전역변수임을
        * 알려주어야 한다. */
+      axios
+        .get("http://localhost:8080/attraction", { withCredentials: true })
+        .then((res) => (this.attractions = res.data));
+      console.log(this.attractions);
       /* global kakao */
       script.addEventListener("load", () => {
         kakao.maps.load(() => {
@@ -56,10 +68,22 @@ export default {
 };
 </script>
 
-<style>
-#map {
-  width: 1920px;
-  height: 1080px;
-  object-fit: cover;
+<style lang="scss">
+#kakao_map {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  > .map {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  > .side-bar {
+    position: absolute;
+    left: 0;
+    z-index: 10; // 띄울 때 우선 순위 : 클 수록 우선순위가 높다.
+  }
 }
 </style>
