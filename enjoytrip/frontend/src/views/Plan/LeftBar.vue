@@ -10,6 +10,14 @@
           placeholder="관광지를 입력해주세요"
           @keyup.enter="searchTour()" />
       </div>
+      <div class="search-items">
+        <div
+          v-for="data in resultData"
+          :key="data.eee"
+          :class="{ hide: !isOpen }">
+          {{ data.eee }}
+        </div>
+      </div>
       <button class="side-bar-btn" @click="leftClick">
         {{ isOpen ? "<" : ">" }}
       </button>
@@ -25,6 +33,7 @@ export default {
     return {
       isOpen: true,
       inputValue: "",
+      resultData: [],
     };
   },
   methods: {
@@ -33,6 +42,9 @@ export default {
     },
     searchTour() {
       console.log("SEARCH");
+      this.resultData = this.attractions.filter((el) => {
+        return el.addr1.includes(this.inputValue);
+      });
     },
   },
 };

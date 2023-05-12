@@ -48,10 +48,11 @@ export default {
       /* eslint를 사용한다면 kakao 변수가 선언되지 않았다고
        * 오류를 내기 때문에 아래 줄과 같이 전역변수임을
        * 알려주어야 한다. */
-      axios
-        .get("http://localhost:8080/attraction", { withCredentials: true })
-        .then((res) => (this.attractions = res.data));
-      console.log(this.attractions);
+      axios.get("http://localhost:8080/attraction").then((res) => {
+        this.attractions = res.data;
+        console.log(this.attractions);
+      });
+
       /* global kakao */
       script.addEventListener("load", () => {
         kakao.maps.load(() => {
