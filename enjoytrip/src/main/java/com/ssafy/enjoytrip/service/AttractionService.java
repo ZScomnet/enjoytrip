@@ -17,4 +17,7 @@ public interface AttractionService {
 
     public void insertlikes(int plan_id, Long user_id);
 
+    public void insertPlan(String plan_name, Long user_id);
+
+
 }

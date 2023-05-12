@@ -34,4 +34,8 @@ public class AttractionServiceImpl implements AttractionService{
     public void insertlikes(int plan_id, Long user_id){
         attractionRepository.insertlikes(plan_id,user_id);
     }
+
+    public void insertPlan(String plan_name, Long user_id){attractionRepository.insertPlan(plan_name,user_id);}
+
+
 }

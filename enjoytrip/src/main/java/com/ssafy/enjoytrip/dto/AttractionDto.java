@@ -7,5 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AttractionDto {
-    int plan_id;
+    String plan_name;
+    Long user_id;
 }

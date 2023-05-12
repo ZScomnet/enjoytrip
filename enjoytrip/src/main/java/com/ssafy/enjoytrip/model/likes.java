@@ -11,11 +11,15 @@ import org.jetbrains.annotations.NotNull;
 @Entity
 @Table(name="likes")
 public class likes {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idx;// primary  key
+
     @Column(name="user_id")
     @NotNull
-    private Long id; // primary  key
+    private Long id;
     @Column(nullable = false)
     private int plan_id; // foreign key
 

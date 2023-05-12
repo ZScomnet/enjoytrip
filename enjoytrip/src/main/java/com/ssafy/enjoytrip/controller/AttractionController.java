@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.controller;
 
+import com.ssafy.enjoytrip.dto.AttractionDto;
 import com.ssafy.enjoytrip.dto.MemberDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.User;
@@ -44,5 +45,12 @@ public class AttractionController {
         System.out.println("userid : "+user_id);
         attractionService.insertlikes(plan_id,user_id);
     }
+
+    @PutMapping("/plan/insertPlan")
+    public void insertPlan(@RequestBody AttractionDto attractionDto){
+
+        attractionService.insertPlan(attractionDto.getPlan_name(),attractionDto.getUser_id());
+    }
+
 
 }

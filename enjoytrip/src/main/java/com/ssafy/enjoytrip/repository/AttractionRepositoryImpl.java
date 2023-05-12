@@ -51,7 +51,6 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         em.clear();
     }
     @Transactional
-
     public void insertlikes(int plan_id, Long user_id){
         String jpql = "INSERT INTO likes (plan_id, user_id) VALUES(?,?)";
         System.out.println("sql 처리 됨?");
@@ -59,6 +58,15 @@ public class AttractionRepositoryImpl implements AttractionRepository {
                 .setParameter(2, user_id).executeUpdate();
         em.clear();
     }
+    @Transactional
+    public void insertPlan(String plan_name, Long user_id){
+        String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
+        System.out.println("sql 처리 됨?");
+        em.createNativeQuery(jpql).setParameter(1,plan_name )
+                .setParameter(2, user_id).executeUpdate();
+        em.clear();
+    }
+
 
 
 
