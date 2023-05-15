@@ -2,12 +2,14 @@ package com.ssafy.enjoytrip.repository;
 
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
+import com.ssafy.enjoytrip.model.PlanInfo;
 import com.ssafy.enjoytrip.model.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -59,15 +61,31 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         em.clear();
     }
     @Transactional
-    public void insertPlan(String plan_name, Long user_id){
+    public Plan insertPlan(String plan_name, Long user_id){
         String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
         System.out.println("sql 처리 됨?");
         em.createNativeQuery(jpql).setParameter(1,plan_name )
                 .setParameter(2, user_id).executeUpdate();
+
+        Plan plan = em.createQuery("select pl from Plan pl where pl.id =:userId and pl.planName=:planName ", Plan.class).setParameter("userId", user_id)
+                .setParameter("planName",plan_name).getSingleResult();
         em.clear();
+        return plan;
     }
+    @Transactional
+    @Override
+    public void insertDetailPlan(int plan_id, String plan_date, List<Integer> contentIdList){
 
+        for (Integer integer : contentIdList) {
+            String jpql = "INSERT INTO Plan_Info (plan_id, content_id, plan_day) VALUES(?,?,?)";
+            System.out.println("DetailPlan 삽입 완료");
+            em.createNativeQuery(jpql).setParameter(1, plan_id)
+                    .setParameter(2, integer)
+                    .setParameter(3,plan_date).executeUpdate();
+        }
+        em.clear();
 
+    }
 
 
 }

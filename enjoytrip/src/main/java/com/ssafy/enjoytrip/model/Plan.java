@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Entity
 @Table(name="plan")
 public class Plan {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int plan_id; // primary key
@@ -17,10 +18,5 @@ public class Plan {
     private Long id; // foreign key
     @Column(name="plan_name")
     private String planName;
-    @Column(name="likes")
-    @ColumnDefault("0")
-    private int likes;
-
-
 
 }
