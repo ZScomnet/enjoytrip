@@ -1,12 +1,18 @@
 <template>
   <div id="kakao_map">
     <div id="map" class="map"></div>
-    <LeftBar class="side-bar" />
+    <LeftBar
+      v-if="kakaomap != null && map != null"
+      :kakaomap="kakaomap"
+      :map="map"
+      class="left-side-bar" />
+    <RightBar class="right-side-bar" />
   </div>
 </template>
 
 <script>
 import LeftBar from "./Plan/LeftBar.vue";
+import RightBar from "./Plan/RightBar.vue";
 import axios from "axios";
 export default {
   name: "KakaoMap",
@@ -19,15 +25,17 @@ export default {
       adminKey: "6cba4894e7a3c252933edb6d1e69a1e1",
       kakaomap: null,
       attractions: [],
+      map: null,
     };
   },
   components: {
     LeftBar,
+    RightBar,
   },
   methods: {
     initMap() {
       const container = document.getElementById("map");
-
+      this.kakaomap = container;
       const options = {
         // 처음 지도의 위치를 lat, lng(위도, 경도) 값으로 설정한다.
         center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -38,7 +46,12 @@ export default {
       this.map = new kakao.maps.Map(container, options);
     },
   },
-  created() {},
+  created() {
+    axios.get("http://localhost:8080/attraction").then((res) => {
+      this.attractions = res.data;
+      this.$store.attractions = this.attractions;
+    });
+  },
   mounted() {
     if (!window.kakao || !window.kakao.maps) {
       const script = document.createElement("script");
@@ -48,10 +61,6 @@ export default {
       /* eslint를 사용한다면 kakao 변수가 선언되지 않았다고
        * 오류를 내기 때문에 아래 줄과 같이 전역변수임을
        * 알려주어야 한다. */
-      axios.get("http://localhost:8080/attraction").then((res) => {
-        this.attractions = res.data;
-        console.log(this.attractions);
-      });
 
       /* global kakao */
       script.addEventListener("load", () => {
@@ -81,10 +90,15 @@ export default {
     width: 100%;
     height: 100%;
   }
-  > .side-bar {
+  > .left-side-bar {
     position: absolute;
     left: 0;
     z-index: 10; // 띄울 때 우선 순위 : 클 수록 우선순위가 높다.
+  }
+  > .right-side-bar {
+    position: absolute;
+    right: 0;
+    z-index: 11;
   }
 }
 </style>

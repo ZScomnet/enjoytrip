@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import HeaderNav from "./components/HeaderNav.vue";
 export default {
   name: "App",
@@ -20,6 +22,7 @@ export default {
 </script>
 
 <style>
+@import "./assets/css/styles.css";
 #app {
   position: absolute;
   top: 0;
@@ -27,6 +30,7 @@ export default {
   bottom: 0;
   left: 0;
   font-family: "MaplestoryOTFBold";
+  margin-top: 65.97px;
 }
 @font-face {
   font-family: "LINESeedKR-Bd";

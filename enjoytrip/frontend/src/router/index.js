@@ -10,6 +10,22 @@ const routes = [
     name: "home",
     component: () => import("@/views/Home.vue"),
   },
+  // Auth Route
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/Auth/LoginForm.vue"),
+  },
+  {
+    path: "/sign-up",
+    name: "sign-up",
+    component: () => import("@/views/Auth/SignUpForm.vue"),
+  },
+  {
+    path: "/find-pw",
+    name: "find-pw",
+    component: () => import("@/views/Auth/ForgotPassword.vue"),
+  },
 
   // Plan Route
   {
