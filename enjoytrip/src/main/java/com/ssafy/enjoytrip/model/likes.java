@@ -4,21 +4,23 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @Setter
 @Entity
-@Table(name="plan")
-public class Plan {
+@Table(name="likes")
+public class likes {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int plan_id; // primary key
+    private int idx;// primary  key
+
     @Column(name="user_id")
-    private Long id; // foreign key
-    @Column(name="plan_name")
-    private String planName;
-    @Column(name="likes")
-    @ColumnDefault("0")
-    private int likes;
+    @NotNull
+    private Long id;
+    @Column(nullable = false)
+    private int plan_id; // foreign key
 
 }
