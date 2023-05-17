@@ -13,13 +13,24 @@
       <div :class="{ hide: !isOpen }">
         <div class="container mt-5">
           <!-- Card -->
-          <div v-for="result in resultData" :key="result.id" class="card">
-            <div class="row">
-              <div class="col-md-4">
-                <img :src="result.firstImage" class="img-field" />
-              </div>
-              <div class="col-md-8">
-                <h4>{{ result.title }}</h4>
+          <div>
+            <div v-for="result in resultData" :key="result.id" class="card">
+              <div class="row">
+                <div class="col-md-4" @click="moveMap(result)">
+                  <img
+                    v-if="result.firstImage !== ''"
+                    :src="result.firstImage"
+                    class="img-field" />
+                  <img
+                    v-else
+                    :src="require('@/assets/images/empty.jpg')"
+                    class="img-field" />
+                </div>
+                <div class="col-md-8">
+                  <h4 style="text-align: center">{{ result.title }}</h4>
+                  <b-button @click="insertPlan(result)"> 플랜 추가 </b-button>
+                  <b-button> 정보 보기 </b-button>
+                </div>
               </div>
             </div>
           </div>
@@ -45,26 +56,40 @@ export default {
       marker: [],
     };
   },
-  created() {
-    console.log(this.map);
-    console.log("leftbar", window);
-  },
+  created() {},
   methods: {
     leftClick() {
       this.isOpen = this.isOpen ? false : true;
+    },
+    moveMap(result) {
+      const mapOption = new window.kakao.maps.LatLng(
+        result["latitude"],
+        result["longitude"]
+      );
+
+      this.map.setCenter(mapOption);
     },
     searchTour() {
       this.resultData = this.$store.attractions.filter((el) => {
         return el.addr1.includes(this.inputValue);
       });
+      for (let i = 0; i < this.marker.length; i++) this.marker[i].setMap(null);
+      if (this.resultData.length == 0) {
+        this.markerPosition = null;
+        this.marker = null;
+        return;
+      } else {
+        this.markerPosition = [];
+        this.marker = [];
+      }
+      console.log(this.resultData);
       const mapOption = new window.kakao.maps.LatLng(
         this.resultData[0]["latitude"],
         this.resultData[0]["longitude"]
       );
 
       this.map.setCenter(mapOption);
-      for (let i = 0; i < this.marker.length; i++) this.marker[i].setMap(null);
-      this.markerPosition = [];
+
       for (let i = 0; i < this.resultData.length; i++) {
         this.markerPosition.push(
           new window.kakao.maps.LatLng(
@@ -79,26 +104,24 @@ export default {
         );
         this.marker[i].setMap(this.map);
       }
-      console.log("this.marker", this.marker);
+    },
+    insertPlan(plan) {
+      // 관광지 추가
+      this.$store.commit("ADD_TOUR", {
+        day: this.$store.state.selectedDay,
+        tourInfo: plan,
+      });
     },
   },
   props: ["map"],
-  // mounted() {
-  //   // window에 kakao 기능 추가
-  //   if (!window.kakao || !window.kakao.maps) {
-  //     const script = document.createElement("script");
-  //     script.type = "text/javascript";
-  //     script.src =
-  //       "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=072af5d564b2fe0e2778a38436435f49&libraries=clusterer,drawing,services&autoload=false";
-  //     /* global kakao */
-  //     script.addEventListener("load", () => {
-  //       kakao.maps.load(() => {
-  //         // 카카오맵 API가 로딩이 완료된 후 지도의 기본적인 세팅을 시작해야 한다.
-  //       });
-  //     });
-  //     document.head.appendChild(script);
-  //   }
-  // },
+  computed: {
+    tourList() {
+      return this.$store.state.tourList;
+    },
+    selectedDay() {
+      return this.$store.state.selectedDay;
+    },
+  },
 };
 </script>
 

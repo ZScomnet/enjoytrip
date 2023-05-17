@@ -16,6 +16,9 @@ export default new Vuex.Store({
     userInfo: {}, // 유저의 정보
     token: null, // jwt
     attractions: {},
+    planTitle: "",
+    plan: [],
+    selectedDay: 0,
   },
   mutations: {
     // 언더바 권장, method 구현
@@ -31,6 +34,30 @@ export default new Vuex.Store({
     },
     SET_ATTRACTIONS(state, payload) {
       state.attractions = payload;
+    },
+    SET_PLANTITLE(state, title) {
+      // 플랜 타이틀 지정
+      state.planTitle = title;
+    },
+    ADD_DAY(state) {
+      // 하루 일차 추가
+      state.plan.push([]);
+    },
+    ADD_TOUR(state, payload) {
+      // 여행정보 넣기
+      state.plan[payload.day].push(payload.tourInfo);
+    },
+    DELETE_TOUR(state, payload) {
+      // idx 일차 몇번째 여행지 삭제
+      state.plan[payload.day].splice(payload.idx, 1);
+    },
+    DELETE_DAY(state, day) {
+      // idx 일차 통째로 삭제
+      state.plan.splice(day, 1);
+    },
+    SELECT_DAY(state, day) {
+      // 관광지 추가할 날짜 선택
+      state.selectedDay = day;
     },
   },
   actions: {
