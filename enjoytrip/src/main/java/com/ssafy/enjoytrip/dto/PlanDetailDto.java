@@ -10,8 +10,8 @@ import java.util.List;
 @AllArgsConstructor
 public class PlanDetailDto {
 
-    private String plan_name;
+    private String planTitle;
 //    private Long user_id;
-    private List<List<AttractionInfo>> contendIdList;
+    private List<List<AttractionInfo>> plan;
 
 }

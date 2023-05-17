@@ -88,20 +88,25 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     @Transactional
     @Override
     public void insertDetailPlan(PlanDetailDto planDetailDto){
-        String plan_name = planDetailDto.getPlan_name();
+        String plan_name = planDetailDto.getPlanTitle();
         String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
         System.out.println("sql 처리 됨?");
         em.createNativeQuery(jpql).setParameter(1,plan_name )
                 .setParameter(2, 1).executeUpdate();
+        System.out.println("dfdfasdfasdf"+planDetailDto.getPlan().size());
 
-        Plan plan = em.createQuery("select pl from Plan pl where pl.id =:userId and pl.planName=:planName ", Plan.class).setParameter("userId", 1)
-                .setParameter("planName",plan_name).getSingleResult();
-        int planId =  plan.getPlan_id();
-        for (int i=0;i<planDetailDto.getContendIdList().size();i++) {
-            for(int j=0;j<planDetailDto.getContendIdList().get(i).size();j++) {
+        Long plan_id =(Long)em.createNativeQuery(" SELECT LAST_INSERT_ID() from Plan").getSingleResult();
+
+//        Plan plan = em.createQuery("SELECT pl from Plan pl order by plan_id desc limit 1").getSingleResult();
+
+//        Plan plan = em.createQuery("select pl from Plan pl where pl.id =:userId and pl.planName=:planName ", Plan.class).setParameter("userId", 1)
+//                .setParameter("planName",plan_name).getSingleResult();
+//        int planId =  plan.getPlan_id();
+        for (int i=0;i<planDetailDto.getPlan().size();i++) {
+            for(int j=0;j<planDetailDto.getPlan().get(i).size();j++) {
                 jpql = "INSERT INTO Plan_Info (plan_id, content_id, plan_day, plan_day_idx) VALUES(?,?,?,?)";
-                AttractionInfo tour = planDetailDto.getContendIdList().get(i).get(j);
-                em.createNativeQuery(jpql).setParameter(1, planId)
+                AttractionInfo tour = planDetailDto.getPlan().get(i).get(j);
+                em.createNativeQuery(jpql).setParameter(1, plan_id)
                         .setParameter(2, tour.getId())
                         .setParameter(3, i+1)
                         .setParameter(4, j+1)
