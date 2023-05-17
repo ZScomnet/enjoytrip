@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.controller;
 
 import com.ssafy.enjoytrip.dto.AttractionDto;
 import com.ssafy.enjoytrip.dto.MemberDto;
+import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.User;
@@ -50,6 +51,14 @@ public class AttractionController {
         attractionService.insertlikes(plan_id,user_id);
     }
 
+    @DeleteMapping("/plan/{plan_id}/deleteLike")
+    public void deleteLike(@PathVariable int plan_id,@RequestBody Long user_id){
+//        attractionService.like(plan_id);
+        System.out.println("userid : "+user_id);
+        attractionService.deletelikes(plan_id,user_id);
+    }
+
+
     @PutMapping("/plan/insertPlan")
     public void insertPlan(@RequestBody AttractionDto attractionDto){
         Plan plan =attractionService.insertPlan(attractionDto.getPlan_name(),attractionDto.getUser_id());
@@ -59,16 +68,19 @@ public class AttractionController {
 
     }
     @PutMapping("/plan/insertPlan/detail")
-    public void insertDetailPlan(@RequestBody Map<String, Object> map ){
-        int planId = (Integer)map.get("plan_id");
-        String planDate = (String) map.get("plan_date");
-        List<Integer> contentIdList = (List<Integer>) map.get("content_id_list");
-        System.out.println(contentIdList);
-        System.out.println(planDate);
-        attractionService.insertDetailPlan(planId, planDate, contentIdList);
+    public void insertDetailPlan(@RequestBody PlanDetailDto planDetailDto){
+
+        attractionService.insertDetailPlan(planDetailDto);
         System.out.println("DetailPlan 완료");
 //        int planID = plan.getPlan_id();
+    }
+
+    @PatchMapping("/plan/deletePlan")
+    public void deletePlan(@RequestBody AttractionDto attractionDto){
+        attractionService.deletePlan(attractionDto.getPlan_name(),attractionDto.getUser_id());
 
     }
+
+
 
 }

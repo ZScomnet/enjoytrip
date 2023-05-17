@@ -19,4 +19,8 @@ public class Plan {
     @Column(name="plan_name")
     private String planName;
 
+    @ColumnDefault("false")
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean blocked;
+
 }

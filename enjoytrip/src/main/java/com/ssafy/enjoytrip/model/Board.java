@@ -7,13 +7,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class Board{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String email;
-    private String password;
-    private char permission;
-    private String created;
+    private int id;
+    private String title;
+    private String author;//Member username
+    private String text;
+    private int group_id;
+
 }

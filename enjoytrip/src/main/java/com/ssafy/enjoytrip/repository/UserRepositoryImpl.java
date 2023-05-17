@@ -2,78 +2,45 @@ package com.ssafy.enjoytrip.repository;
 
 import com.ssafy.enjoytrip.dto.MemberDto;
 import com.ssafy.enjoytrip.dto.SignInDto;
-import com.ssafy.enjoytrip.dto.SignUpDto;
 import com.ssafy.enjoytrip.model.Member;
 import com.ssafy.enjoytrip.model.User;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository{
     private final EntityManager em;
-
-    public Optional<User> getMemberInfoByEmail(String email){
-        try {
-            Member member = em.createQuery("select m from Member m where m.email = :email", Member.class)
-                    .setParameter("email", email)
-                    .getSingleResult();
-            MemberDto memberDto = new MemberDto(
-                    member.getUsername(),
-                    member.getAddress(),
-                    member.getAge(),
-                    member.getPhone_number()
-            );
-            return null;
-        }catch(NoResultException e){
-            e.printStackTrace();
-            return null;
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
+    public List<User> getAllUser(){
+        return em.createQuery("select u from User u", User.class).getResultList();
     }
-    public MemberDto login(SignInDto signInDto){
-        Member member = em.createQuery("select m from Member m where m.email= :email and m.password= :password",Member.class)
+
+    public MemberDto getMemberInfoById(Long id){
+        Member member = em.find(Member.class,id);
+        MemberDto memberDto = new MemberDto(
+            member.getUsername(),
+            member.getAddress(),
+            member.getAge(),
+            member.getPhone_number()
+        );
+        return memberDto;
+    }
+    public void signIn(SignInDto signInDto){
+        User user = em.createQuery("select u from User u where u.email = :email and u.password = :password",User.class)
                 .setParameter("email",signInDto.getEmail())
                 .setParameter("password",signInDto.getPassword())
                 .getSingleResult();
-        if(member != null) {
-            return new MemberDto(
-                    member.getUsername(),
-                    member.getAddress(),
-                    member.getAge(),
-                    member.getPhone_number()
-            );
-        } else return null;
+        if(user != null){
+
+        }
     }
-    @Transactional
-    public void signUp(SignUpDto signUpDto){
-            Member member = new Member();
-            // user
-            member.setEmail(signUpDto.getEmail());
-            member.setPassword(signUpDto.getPassword());
-            member.setCreated(LocalDateTime.now().toString());
-            member.setPermission('M');
-            // member
-            member.setUsername(signUpDto.getUsername());
-            member.setAddress(signUpDto.getAddress());
-            member.setAge(signUpDto.getAge());
-            member.setPhone_number(signUpDto.getPhone_number());
-            em.persist(member);
+    public void updateInfo(MemberDto memberDto){
 
     }
-//    public void updateInfo(MemberDto memberDto){
-//
-//    }
-//    public void updatePassword(){
-//
-//    }
+    public void updatePassword(){
+
+    }
 }

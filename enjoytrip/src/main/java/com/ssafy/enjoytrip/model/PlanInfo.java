@@ -23,11 +23,9 @@ public class PlanInfo {
     @Column(name="content_id")
     private int contentId;
     @Column(name="plan_day")
-    private LocalDateTime planDay;
+    private int planDay;
+    @Column(name="plan_day_idx")
+    private int planDayIdx;
 
-//    @PrePersist
-//    public void planDay() {
-//        this.planDay = LocalDateTime.now();
-//    }
 
 }

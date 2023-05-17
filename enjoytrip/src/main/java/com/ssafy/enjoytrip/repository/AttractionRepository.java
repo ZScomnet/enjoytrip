@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.repository;
 
+import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.PlanInfo;
@@ -20,13 +21,18 @@ public interface AttractionRepository {
 //
 //    public void insertPlanInfo(long type);
 
-    public void like(int plan_id);
+//    public void like(int plan_id);
 
     public void insertlikes(int plan_id, Long user_id);
 
+    public void deletelikes(int plan_id, Long user_id);
+
+
     public Plan insertPlan(String plan_name, Long user_id);
 
-    public void insertDetailPlan(int plan_id, String plan_date, List<Integer> contentIdList);
+    public void insertDetailPlan(PlanDetailDto planDetailDto);
+
+    public void deletePlan(String plan_name, Long user_id);
 
 
 }
