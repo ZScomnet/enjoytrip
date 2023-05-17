@@ -28,7 +28,7 @@ public class BoardController {
         boardService.insertBoard(board);
 
         //boardGroup 추가(권한 설정)
-        boardService.
+//        boardService.
 
 //        System.out.println(board.getText());
 //        int planID = plan.getPlan_id();

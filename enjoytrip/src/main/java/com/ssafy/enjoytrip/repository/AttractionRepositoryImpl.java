@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.repository;
 
+import com.ssafy.enjoytrip.dto.AttractionDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
@@ -87,15 +88,25 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     @Transactional
     @Override
     public void insertDetailPlan(PlanDetailDto planDetailDto){
-        planDetailDto.getContendIdList().get(0).
-        for (int i=1; i<= planDetailDto.getContendIdList().size();i++) {
-            String jpql = "INSERT INTO Plan_Info (plan_id, content_id, plan_day, plan_day_idx) VALUES(?,?,?,?)";
-            System.out.println("DetailPlan 삽입 완료");
-            em.createNativeQuery(jpql).setParameter(1, plan_id)
-                    .setParameter(2, integer)
-                    .setParameter(3,plan_date)
-                    .setParameter(4,plan_date_idx)
-                    .executeUpdate();
+        String plan_name = planDetailDto.getPlan_name();
+        String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
+        System.out.println("sql 처리 됨?");
+        em.createNativeQuery(jpql).setParameter(1,plan_name )
+                .setParameter(2, 1).executeUpdate();
+
+        Plan plan = em.createQuery("select pl from Plan pl where pl.id =:userId and pl.planName=:planName ", Plan.class).setParameter("userId", 1)
+                .setParameter("planName",plan_name).getSingleResult();
+        int planId =  plan.getPlan_id();
+        for (int i=0;i<planDetailDto.getContendIdList().size();i++) {
+            for(int j=0;j<planDetailDto.getContendIdList().get(i).size();j++) {
+                jpql = "INSERT INTO Plan_Info (plan_id, content_id, plan_day, plan_day_idx) VALUES(?,?,?,?)";
+                AttractionInfo tour = planDetailDto.getContendIdList().get(i).get(j);
+                em.createNativeQuery(jpql).setParameter(1, planId)
+                        .setParameter(2, tour.getId())
+                        .setParameter(3, i+1)
+                        .setParameter(4, j+1)
+                        .executeUpdate();
+            }
         }
         em.clear();
 

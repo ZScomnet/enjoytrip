@@ -59,15 +59,15 @@ public class AttractionController {
     }
 
 
-    @PutMapping("/plan/insertPlan")
-    public void insertPlan(@RequestBody AttractionDto attractionDto){
-        Plan plan =attractionService.insertPlan(attractionDto.getPlan_name(),attractionDto.getUser_id());
-
-        System.out.println(plan.getPlan_id());
-//        int planID = plan.getPlan_id();
-
-    }
-    @PutMapping("/plan/insertPlan/detail")
+//    @PutMapping("/plan/insertPlan")
+//    public void insertPlan(@RequestBody AttractionDto attractionDto){
+//        Plan plan =attractionService.insertPlan(attractionDto.getPlan_name(),attractionDto.getUser_id());
+//
+//        System.out.println(plan.getPlan_id());
+////        int planID = plan.getPlan_id();
+//
+//    }
+    @PostMapping("/plan")
     public void insertDetailPlan(@RequestBody PlanDetailDto planDetailDto){
 
         attractionService.insertDetailPlan(planDetailDto);
