@@ -15,7 +15,13 @@
       <div :class="{ hide: !isOpen }">
         <!-- ListGroup -->
         <ul v-for="(tourList, idx) in plan" :key="idx" class="list-group">
-          <li class="list-group-item active" @click="selectPlan(idx)">
+          <li
+            class="list-group-item active"
+            :style="{
+              backgroundColor: selectedDay == idx ? '#000000' : '',
+              borderColor: selectedDay == idx ? '#000000' : '',
+            }"
+            @click="selectPlan(idx)">
             {{ idx + 1 }} 일차
             <b-button @click="deleteDay(idx)"> X </b-button>
           </li>
@@ -92,7 +98,7 @@ export default {
     postPlan() {
       console.log(this.$store.state.planTitle);
       console.log(this.$store.state.plan);
-      http.post("/plan", {
+      http.post("/attraction/plan", {
         planTitle: this.$store.state.planTitle,
         plan: this.$store.state.plan,
       });
