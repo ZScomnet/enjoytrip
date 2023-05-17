@@ -1,5 +1,17 @@
 spring:
 
+  mail:
+    host: smtp.gmail.com # 1
+    port: 587 # 2
+    username: ${mail.companyname}    # 3
+    password:  ${mail.password}
+    properties:
+      mail:
+        smtp:
+          auth: true # 5
+          starttls:
+            enable: true # 7
+
   datasource:
     url: jdbc:mysql://localhost:3306/enjoytrip?useSSL=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: ssafy
@@ -28,8 +40,6 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
-
-
 
 server:
   port: 8080
