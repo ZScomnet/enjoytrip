@@ -2,6 +2,7 @@
   <div class="right-container">
     <div :class="{ 'side-bar': isOpen }">
       <BInput
+        :class="{ hide: !isOpen }"
         v-model="title"
         placeholder="플랜명을 입력해주세요.."
         @keyup="setPlanTitle(title)" />
@@ -13,47 +14,50 @@
         <div class="search-items"></div>
       </div>
       <div :class="{ hide: !isOpen }">
-        <!-- ListGroup -->
-        <ul v-for="(tourList, idx) in plan" :key="idx" class="list-group">
-          <li
-            class="list-group-item active"
-            :style="{
-              backgroundColor: selectedDay == idx ? '#000000' : '',
-              borderColor: selectedDay == idx ? '#000000' : '',
-            }"
-            @click="selectPlan(idx)">
-            {{ idx + 1 }} 일차
-            <b-button @click="deleteDay(idx)"> X </b-button>
-          </li>
-          <li
-            v-for="(tour, tourIdx) in tourList"
-            :key="tourIdx"
-            class="list-group-item">
-            <div class="card">
-              <div class="row">
-                <div class="col-md-4">
-                  <img
-                    v-if="tour.firstImage !== ''"
-                    :src="tour.firstImage"
-                    class="img-field" />
-                  <img
-                    v-else
-                    :src="require('@/assets/images/empty.jpg')"
-                    class="img-field" />
-                </div>
-                <div class="col-md-8">
-                  <h4 style="text-align: center">{{ tour.title }}</h4>
-                  <b-button @click="deleteTour(tourIdx, idx)"> 삭제 </b-button>
+        <div class="plan-group">
+          <!-- ListGroup -->
+          <ul v-for="(tourList, idx) in plan" :key="idx" class="list-group">
+            <li
+              class="list-group-item active"
+              :style="{
+                backgroundColor: selectedDay == idx ? '#000000' : '',
+                borderColor: selectedDay == idx ? '#000000' : '',
+              }"
+              @click="selectPlan(idx)">
+              {{ idx + 1 }} 일차
+              <b-button @click="deleteDay(idx)"> X </b-button>
+            </li>
+            <li
+              v-for="(tour, tourIdx) in tourList"
+              :key="tourIdx"
+              class="list-group-item">
+              <div class="card">
+                <div class="row">
+                  <div class="col-md-4">
+                    <img
+                      v-if="tour.firstImage !== ''"
+                      :src="tour.firstImage"
+                      class="img-field" />
+                    <img
+                      v-else
+                      :src="require('@/assets/images/empty.jpg')"
+                      class="img-field" />
+                  </div>
+                  <div class="col-md-8">
+                    <h4 style="text-align: center">{{ tour.title }}</h4>
+                    <b-button @click="deleteTour(tourIdx, idx)">
+                      삭제
+                    </b-button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-
-      <button class="side-bar-btn" @click="rightClick">
+      <!-- <button class="side-bar-btn" @click="rightClick">
         {{ isOpen ? ">" : "<" }}
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
@@ -161,5 +165,22 @@ h1 {
 .img-field {
   width: 100px;
   height: 101px;
+}
+.plan-group::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+  -webkit-transform-origin-x: 10px;
+}
+.plan-group::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 10px;
+}
+.plan-group::-webkit-scrollbar-track {
+  background: #00000057;
+  border-radius: 10px;
+}
+.plan-group {
+  overflow-y: scroll;
+  max-height: 82.9vh;
 }
 </style>

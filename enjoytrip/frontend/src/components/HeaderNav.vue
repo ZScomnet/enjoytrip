@@ -33,10 +33,9 @@
         </ul> -->
         <ul v-if="!token" class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" to="/login">로그인</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/sign-up">회원가입</router-link>
+            <router-link class="nav-link" to="/auth"
+              >로그인/회원가입</router-link
+            >
           </li>
         </ul>
         <ul v-else class="navbar-nav">

@@ -34,6 +34,7 @@ export default {
   },
   methods: {
     initMap() {
+      this.$store.commit("SET_MAKE_PLAN");
       const container = document.getElementById("map");
       this.kakaomap = container;
       const options = {

@@ -21,6 +21,12 @@ export default new Vuex.Store({
     selectedDay: 0,
   },
   mutations: {
+    SET_MAKE_PLAN(state) {
+      // 플랜 사이트 입장했을 때 초기화
+      state.plan = [];
+      state.selectedDay = 0;
+      state.planTitle = "";
+    },
     // 언더바 권장, method 구현
     SET_USER_INFO(state, payload) {
       state.userInfo = payload;

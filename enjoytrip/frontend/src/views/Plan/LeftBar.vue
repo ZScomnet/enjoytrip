@@ -13,7 +13,7 @@
       <div :class="{ hide: !isOpen }">
         <div class="container mt-5">
           <!-- Card -->
-          <div>
+          <div class="card_scroll">
             <div v-for="result in resultData" :key="result.id" class="card">
               <div class="row">
                 <div class="col-md-4" @click="moveMap(result)">
@@ -168,5 +168,22 @@ h1 {
 .img-field {
   width: 100px;
   height: 101px;
+}
+.card_scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 0;
+  -webkit-transform-origin-x: 10px;
+}
+.card_scroll::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 10px;
+}
+.card_scroll::-webkit-scrollbar-track {
+  background: #00000057;
+  border-radius: 10px;
+}
+.card_scroll {
+  overflow-y: scroll;
+  max-height: 75vh;
 }
 </style>

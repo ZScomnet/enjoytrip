@@ -6,32 +6,23 @@ Vue.use(VueRouter);
 const routes = [
   // Home Route
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: () => import("@/views/Home.vue"),
   },
   // Auth Route
   {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/Auth/LoginForm.vue"),
-  },
-  {
-    path: "/sign-up",
-    name: "sign-up",
-    component: () => import("@/views/Auth/SignUpForm.vue"),
-  },
-  {
-    path: "/find-pw",
-    name: "find-pw",
-    component: () => import("@/views/Auth/ForgotPassword.vue"),
+    path: "/auth",
+    name: "auth",
+    component: () => import("@/views/Auth/AuthForm.vue"),
   },
 
   // Plan Route
   {
-    path: "/plan",
-    name: "plan",
-    component: () => import("@/views/KakaoMap.vue"),
+    path: "/plan/:plan_id",
+    name: "planList",
+    component: () => import("@/views/PlanList.vue"),
+
     children: [
       // 여기에 사이드바 구현한 vue 등록
     ],
