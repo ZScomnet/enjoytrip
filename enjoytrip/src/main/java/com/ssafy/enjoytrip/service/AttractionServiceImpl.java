@@ -43,9 +43,9 @@ public class AttractionServiceImpl implements AttractionService{
     }
 
 
-    public Plan insertPlan(String plan_name, Long user_id){
-        return attractionRepository.insertPlan(plan_name,user_id);
-    }
+//    public Plan insertPlan(String plan_name, Long user_id){
+//        return attractionRepository.insertPlan(plan_name,user_id);
+//    }
 
     public void insertDetailPlan(PlanDetailDto planDetailDto){
         attractionRepository.insertDetailPlan(planDetailDto);
@@ -54,6 +54,14 @@ public class AttractionServiceImpl implements AttractionService{
 
     public void deletePlan(String plan_name, Long user_id){
         attractionRepository.deletePlan(plan_name,user_id);
+    }
+
+    public PlanDetailDto selectPlanList(int plan_id){
+        return  attractionRepository.selectPlanList(plan_id);
+    }
+
+    public void updatePlanList(int plan_id, PlanDetailDto planDetailDto){
+        attractionRepository.updatePlanList(plan_id,planDetailDto);
     }
 
 
