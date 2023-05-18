@@ -38,9 +38,7 @@
 </template>
 
 <script>
-import KakaoMapVue from "./KakaoMap.vue";
 export default {
-  components: [KakaoMapVue],
 };
 </script>
 

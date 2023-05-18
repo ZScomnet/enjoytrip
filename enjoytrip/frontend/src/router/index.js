@@ -19,14 +19,17 @@ const routes = [
 
   // Plan Route
   {
-    path: "/plan/:plan_id",
-    name: "planList",
+    path: "/plan/:username",
+    name: "user_plan",
     component: () => import("@/views/PlanList.vue"),
+  },{
+    path: "/plan/:username/:plan_id",
+    name: "plan_datail",
+    component: () => import("@/views/KakaoMap.vue"),
+  }
 
-    children: [
-      // 여기에 사이드바 구현한 vue 등록
-    ],
-  },
+
+
   // Board Route
   //   {
   //     path: "/board",
