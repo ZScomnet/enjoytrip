@@ -23,13 +23,15 @@ public interface AttractionService {
     public void deletelikes(int plan_id, Long user_id);
 
 
-    public Plan insertPlan(String plan_name, Long user_id);
+//    public Plan insertPlan(String plan_name, Long user_id);
 
     public void insertDetailPlan(PlanDetailDto planDetailDto);
 
 
     public void deletePlan(String plan_name, Long user_id);
 
+    public PlanDetailDto selectPlanList(int plan_id);
+    public void updatePlanList(int plan_id, PlanDetailDto planDetailDto);
 
 
 }
