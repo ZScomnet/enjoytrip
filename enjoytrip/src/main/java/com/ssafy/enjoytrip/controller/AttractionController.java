@@ -81,6 +81,14 @@ public class AttractionController {
 
     }
 
+    @GetMapping("/myplanList/{plan_id}")
+    public PlanDetailDto selectPlanList(@PathVariable int plan_id){
+        return attractionService.selectPlanList(plan_id);
+    }
 
+    @PostMapping("/myplanUpdateList/{plan_id}")
+    public void updatePlanList(@PathVariable int plan_id, @RequestBody PlanDetailDto planDetailDto){
+        attractionService.updatePlanList(plan_id, planDetailDto);
+    }
 
 }

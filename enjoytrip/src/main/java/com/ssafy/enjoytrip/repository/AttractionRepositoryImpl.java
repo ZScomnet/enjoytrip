@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.repository;
 
 import com.ssafy.enjoytrip.dto.AttractionDto;
+import com.ssafy.enjoytrip.dto.GetMyListDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -44,7 +46,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         return typeAttraction;
     }
 
-//    @Transactional
+    //    @Transactional
 //    public void like(int plan_id){
 //        String jpql = "UPDATE Plan  pl SET pl.likes = pl.likes+1 WHERE pl.plan_id =:planId"; // 앞에 :가 붙은 변수에 파라미터를 바인딩 받는다
 //        em.createQuery(jpql)
@@ -73,18 +75,18 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         em.clear();
     }
 
-    @Transactional
-    public Plan insertPlan(String plan_name, Long user_id){
-        String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
-        System.out.println("sql 처리 됨?");
-        em.createNativeQuery(jpql).setParameter(1,plan_name )
-                .setParameter(2, user_id).executeUpdate();
-
-        Plan plan = em.createQuery("select pl from Plan pl where pl.id =:userId and pl.planName=:planName ", Plan.class).setParameter("userId", user_id)
-                .setParameter("planName",plan_name).getSingleResult();
-        em.clear();
-        return plan;
-    }
+    //    @Transactional
+//    public Plan insertPlan(String plan_name, Long user_id){
+//        String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
+//        System.out.println("sql 처리 됨?");
+//        em.createNativeQuery(jpql).setParameter(1,plan_name )
+//                .setParameter(2, user_id).executeUpdate();
+//
+//        Plan plan = em.createQuery("select pl from Plan pl where pl.id =:userId and pl.planName=:planName ", Plan.class).setParameter("userId", user_id)
+//                .setParameter("planName",plan_name).getSingleResult();
+//        em.clear();
+//        return plan;
+//    }
     @Transactional
     @Override
     public void insertDetailPlan(PlanDetailDto planDetailDto){
@@ -126,5 +128,119 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         em.clear();
 
     }
+
+    public PlanDetailDto selectPlanList(int plan_id){
+        String jpql = "select p from Plan p where p.plan_id=:planId";
+        Plan plan = (Plan)em.createQuery(jpql)
+                .setParameter("planId", plan_id).getSingleResult();
+
+        String planName = plan.getPlanName();
+
+//        GetMyListDto getMyListDto;
+//        jpql = "SELECT DISTINCT a,b.plan_id, b.plan_day,b.plan_day_idx FROM attraction_info a INNER JOIN a. (SELECT pi.plan_id, content_id,pi.plan_day, pi.plan_day_idx FROM plan_info as pi INNER JOIN plan as p ON pi.plan_id = p.plan_id) b ON a.content_id = b.content_id AND b.plan_id = 5";
+
+        jpql = "select pi from PlanInfo pi where pi.planId=:planId order by pi.planDay asc, pi.planDayIdx asc";
+//
+        List<PlanInfo> planInfoList = em.createQuery(jpql)
+                .setParameter("planId", plan_id).getResultList();
+        System.out.println(planInfoList.get(1));
+        //contentIdList 추출
+        List<Integer> contentIdList = new ArrayList<>();
+        for (int i = 0; i < planInfoList.size(); i++) {
+            contentIdList.add(planInfoList.get(i).getContentId());
+        }
+        System.out.println("contentIdList : "+contentIdList);
+
+        //contentIdList 통해 attractionInfo 접근해서 세부정보 가져오기
+        List<AttractionInfo> attractionInfoList = new ArrayList<>();
+        for (int i = 0; i < contentIdList.size(); i++) {
+            jpql = "select ai from AttractionInfo ai where ai.id=:contentId";
+            attractionInfoList.add((AttractionInfo) em.createQuery(jpql).setParameter("contentId",contentIdList.get(i)).getSingleResult());
+        }
+
+        System.out.println("attractionInfoList : "+attractionInfoList.get(1));
+//        //몇일짜리 여행인지
+        jpql = "SELECT max(pi.planDay) FROM PlanInfo pi where pi.planId =:planId";
+
+        int n = (int)em.createQuery(jpql)
+                .setParameter("planId", plan_id).getSingleResult();
+
+        System.out.println("maxDay : "+n);
+
+
+        List<List<AttractionInfo>> result = new ArrayList<>();
+        int idx = 0;
+        for (int day = 1; day <= n; day++) {
+            List<AttractionInfo> dayList = new ArrayList<>();
+
+            for (int j = idx; j < planInfoList.size(); j++) {
+                int plan_day =planInfoList.get(j).getPlanDay();
+                if(day == plan_day){
+                    int contentId = planInfoList.get(j).getContentId();
+                    for (int i = 0; i < attractionInfoList.size(); i++) {
+                        if(contentId==attractionInfoList.get(i).getId()){
+                            dayList.add(attractionInfoList.get(i));
+                            break;
+                        }
+                    }
+                }
+                //달라
+                else if(day !=  plan_day) {
+                    idx=j;
+                    break;
+                }
+            }
+
+
+            result.add(dayList);
+        }
+//
+//
+//
+//        // planInfo -> attractionInfo
+////        for(int i=0;i<planInfoList.size();i++){
+////            if(result.size() == planInfoList.get(i).getPlanDay()){
+////                result.get(result.size()-1).add(planInfoList.get(i));
+////            }else{
+////                result.add(new ArrayList<>());
+////                result.get(result.size()-1).add(planInfoList.get(i));
+////            }
+////        }
+//        List<Integer> dayList= new ArrayList<>();
+//        for (PlanInfo info: planInfoList) {
+//            dayList.add(info.getPlanDay());
+//        }
+
+        PlanDetailDto planDetailDto = new PlanDetailDto(planName,result);
+
+        return planDetailDto;
+
+    }
+
+    @Transactional
+    @Override
+    public void updatePlanList(int plan_id, PlanDetailDto planDetailDto){
+
+        String jpql = "DELETE FROM PlanInfo pi WHERE pi.planId=:planId";
+//        System.out.println("sql 처리 됨?");
+        em.createQuery(jpql).setParameter("planId",plan_id ).executeUpdate();
+
+        for (int i=0;i<planDetailDto.getPlan().size();i++) {
+            for(int j=0;j<planDetailDto.getPlan().get(i).size();j++) {
+                String jpql2 = "INSERT INTO Plan_Info (plan_id, content_id, plan_day, plan_day_idx)  VALUES(?,?,?,?)";
+                AttractionInfo tour = planDetailDto.getPlan().get(i).get(j);
+                em.createNativeQuery(jpql2).setParameter(1, plan_id)
+                        .setParameter(2, tour.getId())
+                        .setParameter(3, i+1)
+                        .setParameter(4, j+1)
+                        .executeUpdate();
+            }
+        }
+        em.clear();
+
+
+    }
+
+
 
 }
