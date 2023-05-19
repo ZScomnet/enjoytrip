@@ -18,7 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/board")
-@CrossOrigin("http://localhost:5000/")
+@CrossOrigin("*")
 public class BoardController {
     private final BoardService boardService;
 
