@@ -36,4 +36,8 @@ public interface AttractionService {
 
     public List<MyPlanListsDto> myplanLists(String username);
 
+    public List<MyPlanListsDto> getAllPlanLists();
+
+    public List<MyPlanListsDto> getNewAllPlanLists();
+
 }

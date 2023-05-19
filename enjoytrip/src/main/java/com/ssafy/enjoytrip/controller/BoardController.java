@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.controller;
 import com.ssafy.enjoytrip.dto.AttractionDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Board;
+import com.ssafy.enjoytrip.model.BoardGroup;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.service.AttractionService;
 import com.ssafy.enjoytrip.service.BoardService;
@@ -27,12 +28,28 @@ public class BoardController {
         //board table 추가
         boardService.insertBoard(board);
 
-        //boardGroup 추가(권한 설정)
-//        boardService.
-
-//        System.out.println(board.getText());
-//        int planID = plan.getPlan_id();
-
     }
 
-}
+    @GetMapping("/getBoardGroup")
+    public List<BoardGroup> getBoardGroup(){
+        //board table 추가
+        return boardService.getBoardGroup();
+    }
+
+    @GetMapping("/getCategoryBoard/{groupId}")
+    public List<Board> getCategoryBoard(@PathVariable int groupId){
+        //board table 추가
+        return boardService.getCategoryBoard(groupId);
+    }
+
+    @PatchMapping("/deleteBoard/{boardId}")
+    public void deleteBoard(@PathVariable int boardId){
+        boardService.deleteBoard(boardId);
+    }
+    @PatchMapping("/updateBoard")
+    public void updateBoard(@RequestBody Board board){
+        boardService.updateBoard(board);
+    }
+
+
+    }

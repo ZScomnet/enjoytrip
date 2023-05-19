@@ -12,6 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 public class BoardGroup {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idx;
 
     private int group_id;
