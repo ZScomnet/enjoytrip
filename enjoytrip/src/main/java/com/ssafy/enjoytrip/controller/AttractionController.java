@@ -1,22 +1,17 @@
 package com.ssafy.enjoytrip.controller;
 
 import com.ssafy.enjoytrip.dto.AttractionDto;
-import com.ssafy.enjoytrip.dto.MemberDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
+import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
-import com.ssafy.enjoytrip.model.Plan;
-import com.ssafy.enjoytrip.model.User;
+import com.ssafy.enjoytrip.model.Member;
 import com.ssafy.enjoytrip.service.AttractionService;
-import com.ssafy.enjoytrip.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Update;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -90,5 +85,11 @@ public class AttractionController {
     public void updatePlanList(@PathVariable int plan_id, @RequestBody PlanDetailDto planDetailDto){
         attractionService.updatePlanList(plan_id, planDetailDto);
     }
+
+    @GetMapping("/myplanLists/{username}")
+    public List<MyPlanListsDto> myplanLists(@PathVariable String username){
+        return attractionService.myplanLists(username);
+    }
+
 
 }

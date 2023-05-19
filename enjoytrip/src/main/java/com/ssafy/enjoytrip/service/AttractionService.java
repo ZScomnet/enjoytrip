@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.service;
 
+import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
@@ -33,5 +34,6 @@ public interface AttractionService {
     public PlanDetailDto selectPlanList(int plan_id);
     public void updatePlanList(int plan_id, PlanDetailDto planDetailDto);
 
+    public List<MyPlanListsDto> myplanLists(String username);
 
 }
