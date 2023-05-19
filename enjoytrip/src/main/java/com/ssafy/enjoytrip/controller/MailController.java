@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/mail")
-@CrossOrigin("http://localhost:5000/")
+@CrossOrigin("*")
 public class MailController {
     private final MailService mailService;
     @PatchMapping("/send/{userEmail}")

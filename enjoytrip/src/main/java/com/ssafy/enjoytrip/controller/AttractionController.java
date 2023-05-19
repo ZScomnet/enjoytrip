@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/attraction")
-@CrossOrigin("http://localhost:5000/")
+@CrossOrigin("*")
 public class AttractionController {
     private final AttractionService attractionService;
     @GetMapping
