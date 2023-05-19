@@ -45,6 +45,9 @@ export default new Vuex.Store({
       // 플랜 타이틀 지정
       state.planTitle = title;
     },
+    SET_PLAN(state, selectPlan) {
+      state.plan = selectPlan;
+    },
     ADD_DAY(state) {
       // 하루 일차 추가
       state.plan.push([]);
@@ -72,10 +75,8 @@ export default new Vuex.Store({
       console.log(loginInfo);
       // id, pw 정보를 갖고 서버에 로그인 요청
       context.commit("SET_USER_INFO", {
-        userInfo: {
-          id: "ssafy",
-          name: "ssafy",
-        },
+        user_id: 1,
+        name: "ssafy",
       });
       context.commit("SET_TOKEN", "ssafy");
       // http

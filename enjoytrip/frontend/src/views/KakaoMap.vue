@@ -1,19 +1,33 @@
 <template>
   <div id="kakao_map">
     <div id="map" class="map"></div>
-    <LeftBar
-      v-if="kakaomap != null && map != null"
-      :kakaomap="kakaomap"
-      :map="map"
-      class="left-side-bar" />
-    <RightBar class="right-side-bar" />
+    <!-- plan의 주인과 로그인한 username이 일치하면 custom-->
+    <div class="side-bar" v-if="isMine()">
+      <CustomLeftBar
+        v-if="kakaomap != null && map != null"
+        :kakaomap="kakaomap"
+        :map="map"
+        class="left-side-bar" />
+      <CustomRightBar :map="map" class="right-side-bar" />
+    </div>
+    <!-- plan의 주인과 username이 다르면 read -->
+    <div class="side-bar" v-else>
+      <ReadLeftBar
+        v-if="kakaomap != null && map != null"
+        :kakaomap="kakaomap"
+        :map="map"
+        class="left-side-bar" />
+      <ReadRightBar :map="map" class="right-side-bar" />
+    </div>
   </div>
 </template>
 
 <script>
-import LeftBar from "./Plan/LeftBar.vue";
-import RightBar from "./Plan/RightBar.vue";
-import axios from "axios";
+import CustomLeftBar from "./Plan/CustomLeftBar.vue";
+import CustomRightBar from "./Plan/CustomRightBar.vue";
+import ReadLeftBar from "./Plan/ReadLeftBar.vue";
+import ReadRightBar from "./Plan/ReadRightBar.vue";
+import http from "@/util/http.js";
 export default {
   name: "KakaoMap",
   data() {
@@ -24,17 +38,18 @@ export default {
       nativeAppKey: "9d29d54a5264a72919fa63d8292496d2",
       adminKey: "6cba4894e7a3c252933edb6d1e69a1e1",
       kakaomap: null,
-      attractions: [],
       map: null,
+      planUsername: "", // plan 제작 유저이름
     };
   },
   components: {
-    LeftBar,
-    RightBar,
+    CustomLeftBar,
+    CustomRightBar,
+    ReadLeftBar,
+    ReadRightBar,
   },
   methods: {
     initMap() {
-      this.$store.commit("SET_MAKE_PLAN");
       const container = document.getElementById("map");
       this.kakaomap = container;
       const options = {
@@ -46,12 +61,24 @@ export default {
 
       this.map = new kakao.maps.Map(container, options);
     },
+    isMine() {
+      if (this.planUsername === this.userInfo.name) return true;
+      else return false;
+    },
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    },
   },
   created() {
-    axios.get("http://localhost:8080/attraction").then((res) => {
-      this.attractions = res.data;
-      this.$store.attractions = this.attractions;
-    });
+    this.planUsername = this.$route.params.username;
+    http
+      .get("/attraction/myplanList/" + this.$route.params.plan_id)
+      .then((res) => {
+        this.$store.state.planTitle = res.data.planTitle;
+        this.$store.state.plan = res.data.plan;
+      });
   },
   mounted() {
     if (!window.kakao || !window.kakao.maps) {
@@ -62,7 +89,10 @@ export default {
       /* eslint를 사용한다면 kakao 변수가 선언되지 않았다고
        * 오류를 내기 때문에 아래 줄과 같이 전역변수임을
        * 알려주어야 한다. */
-
+      http.get("/attraction").then((res) => {
+        this.attractions = res.data;
+        this.$store.attractions = this.attractions;
+      });
       /* global kakao */
       script.addEventListener("load", () => {
         kakao.maps.load(() => {
@@ -86,20 +116,22 @@ export default {
   right: 0;
   bottom: 0;
   left: 0;
+  > .side-bar {
+    > .left-side-bar {
+      position: absolute;
+      left: 0;
+      z-index: 10; // 띄울 때 우선 순위 : 클 수록 우선순위가 높다.
+    }
+    > .right-side-bar {
+      position: absolute;
+      right: 0;
+      z-index: 11;
+    }
+  }
   > .map {
     position: absolute;
     width: 100%;
     height: 100%;
-  }
-  > .left-side-bar {
-    position: absolute;
-    left: 0;
-    z-index: 10; // 띄울 때 우선 순위 : 클 수록 우선순위가 높다.
-  }
-  > .right-side-bar {
-    position: absolute;
-    right: 0;
-    z-index: 11;
   }
 }
 </style>

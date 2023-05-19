@@ -45,7 +45,7 @@
 
 <script>
 export default {
-  name: "LeftBar",
+  name: "CustomLeftBar",
   components: {},
   data() {
     return {
@@ -115,9 +115,6 @@ export default {
   },
   props: ["map"],
   computed: {
-    tourList() {
-      return this.$store.state.tourList;
-    },
     selectedDay() {
       return this.$store.state.selectedDay;
     },

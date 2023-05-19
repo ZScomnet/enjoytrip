@@ -55,9 +55,9 @@
           </ul>
         </div>
       </div>
-      <!-- <button class="side-bar-btn" @click="rightClick">
+      <button class="side-bar-btn" @click="rightClick">
         {{ isOpen ? ">" : "<" }}
-      </button> -->
+      </button>
     </div>
   </div>
 </template>
@@ -65,13 +65,16 @@
 <script>
 import http from "@/util/http.js";
 export default {
-  name: "RightBar",
+  name: "CustomRightBar",
   components: {},
   data() {
     return {
       isOpen: true,
       title: "",
     };
+  },
+  created() {
+    this.$store.commit("SET_MAKE_PLAN");
   },
   methods: {
     rightClick() {
@@ -106,6 +109,7 @@ export default {
         planTitle: this.$store.state.planTitle,
         plan: this.$store.state.plan,
       });
+      this.$router.push("/plan/" + this.userInfo.name);
     },
   },
   computed: {
@@ -117,6 +121,9 @@ export default {
     },
     planTitle() {
       return this.$store.state.planTitle;
+    },
+    userInfo() {
+      return this.$store.state.userInfo;
     },
   },
 };

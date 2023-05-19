@@ -22,20 +22,20 @@ const routes = [
     path: "/plan/:username",
     name: "user_plan",
     component: () => import("@/views/PlanList.vue"),
-  },{
+  },
+  {
+    // 해당 유저의 플랜 조회
     path: "/plan/:username/:plan_id",
     name: "plan_datail",
     component: () => import("@/views/KakaoMap.vue"),
-  }
-
-
+  },
 
   // Board Route
-  //   {
-  //     path: "/board",
-  //     name: "board",
-  //     component: () => import("@/views/Board.vue"),
-  //   },
+  {
+    path: "/board",
+    name: "board",
+    component: () => import("@/views/BoardList.vue"),
+  },
   // Tour Route
   //   {
   //     path: "/tour",

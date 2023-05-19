@@ -40,7 +40,9 @@
         </ul>
         <ul v-else class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" to="/plan">플랜</router-link>
+            <router-link class="nav-link" to="/plan/username"
+              >나의 플랜</router-link
+            >
           </li>
           <li class="nav-item">
             <a @click="board" class="nav-link" href="/board">게시판</a>
