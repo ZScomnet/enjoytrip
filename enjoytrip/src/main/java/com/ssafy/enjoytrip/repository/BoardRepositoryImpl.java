@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class BoardRepositoryImpl implements BoardRepository{
@@ -31,31 +33,40 @@ public class BoardRepositoryImpl implements BoardRepository{
      * group id =4  이벤트
      * group id =5  여행 후기
      * */
+    public List<BoardGroup> getBoardGroup(){
+        List<BoardGroup> boardGroup =  em.createQuery("select bd from BoardGroup bd", BoardGroup.class).getResultList();
+        return boardGroup;
+    }
+
+    public List<Board> getCategoryBoard(int groupId){
+        List<Board> groupIdBoard =  em.createQuery("select b from Board b where b.group_id =:groupId", Board.class)
+                .setParameter("groupId",groupId)
+                .getResultList();
+        return groupIdBoard;
+    }
+
     @Transactional
-    public void insertBoardPermission(BoardGroup boardGroup){
-        String jpql = "INSERT INTO BoardGroup (group_id, group_name, write_permission, read_permission) VALUES(?,?,?,?)";
-        if(boardGroup.getGroup_id() == 1){
-
-        }
-        else if(boardGroup.getGroup_id() == 2){
-
-        }
-        else if(boardGroup.getGroup_id() == 3){
-
-        }
-        else if(boardGroup.getGroup_id() == 4){
-
-        }
-        else if(boardGroup.getGroup_id() == 5){
-
-        }
-        em.createNativeQuery(jpql).setParameter(1,boardGroup.getGroup_id() )
-                .setParameter(2, boardGroup.getGroup_name())
-                .setParameter(3, boardGroup.isWrite_permission())
-                .setParameter(4, boardGroup.getGroup_id())
+    public void deleteBoard(int BoardId){
+        String jpql = "update Board b set blocked=true where b.id =:boardId";
+        System.out.println("delete 체크 완료");
+        em.createQuery(jpql).setParameter("boardId", BoardId)
                 .executeUpdate();
         em.clear();
     }
+
+    @Transactional
+    public void updateBoard(Board board){
+        String jpql = "update Board b set b.id=:id, b.author=:author, b.group_id=:groupId, b.text=:text, b.title=:title where b.id =:boardId";
+        em.createQuery(jpql).setParameter("id", board.getId())
+                .setParameter("author", board.getAuthor())
+                .setParameter("groupId", board.getGroup_id())
+                .setParameter("text", board.getText())
+                .setParameter("title", board.getTitle())
+                .executeUpdate();
+        em.clear();
+    }
+
+
 
 
 }

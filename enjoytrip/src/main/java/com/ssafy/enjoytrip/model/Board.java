@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter
@@ -16,4 +17,7 @@ public class Board{
     private String text;
     private int group_id;
 
+    @ColumnDefault("false")
+    @Column(columnDefinition = "TINYINT(1)")
+    private boolean blocked;
 }
