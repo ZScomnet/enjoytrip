@@ -1,9 +1,11 @@
 package com.ssafy.enjoytrip.repository;
 
+import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.PlanInfo;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,5 +40,8 @@ public interface AttractionRepository {
     public PlanDetailDto selectPlanList(int plan_id);
 
     public void updatePlanList(int plan_id, PlanDetailDto planDetailDto);
+
+
+    public List<MyPlanListsDto> myplanLists(String usename);
 
 }

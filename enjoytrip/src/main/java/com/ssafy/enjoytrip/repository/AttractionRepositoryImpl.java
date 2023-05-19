@@ -2,11 +2,9 @@ package com.ssafy.enjoytrip.repository;
 
 import com.ssafy.enjoytrip.dto.AttractionDto;
 import com.ssafy.enjoytrip.dto.GetMyListDto;
+import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
-import com.ssafy.enjoytrip.model.AttractionInfo;
-import com.ssafy.enjoytrip.model.Plan;
-import com.ssafy.enjoytrip.model.PlanInfo;
-import com.ssafy.enjoytrip.model.User;
+import com.ssafy.enjoytrip.model.*;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -121,7 +119,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     @Transactional
     @Override
     public void deletePlan(String plan_name, Long user_id){
-        String jpql = "update Plan pl set blocked=true where pl.id =:userId and pl.planName=:planName  ";
+        String jpql = "update Plan pl set blocked=true where pl.id =:userId and pl.plan_name=:planName  ";
         System.out.println("delete 체크 완료");
         em.createQuery(jpql).setParameter("userId", user_id)
                 .setParameter("planName",plan_name).executeUpdate();
@@ -134,7 +132,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         Plan plan = (Plan)em.createQuery(jpql)
                 .setParameter("planId", plan_id).getSingleResult();
 
-        String planName = plan.getPlanName();
+        String planName = plan.getPlan_name();
 
 //        GetMyListDto getMyListDto;
 //        jpql = "SELECT DISTINCT a,b.plan_id, b.plan_day,b.plan_day_idx FROM attraction_info a INNER JOIN a. (SELECT pi.plan_id, content_id,pi.plan_day, pi.plan_day_idx FROM plan_info as pi INNER JOIN plan as p ON pi.plan_id = p.plan_id) b ON a.content_id = b.content_id AND b.plan_id = 5";
@@ -240,6 +238,17 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 
 
     }
+
+    public List<MyPlanListsDto> myplanLists(String username){
+        String jpql = "select p.plan_id ,p.plan_name from Plan p join  Member m on p.user_id = m.user_id where m.username =:username";
+        List<MyPlanListsDto> myPlanListsDto =  (List<MyPlanListsDto>)em.createNativeQuery(jpql)
+                .setParameter("username", username)
+                .getResultList();
+
+
+        return myPlanListsDto;
+    }
+
 
 
 

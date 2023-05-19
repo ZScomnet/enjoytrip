@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.service;
 
+import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
@@ -62,6 +63,10 @@ public class AttractionServiceImpl implements AttractionService{
 
     public void updatePlanList(int plan_id, PlanDetailDto planDetailDto){
         attractionRepository.updatePlanList(plan_id,planDetailDto);
+    }
+
+    public List<MyPlanListsDto> myplanLists(String username) {
+       return attractionRepository.myplanLists(username);
     }
 
 
