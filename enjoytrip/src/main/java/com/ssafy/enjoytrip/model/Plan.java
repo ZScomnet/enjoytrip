@@ -15,9 +15,9 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int plan_id; // primary key
     @Column(name="user_id")
-    private Long id; // foreign key
+    private Long user_id; // foreign key
     @Column(name="plan_name")
-    private String planName;
+    private String plan_name;
 
     @ColumnDefault("false")
     @Column(columnDefinition = "TINYINT(1)")
