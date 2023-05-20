@@ -23,7 +23,7 @@ import java.util.Map;
 public class BoardController {
     private final BoardService boardService;
 
-    @PutMapping("/insertBoard")
+    @PostMapping("/insertBoard")
     public void insertBoard(@RequestBody Board board){
         //board table 추가
         boardService.insertBoard(board);
@@ -46,7 +46,7 @@ public class BoardController {
     public void deleteBoard(@PathVariable int boardId){
         boardService.deleteBoard(boardId);
     }
-    @PatchMapping("/updateBoard")
+    @PutMapping("/updateBoard")
     public void updateBoard(@RequestBody Board board){
         boardService.updateBoard(board);
     }
