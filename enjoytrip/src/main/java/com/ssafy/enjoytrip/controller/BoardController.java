@@ -51,7 +51,7 @@ public class BoardController {
         boardService.updateBoard(board);
     }
 
-    @GetMapping("/getALlBoardList")
+    @GetMapping("/getAllBoardList")
     public List<Board> getAllBoardList(){
        return boardService.getAllBoardList();
     }
