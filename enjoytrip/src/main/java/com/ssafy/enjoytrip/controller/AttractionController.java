@@ -39,7 +39,7 @@ public class AttractionController {
         return attractionService.getTypeAttraction(type);
     }
 
-    @PutMapping("/plan/{plan_id}")
+    @PutMapping("/plan/{plan_id}/like")
     public void updateLike(@PathVariable int plan_id,@RequestBody Long user_id){
 //        attractionService.like(plan_id);
         System.out.println("userid : "+user_id);
@@ -73,7 +73,6 @@ public class AttractionController {
     @PatchMapping("/plan/deletePlan")
     public void deletePlan(@RequestBody AttractionDto attractionDto){
         attractionService.deletePlan(attractionDto.getPlan_name(),attractionDto.getUser_id());
-
     }
 
     @GetMapping("/myplanList/{plan_id}")
@@ -89,6 +88,16 @@ public class AttractionController {
     @GetMapping("/myplanLists/{username}")
     public List<MyPlanListsDto> myplanLists(@PathVariable String username){
         return attractionService.myplanLists(username);
+    }
+
+    @GetMapping("/allPlanLists")//like순 정렬
+    public List<MyPlanListsDto> getAllPlanLists(){
+        return attractionService.getAllPlanLists();
+    }
+
+    @GetMapping("/allNewPlanLists")//최신순 정렬
+    public List<MyPlanListsDto> getNewAllPlanLists(){
+        return attractionService.getNewAllPlanLists();
     }
 
 

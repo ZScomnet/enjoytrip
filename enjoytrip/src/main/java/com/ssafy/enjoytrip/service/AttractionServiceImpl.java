@@ -69,6 +69,12 @@ public class AttractionServiceImpl implements AttractionService{
        return attractionRepository.myplanLists(username);
     }
 
+    public List<MyPlanListsDto> getAllPlanLists(){
+        return attractionRepository.getAllPlanLists();
+    }
 
+    public List<MyPlanListsDto> getNewAllPlanLists(){
+        return  attractionRepository.getNewAllPlanLists();
+    }
 
 }

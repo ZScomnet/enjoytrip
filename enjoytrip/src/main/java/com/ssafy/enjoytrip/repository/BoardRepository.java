@@ -10,8 +10,13 @@ import java.util.List;
 public interface BoardRepository {
     public void insertBoard(Board board);
 
-    public void insertBoardPermission(BoardGroup boardGroup);
+    public List<BoardGroup> getBoardGroup();
 
+    public List<Board> getCategoryBoard(int groupId);
+
+    public void deleteBoard(int BoardId);
+
+    public void updateBoard(Board board);
 
 
 }

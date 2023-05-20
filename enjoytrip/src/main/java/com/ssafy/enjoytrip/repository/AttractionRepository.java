@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.repository;
 import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
+import com.ssafy.enjoytrip.model.Board;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.PlanInfo;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,5 +44,14 @@ public interface AttractionRepository {
 
 
     public List<MyPlanListsDto> myplanLists(String usename);
+
+    public List<MyPlanListsDto> getAllPlanLists();
+
+    public List<MyPlanListsDto> getNewAllPlanLists();
+
+
+
+
+
 
 }
