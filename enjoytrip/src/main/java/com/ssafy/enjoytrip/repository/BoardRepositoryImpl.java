@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.repository;
 
+import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Board;
 import com.ssafy.enjoytrip.model.BoardGroup;
 import com.ssafy.enjoytrip.model.Plan;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -17,13 +19,16 @@ public class BoardRepositoryImpl implements BoardRepository{
     private final EntityManager em;
     @Transactional
     public void insertBoard(Board board){
-        String jpql = "INSERT INTO Board (title, author, text, group_id) VALUES(?,?,?,?)";
+        String jpql = "INSERT INTO Board (title, author, text, group_id, created) VALUES(?,?,?,?)";
         em.createNativeQuery(jpql).setParameter(1,board.getTitle() )
                 .setParameter(2, board.getAuthor())
                 .setParameter(3, board.getText())
                 .setParameter(4, board.getGroup_id())
+                .setParameter(5, LocalDateTime.now())
                 .executeUpdate();
+
         em.clear();
+
     }
 
     /*
@@ -66,7 +71,12 @@ public class BoardRepositoryImpl implements BoardRepository{
         em.clear();
     }
 
+    @Override
+    public List<Board> getALlBoard() {
 
+        return em.createQuery("select b from Board b", Board.class)
+                .getResultList();
+    }
 
 
 }
