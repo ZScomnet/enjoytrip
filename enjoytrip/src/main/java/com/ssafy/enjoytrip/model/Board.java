@@ -23,7 +23,7 @@ public class Board{
 
     @CreationTimestamp // INSERT 시 자동으로 값을 채워줌
     @Column(name = "created")
-    private LocalDateTime created = LocalDateTime.now();
+    private LocalDateTime created;
 
     @ColumnDefault("false")
     @Column(columnDefinition = "TINYINT(1)")
