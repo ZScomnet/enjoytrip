@@ -17,6 +17,7 @@ public class Board{
     private String text;
     private int group_id;
 
+
     @ColumnDefault("false")
     @Column(columnDefinition = "TINYINT(1)")
     private boolean blocked;
