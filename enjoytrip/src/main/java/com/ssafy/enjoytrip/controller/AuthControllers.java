@@ -37,7 +37,7 @@ public class AuthControllers {
 
 	//로그인 요청 처리 - POST /user/login
 	@PostMapping("/login")
-	public ResponseEntity<?> doLogin( @RequestBody Member member) throws SQLException, UnsupportedEncodingException{
+	public ResponseEntity<?> doLogin( @RequestBody Member member) throws UnsupportedEncodingException{
 		//유저 정보 조회
 		Member memberInfo = userService.login(member);
 
