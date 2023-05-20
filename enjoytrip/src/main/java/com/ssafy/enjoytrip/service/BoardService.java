@@ -20,7 +20,7 @@ public interface BoardService {
 
     public void updateBoard(Board board);
 
-    public List<Board> getALlBoard();
+    public List<Board> getAllBoardList();
 
 
 

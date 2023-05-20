@@ -29,7 +29,7 @@ public class BoardServiceImpl implements BoardService{
     public void updateBoard(Board board){ boardRepository.updateBoard(board);}
 
 
-    public List<Board> getALlBoard() { return boardRepository.getALlBoard();}
+    public List<Board> getAllBoardList() { return boardRepository.getAllBoardList();}
 
 
 }
