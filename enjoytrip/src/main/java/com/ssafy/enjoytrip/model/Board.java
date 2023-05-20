@@ -21,8 +21,8 @@ public class Board{
     private String text;
     private int group_id;
 
-    @CreationTimestamp // INSERT 시 자동으로 값을 채워줌
-    @Column(name = "created")
+//    @Temporal(TemporalType.TIMESTAMP)
+//    @CreationTimestamp // INSERT 시 자동으로 값을 채워줌
     private LocalDateTime created;
 
     @ColumnDefault("false")
