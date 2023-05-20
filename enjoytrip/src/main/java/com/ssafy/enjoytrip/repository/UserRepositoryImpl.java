@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.repository;
 
 import com.ssafy.enjoytrip.dto.MemberDto;
+import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.SignInDto;
 import com.ssafy.enjoytrip.model.Member;
 import com.ssafy.enjoytrip.model.User;
@@ -28,6 +29,18 @@ public class UserRepositoryImpl implements UserRepository{
         );
         return memberDto;
     }
+
+    @Override
+    public Member login(Member member) {
+        String jpql = "select u.user_id ,m.user_name from user u join  Member m on p.user_id = m.user_id where p.user_id =:userId and p.password =:passWord";
+        Member memberInfo = (Member) em.createNativeQuery(jpql)
+                .setParameter("userId", member.getUser_id())
+                .setParameter("passWord", member.getPassword())
+                .getSingleResult();
+
+        return memberInfo;
+    }
+
     public void signIn(SignInDto signInDto){
         User user = em.createQuery("select u from User u where u.email = :email and u.password = :password",User.class)
                 .setParameter("email",signInDto.getEmail())

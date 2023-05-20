@@ -18,5 +18,6 @@ public interface BoardRepository {
 
     public void updateBoard(Board board);
 
+    public List<Board> getALlBoard();
 
 }
