@@ -31,5 +31,7 @@ public class BoardServiceImpl implements BoardService{
 
     public List<Board> getAllBoardList() { return boardRepository.getAllBoardList();}
 
+    public Board getBoardDetail(int boardId){return  boardRepository.getBoardDetail(boardId);}
+
 
 }

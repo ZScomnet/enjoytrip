@@ -56,5 +56,9 @@ public class BoardController {
        return boardService.getAllBoardList();
     }
 
+    @GetMapping("/getBoardDetail/{boardId}")
+    public Board getBoardDetail(@PathVariable int boardId){
+        return boardService.getBoardDetail(boardId);
+    }
 
 }
