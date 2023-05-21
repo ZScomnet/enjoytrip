@@ -4,7 +4,7 @@
       <div class="page-title">
         <div class="container">
           <h1 align="center" v-if="!this.$route.params.idx"> 게시판 </h1>
-          <h1 align="center" v-else > {{ boardGroup[this.$route.params.idx-1].group_name }} </h1>
+          <h1 align="center" v-else > {{ boardGroup[board.group_id-1].group_name }} </h1>
         </div>
       </div>
 
@@ -14,14 +14,7 @@
           <div class="search-window">
             <form action="">
               <div class="search-wrap">
-                <label for="search" class="blind">공지사항 내용 검색</label>
-                <input
-                  id="search"
-                  type="search"
-                  name=""
-                  placeholder="검색어를 입력해주세요."
-                  value="" />
-                <button type="submit" class="btn btn-dark">검색</button>
+                
               </div>
             </form>
           </div>
@@ -46,32 +39,28 @@
             </div>
             <div class="container-board">
               <table class="board-table">
-                <thead>
+                
                   <tr>
-                    <th scope="col" class="th-num">번호</th>
-                    <th scope="col" class="th-title">제목</th>
-                    <th scope="col" class="th-date">등록일</th>
+                    <td scope="col"><h1>{{ board.title }}</h1></td>
                   </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="board in boardList" :key=board.id @click="pushDetailPage(board.id)">
-                    <td>{{board.id}}</td>
-                    <th>
-                      <a href="#"
-                        > {{ board.title }}</a
-                      >
-                    </th>
-                    <td> {{ board.created }} </td>
+                  <tr>
+                    <td> <h4>작성자 : {{ board.author }}</h4> </td>
+                    <td> <h4>작성 날짜 : {{ board.created.substr(0,10) }}</h4> </td>
                   </tr>
-                  
-                </tbody>
+                  <tr>
+                    <td colspan="2"><h4 style="margin-bottom: 20px;">글 내용</h4>
+                    <p>
+                     {{ board.text }}
+                    </p>
+                     </td>
+                  </tr>
               </table>
             </div>
           </div>
         </div>
         <!-- board button area -->
       <div class="container">
-        <button @click="pushWritePage" type="button" class="btn btn-dark" style="border-radius: 4px; float: right; margin : 10px; padding : 7px 7px;">등록하기</button>
+        <button @click="rollbackPage" type="button" class="btn btn-dark" style="border-radius: 4px; float: right; margin : 10px; padding : 7px 7px;">목록으로</button>
       </div>
       </div>
 
@@ -87,34 +76,23 @@ export default {
   data(){
     return {
       boardGroup: [],
-      boardList: [],
-
+      board: [],
     };
   },
   created(){
     http.get("/board/getBoardGroup")
     .then((res)=>{
       this.boardGroup = res.data;
-      
+      console.log(this.boardGroup);
     });
-    if(this.$route.params.idx){
-      http.get("/board/getCategoryBoard/"+this.$route.params.idx)
-      .then((res)=>{
-        this.boardList = res.data;
-      });
-    }else{
-      http.get("/board/getAllBoardList")
-      .then((res)=>{
-        this.boardList = res.data;
-      });
-    }
+    http.get("/board/getBoardDetail/"+this.$route.params.idx)
+    .then((res)=>{
+      this.board = res.data;
+    })
   },
   methods:{
-    pushWritePage(){
-      this.$router.push("/board/write");
-    },
-    pushDetailPage(idx){
-      this.$router.push("/board/detail/"+idx);
+    rollbackPage(){
+      this.$router.push("/board/"+this.boardGroup[this.board.group_id-1].group_id);
     }
   }
 
@@ -124,6 +102,9 @@ export default {
 <style lang="scss" scoped>
 .total-container {
   justify-content: space-between;
+}
+p{
+  font-size: 20px;
 }
 .board-types{
   > a:link{
@@ -171,7 +152,7 @@ section.notice {
 
 #board-search .search-window {
   padding: 15px 0;
-  background-color: #f9f7f9;
+  background-color: #FFFFFF;
 }
 #board-search .search-window .search-wrap {
   position: relative;
@@ -207,10 +188,6 @@ section.notice {
   width: 100%;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  > tbody tr:hover{
-    background-color: #50d7f2;
-    cursor: pointer;
-  }
 }
 
 .board-table a {
@@ -239,7 +216,6 @@ section.notice {
 .board-table th,
 .board-table td {
   padding: 14px 0;
-  font-size: 15px;
 }
 
 .board-table tbody td {

@@ -5,7 +5,8 @@
         :class="{ hide: !isOpen }"
         v-model="title"
         placeholder="플랜명을 입력해주세요.."
-        @keyup="setPlanTitle(title)" />
+        @keyup="setPlanTitle(title)" 
+        style="padding: 10px; padding-top: 10px;font-size: 24px;"/>
       <div class="search-area" :class="{ hide: !isOpen }">
         <b-button @click="addPlanDay"> 하루 연장 </b-button>
         <b-button @click="postPlan"> 플랜 저장 </b-button>
@@ -25,7 +26,7 @@
               }"
               @click="selectPlan(idx)">
               {{ idx + 1 }} 일차
-              <b-button @click="deleteDay(idx)"> X </b-button>
+              <span @click="deleteDay(idx)" style="cursor: pointer;">&times;</span>
             </li>
             <li
               v-for="(tour, tourIdx) in tourList"
@@ -103,13 +104,11 @@ export default {
       this.$store.commit("SELECT_DAY", idx);
     },
     postPlan() {
-      console.log(this.$store.state.planTitle);
-      console.log(this.$store.state.plan);
       http.post("/attraction/plan", {
         planTitle: this.$store.state.planTitle,
         plan: this.$store.state.plan,
       });
-      this.$router.push("/plan/" + this.userInfo.name);
+      this.$router.push("/plan/" + this.userInfo.username);
     },
   },
   computed: {

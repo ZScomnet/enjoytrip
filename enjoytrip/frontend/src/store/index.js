@@ -76,7 +76,7 @@ export default new Vuex.Store({
       // id, pw 정보를 갖고 서버에 로그인 요청
       context.commit("SET_USER_INFO", {
         user_id: 1,
-        name: "ssafy",
+        username: "ssafy",
       });
       context.commit("SET_TOKEN", "ssafy");
       // http

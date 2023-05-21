@@ -27,7 +27,7 @@
                     class="img-field" />
                 </div>
                 <div class="col-md-8">
-                  <h4 style="text-align: center">{{ result.title }}</h4>
+                  <h5 style="text-align: center">{{ result.title }}</h5>
                   <b-button @click="insertPlan(result)"> 플랜 추가 </b-button>
                   <b-button> 정보 보기 </b-button>
                 </div>

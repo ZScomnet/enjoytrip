@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <HeaderNav />
-    <router-view></router-view>
+    <router-view class="animate__animated animate__fadeIn"></router-view>
   </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
   bottom: 0;
   left: 0;
   font-family: "MaplestoryOTFBold";
-  margin-top: 65.97px;
+  margin-top: 55px;
 }
 @font-face {
   font-family: "LINESeedKR-Bd";
