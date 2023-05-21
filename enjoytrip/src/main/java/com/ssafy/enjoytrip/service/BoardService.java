@@ -22,6 +22,7 @@ public interface BoardService {
 
     public List<Board> getAllBoardList();
 
+    public Board getBoardDetail(int boardId);
 
 
 

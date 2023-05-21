@@ -77,6 +77,12 @@ public class BoardRepositoryImpl implements BoardRepository{
         return boardList;
     }
 
+    public Board getBoardDetail(int boardId){
+        Board boardDetail = em.createQuery("select bo from Board bo where id=:BoardId", Board.class)
+                .setParameter("BoardId",boardId)
+                .getSingleResult();
+        return boardDetail;
+    }
 
 
 }
