@@ -1,22 +1,19 @@
 package com.ssafy.enjoytrip.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
-@Getter
+@Getter @Setter @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 public class SignInDto {
-    @NonNull
+    private Long user_id;
     private String email;
-    @NonNull
-    private String password;
-    @NonNull
     private String username;
-    @NonNull
-    private String address;
-    @NonNull
-    private int age;
-    @NonNull
-    private String phone_number;
+    private String password;
+//
+//    private String email;
+//    private String password;
+//    private String address;
+//    private int age;
+//    private String phone_number;
 }

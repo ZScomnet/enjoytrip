@@ -270,5 +270,16 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         return allNewPlanListsDto;
     }
 
+    public List<AttractionInfo> LikeAttractionList(int page){
+        String jpql =  "select  ai.* from attraction_info as ai left join plan_info as pi on pi.content_id = ai.content_id\n" +
+                "group by ai.content_id order by count(*) desc limit ?,?";
+        List<AttractionInfo> likeAttractionList = em.createNativeQuery(jpql)
+                .setParameter(1,(page-1)*100)
+                .setParameter(2,100)
+                .getResultList();
+
+        return likeAttractionList;
+    }
+
 
 }

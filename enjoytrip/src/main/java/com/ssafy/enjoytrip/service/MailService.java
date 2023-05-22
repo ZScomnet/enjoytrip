@@ -17,7 +17,7 @@ public class MailService {
     private final EntityManager em;
 
     @Transactional
-    public void sendMail(String userEmail) {
+    public int sendMail(String userEmail) {
 
 
         String jpql = "update User u set u.password =:newPw where u.email=:user_email";
@@ -25,7 +25,7 @@ public class MailService {
         int update = em.createQuery(jpql).setParameter("newPw", "ssafy")
                 .setParameter("user_email",userEmail).executeUpdate();
         em.clear();
-        System.out.println(update);
+        System.out.println("updated int: "+update);
         ArrayList<String> toUserList = new ArrayList<>();
 
         toUserList.add(userEmail);
@@ -41,5 +41,6 @@ public class MailService {
         simpleMessage.setText("임시 비밀번호는 'ssafy' 입니다.");
 
         javaMailSender.send(simpleMessage);
+        return update;
     }
 }
