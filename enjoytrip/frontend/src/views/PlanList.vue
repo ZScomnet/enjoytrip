@@ -9,12 +9,19 @@
         <div class="profile-detail">
           <h1 class="display-4 fw-bolder">{{ userInfo.username }}</h1>
           <h5>Plan : {{ myPlan.length }}</h5>
-          <p class="lead fw-normal text-black-50 mb-0">
-            안녕하세요
-          </p>
-          <button v-if="userInfo.username == this.$route.username" class="btn btn-info" @click="routePlanMaker"> 플랜 생성하기 </button>
-          <button v-else-if="!this.$route.username" class="btn btn-info" @click="routePlanMaker"> 플랜 생성하기 </button>
-        
+          <p class="lead fw-normal text-black-50 mb-0">안녕하세요</p>
+          <button
+            v-if="userInfo.username == this.$route.username"
+            class="btn btn-info"
+            @click="routePlanMaker">
+            플랜 생성하기
+          </button>
+          <button
+            v-else-if="!this.$route.username"
+            class="btn btn-info"
+            @click="routePlanMaker">
+            플랜 생성하기
+          </button>
         </div>
       </div>
     </header>
@@ -31,8 +38,7 @@
             <div class="card-body p-4">
               <div class="text-center">
                 <!-- Product name-->
-                <h5 cl
-                ass="fw-bolder">{{ plan[1] }}</h5>
+                <h5 cl ass="fw-bolder">{{ plan[1] }}</h5>
                 <!-- Product price-->
                 Like : {{ idx }}
               </div>
@@ -64,17 +70,11 @@ export default {
     };
   },
   created() {
-    if(this.$route.params.username){
-      http.get("/attraction/myplanLists/" + this.$route.params.username).then((res) => {
+    http
+      .get("/attraction/myplanLists/" + this.$route.params.username)
+      .then((res) => {
         this.myPlan = res.data;
-        console.log(res.data);
       });
-    }else{
-      http.get("/attraction/myplanLists/" + this.userInfo.username).then((res) => {
-        this.myPlan = res.data;
-        console.log(res.data);
-      });
-    }
   },
   computed: {
     userInfo() {
@@ -83,11 +83,11 @@ export default {
   },
   methods: {
     viewPlan(planIdx) {
-      this.$router.push("/plan/" + this.userInfo.name + "/" + planIdx);
+      this.$router.push("/plan/" + this.userInfo.username + "/" + planIdx);
     },
-    routePlanMaker(){
+    routePlanMaker() {
       this.$router.push("/plan/edit");
-    }
+    },
   },
 };
 </script>

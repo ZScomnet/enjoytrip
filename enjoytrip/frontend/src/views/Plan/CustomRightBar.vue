@@ -4,9 +4,17 @@
       <BInput
         :class="{ hide: !isOpen }"
         v-model="title"
+        v-if="!this.$route.params.username"
         placeholder="플랜명을 입력해주세요.."
-        @keyup="setPlanTitle(title)" 
-        style="padding: 10px; padding-top: 10px;font-size: 24px;"/>
+        @keyup="setPlanTitle(title)"
+        style="padding: 10px; padding-top: 10px; font-size: 24px" />
+      <BInput
+        :class="{ hide: !isOpen }"
+        v-model="this.planTitle"
+        v-else
+        placeholder="플랜명을 입력해주세요.."
+        @keyup="setPlanTitle(title)"
+        style="padding: 10px; padding-top: 10px; font-size: 24px" />
       <div class="search-area" :class="{ hide: !isOpen }">
         <b-button @click="addPlanDay"> 하루 연장 </b-button>
         <b-button @click="postPlan"> 플랜 저장 </b-button>
@@ -26,7 +34,9 @@
               }"
               @click="selectPlan(idx)">
               {{ idx + 1 }} 일차
-              <span @click="deleteDay(idx)" style="cursor: pointer;">&times;</span>
+              <span @click="deleteDay(idx)" style="cursor: pointer"
+                >&times;</span
+              >
             </li>
             <li
               v-for="(tour, tourIdx) in tourList"
@@ -84,6 +94,9 @@ export default {
     setPlanTitle(title) {
       this.$store.commit("SET_PLANTITLE", title);
     },
+    getPlanTitle() {
+      this.title = this.planTitle;
+    },
     addPlanDay() {
       // 플랜 하루 추가
       this.$store.commit("ADD_DAY");
@@ -104,11 +117,22 @@ export default {
       this.$store.commit("SELECT_DAY", idx);
     },
     postPlan() {
-      http.post("/attraction/plan", {
-        planTitle: this.$store.state.planTitle,
-        plan: this.$store.state.plan,
-      });
-      this.$router.push("/plan/" + this.userInfo.username);
+      if (!this.$route.params.username && !this.$route.params.plan_id) {
+        http.post("/attraction/plan", {
+          planTitle: this.$store.state.planTitle,
+          plan: this.$store.state.plan,
+        });
+        this.$router.push("/plan/" + this.userInfo.username);
+      } else {
+        http.post(
+          "/attraction/myplanUpdateList/" + this.$route.params.plan_id,
+          {
+            planTitle: this.$store.state.planTitle,
+            plan: this.$store.state.plan,
+          }
+        );
+        this.$router.push("/plan/" + this.userInfo.username);
+      }
     },
   },
   computed: {

@@ -55,6 +55,11 @@ export default {
     return {
       isOpen: true,
       title: "",
+      plan: [],
+      planTitle: "",
+      markerPosition: [],
+      marker: [],
+      infoWindow: [],
     };
   },
   created() {
@@ -63,16 +68,64 @@ export default {
     http
       .get("/attraction/myplanList/" + this.$route.params.plan_id)
       .then((res) => {
-        this.$store.commit("SET_PLANTITLE", res.data.planTitle);
-        this.$store.commit("SET_PLAN", res.data.plan);
+        this.planTitle = res.data.planTitle;
+        this.plan = res.data.plan;
+        console.log(this.plan);
+        let idx = 0;
+        for (let i = 0; i < this.plan.length; i++) {
+          // 마커를 표시할 위치입니다
+          for (let j = 0; j < this.plan[i].length; j++) {
+            console.log(this.plan[i][j]);
+            var position = new window.kakao.maps.LatLng(
+              this.plan[i][j].latitude,
+              this.plan[i][j].longitude
+            );
+            this.markerPosition.push(position);
+            // 마커를 생성합니다
+
+            this.marker.push(
+              new window.kakao.maps.Marker({
+                position: this.markerPosition[idx],
+              })
+            );
+            // 마커를 지도에 표시합니다.
+            this.marker[idx].setMap(this.map);
+
+            // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
+            var iwContent =
+              '<div style="padding:7px;">' + this.plan[i][j].title + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+            // 인포윈도우를 생성합니다
+            var infowindow = new window.kakao.maps.InfoWindow({
+              content: iwContent,
+            });
+            this.infoWindow.push(iwContent);
+            // 마커에 마우스오버 이벤트를 등록합니다
+            window.kakao.maps.event.addListener(
+              this.marker[idx],
+              "mouseover",
+              () => {
+                // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+                infowindow.open(this.map, this.marker[idx]);
+              }
+            );
+
+            // 마커에 마우스아웃 이벤트를 등록합니다
+            window.kakao.maps.event.addListener(
+              this.marker[idx++],
+              "mouseout",
+              () => {
+                // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+                infowindow.close();
+              }
+            );
+          }
+        }
       });
   },
   methods: {
     rightClick() {
       this.isOpen = this.isOpen ? false : true;
-    },
-    setPlanTitle(title) {
-      this.$store.commit("SET_PLANTITLE", title);
     },
     copyPlan() {
       // 플랜 스크랩해오기
@@ -82,13 +135,6 @@ export default {
       });
       this.$router.push("/plan/" + this.userInfo.name);
     },
-    deleteTour(tourIdx, idx) {
-      // 선택한 날짜의 tour 삭제
-      this.$store.commit("DELETE_TOUR", {
-        day: idx,
-        idx: tourIdx,
-      });
-    },
     moveMap(tour) {
       const mapOption = new window.kakao.maps.LatLng(
         tour["latitude"],
@@ -97,24 +143,11 @@ export default {
 
       this.map.setCenter(mapOption);
     },
-    deleteDay(idx) {
-      // 해당 날짜 tourList 통째로 삭제
-      this.$store.commit("DELETE_DAY", idx);
-    },
-    selectPlan(idx) {
-      // 관광지 추가할 날 선택
-      this.$store.commit("SELECT_DAY", idx);
-    },
+    setMarker() {},
   },
   computed: {
-    plan() {
-      return this.$store.state.plan;
-    },
     selectedDay() {
       return this.$store.state.selectedDay;
-    },
-    planTitle() {
-      return this.$store.state.planTitle;
     },
     userInfo() {
       return this.$store.state.userInfo;

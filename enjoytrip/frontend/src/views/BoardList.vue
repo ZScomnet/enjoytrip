@@ -3,8 +3,10 @@
     <section class="notice">
       <div class="page-title">
         <div class="container">
-          <h1 align="center" v-if="!this.$route.params.idx"> 게시판 </h1>
-          <h1 align="center" v-else > {{ boardGroup[this.$route.params.idx-1].group_name }} </h1>
+          <h1 align="center" v-if="!this.$route.params.idx">게시판</h1>
+          <h1 align="center" v-else-if="!this.loading">
+            {{ boardGroup[this.$route.params.idx - 1].group_name }}
+          </h1>
         </div>
       </div>
 
@@ -32,14 +34,16 @@
               <table class="board-lineup">
                 <tr>
                   <th class="board-types" scope="col" style="width: 100px">
-                    
-                    <a :href="'/board/'" > 게시판 </a></th>
+                    <a :href="'/board/'"> 게시판 </a>
+                  </th>
                 </tr>
                 <hr style="color: white" />
 
-                <tr v-for="group in boardGroup" :key=group.group_id>
-                  <td v-if="group.read_permission == 1" class="board-types"> 
-                    <a :href="'/board/'+group.group_id" >{{ group.group_name }} </a> 
+                <tr v-for="group in boardGroup" :key="group.group_id">
+                  <td v-if="group.read_permission == 1" class="board-types">
+                    <a :href="'/board/' + group.group_id"
+                      >{{ group.group_name }}
+                    </a>
                   </td>
                 </tr>
               </table>
@@ -54,28 +58,37 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="board in boardList" :key=board.id @click="pushDetailPage(board.id)">
-                    <td>{{board.id}}</td>
+                  <tr
+                    v-for="board in boardList"
+                    :key="board.id"
+                    @click="pushDetailPage(board.id)">
+                    <td>{{ board.id }}</td>
                     <th>
-                      <a href="#"
-                        > {{ board.title }}</a
-                      >
+                      <a href="#"> {{ board.title }}</a>
                     </th>
-                    <td> {{ board.created }} </td>
+                    <td>{{ board.created }}</td>
                   </tr>
-                  
                 </tbody>
               </table>
             </div>
           </div>
         </div>
         <!-- board button area -->
-      <div class="container">
-        <button @click="pushWritePage" type="button" class="btn btn-dark" style="border-radius: 4px; float: right; margin : 10px; padding : 7px 7px;">등록하기</button>
+        <div class="container">
+          <button
+            @click="pushWritePage"
+            type="button"
+            class="btn btn-dark"
+            style="
+              border-radius: 4px;
+              float: right;
+              margin: 10px;
+              padding: 7px 7px;
+            ">
+            등록하기
+          </button>
+        </div>
       </div>
-      </div>
-
-      
     </section>
   </div>
 </template>
@@ -83,41 +96,39 @@
 <script>
 import http from "@/util/http.js";
 export default {
-
-  data(){
+  data() {
     return {
       boardGroup: [],
       boardList: [],
-
+      loading: false,
     };
   },
-  created(){
-    http.get("/board/getBoardGroup")
-    .then((res)=>{
+  created() {
+    this.loading = true;
+    http.get("/board/getBoardGroup").then((res) => {
       this.boardGroup = res.data;
-      
+      this.loading = false;
     });
-    if(this.$route.params.idx){
-      http.get("/board/getCategoryBoard/"+this.$route.params.idx)
-      .then((res)=>{
-        this.boardList = res.data;
-      });
-    }else{
-      http.get("/board/getAllBoardList")
-      .then((res)=>{
+    if (this.$route.params.idx) {
+      http
+        .get("/board/getCategoryBoard/" + this.$route.params.idx)
+        .then((res) => {
+          this.boardList = res.data;
+        });
+    } else {
+      http.get("/board/getAllBoardList").then((res) => {
         this.boardList = res.data;
       });
     }
   },
-  methods:{
-    pushWritePage(){
+  methods: {
+    pushWritePage() {
       this.$router.push("/board/write");
     },
-    pushDetailPage(idx){
-      this.$router.push("/board/detail/"+idx);
-    }
-  }
-
+    pushDetailPage(idx) {
+      this.$router.push("/board/detail/" + idx);
+    },
+  },
 };
 </script>
 
@@ -125,20 +136,20 @@ export default {
 .total-container {
   justify-content: space-between;
 }
-.board-types{
-  > a:link{
+.board-types {
+  > a:link {
     color: #333333;
   }
-  > a:hover{
+  > a:hover {
     color: #56caff;
   }
-  > a:visited{
+  > a:visited {
     color: #333333;
   }
-  > a:visited:hover{
+  > a:visited:hover {
     color: #56caff;
   }
-  > a:active{
+  > a:active {
     color: #5667ff;
   }
 }
@@ -207,7 +218,7 @@ section.notice {
   width: 100%;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  > tbody tr:hover{
+  > tbody tr:hover {
     background-color: #50d7f2;
     cursor: pointer;
   }
@@ -335,15 +346,15 @@ section.notice {
   width: 1px;
   height: 1px;
 }
-.board_write_btn{
+.board_write_btn {
   display: flex;
   margin: 3px;
-  
 }
-.board-lineup th, td{
+.board-lineup th,
+td {
   padding: 3px;
 }
-.board-lineup td{
+.board-lineup td {
   padding-left: 10px;
 }
 </style>

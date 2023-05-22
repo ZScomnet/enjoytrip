@@ -1,16 +1,24 @@
 <template>
-  <div class="left-container">
-    <div :class="{ 'side-bar': isOpen }">
-      <h1 class="left-side-bar-title" :class="{ hide: !isOpen }">
+  <div
+    class="left-container"
+    :style="{ left: isOpen ? -400 + pos + 'px' : -400 + 'px' }">
+    <div
+      class="side-bar"
+      :style="{ left: isOpen ? -400 + pos + 'px' : -400 + 'px' }">
+      <h1
+        class="left-side-bar-title"
+        :style="{ left: isOpen ? -400 + pos + 'px' : -400 + 'px' }">
         관광지 검색
       </h1>
-      <div class="search-area" :class="{ hide: !isOpen }">
+      <div
+        class="search-area"
+        :style="{ left: isOpen ? -400 + pos + 'px' : -400 + 'px' }">
         <BInput
           v-model="inputValue"
           placeholder="관광지를 입력해주세요"
           @keyup.enter="searchTour()" />
       </div>
-      <div :class="{ hide: !isOpen }">
+      <div>
         <div class="container mt-5">
           <!-- Card -->
           <div class="card_scroll">
@@ -29,7 +37,15 @@
                 <div class="col-md-8">
                   <h5 style="text-align: center">{{ result.title }}</h5>
                   <b-button @click="insertPlan(result)"> 플랜 추가 </b-button>
-                  <b-button> 정보 보기 </b-button>
+                  <b-button @click="introModal"> 정보 보기 </b-button>
+                  <div v-if="modalOpen" class="modal">
+                    <div
+                      class="animate__animated animate__fadeInDown"
+                      id="modal-content">
+                      <h1 class="close" @click="closeModal">&times;</h1>
+                      TEXT
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -54,12 +70,16 @@ export default {
       resultData: [],
       markerPosition: [],
       marker: [],
+      infoWindow: [],
+      modalOpen: false,
+      pos: 400,
     };
   },
   created() {},
   methods: {
     leftClick() {
       this.isOpen = this.isOpen ? false : true;
+      this.pos = this.isOpen ? 400 : 0;
     },
     moveMap(result) {
       const mapOption = new window.kakao.maps.LatLng(
@@ -77,10 +97,12 @@ export default {
       if (this.resultData.length == 0) {
         this.markerPosition = null;
         this.marker = null;
+        this.infoWindow = null;
         return;
       } else {
         this.markerPosition = [];
         this.marker = [];
+        this.infoWindow = [];
       }
       console.log(this.resultData);
       const mapOption = new window.kakao.maps.LatLng(
@@ -91,6 +113,7 @@ export default {
       this.map.setCenter(mapOption);
 
       for (let i = 0; i < this.resultData.length; i++) {
+        // 검색 결과들 마커를 생성
         this.markerPosition.push(
           new window.kakao.maps.LatLng(
             this.resultData[i]["latitude"],
@@ -102,7 +125,24 @@ export default {
             position: this.markerPosition[i],
           })
         );
-        this.marker[i].setMap(this.map);
+        this.marker[i].setMap(this.map); // 마커를 지도에 표시
+        var iwContent =
+          '<div style="padding: 7px;">' + "\t" + this.plan[i].title + "</div>";
+
+        this.infoWindow.push(iwContent);
+        var infowindow = new window.kakao.maps.InfoWindow({
+          content: this.infoWindow[i],
+        });
+        // 마커에 마우스오버 이벤트를 등록합니다
+        window.kakao.maps.event.addListener(this.marker[i], "mouseover", () => {
+          // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+          infowindow.open(this.map, this.marker[i]);
+        });
+        // 마커에 마우스아웃 이벤트를 등록합니다
+        window.kakao.maps.event.addListener(this.marker[i], "mouseout", () => {
+          // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
+          infowindow.close();
+        });
       }
     },
     insertPlan(plan) {
@@ -112,6 +152,7 @@ export default {
         tourInfo: plan,
       });
     },
+    introModal() {},
   },
   props: ["map"],
   computed: {
@@ -127,11 +168,15 @@ export default {
   position: absolute;
   top: 0;
   bottom: 0;
+  left: 0;
+  animation-name: move;
+  animation-duration: 1s;
   > .side-bar {
     background-color: #ffffff;
     opacity: 0.9;
     width: 400px;
     height: 100%;
+
     > .search-area {
       padding: 20px 10px;
 

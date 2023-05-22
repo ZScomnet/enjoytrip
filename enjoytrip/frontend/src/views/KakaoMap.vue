@@ -62,7 +62,8 @@ export default {
       this.map = new kakao.maps.Map(container, options);
     },
     isMine() {
-      if (this.planUsername === this.userInfo.name) return true;
+      if (this.planUsername === this.userInfo.username) return true;
+      else if (!this.planUsername) return true;
       else return false;
     },
   },
@@ -73,12 +74,14 @@ export default {
   },
   created() {
     this.planUsername = this.$route.params.username;
-    http
-      .get("/attraction/myplanList/" + this.$route.params.plan_id)
-      .then((res) => {
-        this.$store.state.planTitle = res.data.planTitle;
-        this.$store.state.plan = res.data.plan;
-      });
+    if (this.planUsername) {
+      http
+        .get("/attraction/myplanList/" + this.$route.params.plan_id)
+        .then((res) => {
+          this.$store.state.planTitle = res.data.planTitle;
+          this.$store.state.plan = res.data.plan;
+        });
+    }
   },
   mounted() {
     if (!window.kakao || !window.kakao.maps) {

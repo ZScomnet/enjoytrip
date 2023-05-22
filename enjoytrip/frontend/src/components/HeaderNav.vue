@@ -24,20 +24,16 @@
         </ul>
         <ul v-else class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" to="/plan/username"
-              >나의 플랜</router-link
-            >
+            <router-link class="nav-link" :to="plan">나의 플랜</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/board"
-              >게시판</router-link>
+            <router-link class="nav-link" to="/board">게시판</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/rank"
-              >랭킹</router-link>
+            <router-link class="nav-link" to="/rank">랭킹</router-link>
           </li>
           <li class="nav-item">
-              <a href="/" class="nav-link" @click="logout">로그아웃</a>
+            <a href="/" class="nav-link" @click="logout">로그아웃</a>
           </li>
         </ul>
       </div>
@@ -56,9 +52,6 @@ export default {
     home() {
       console.log("home");
     },
-    plan() {
-      console.log("plan");
-    },
     board() {
       console.log("board");
     },
@@ -74,6 +67,9 @@ export default {
     token() {
       return this.$store.state.token;
     },
+    plan() {
+      return `/plan/${this.$store.state.userInfo.username}`;
+    },
   },
 };
 </script>
@@ -82,23 +78,23 @@ export default {
 nav {
   box-shadow: 0px #888888;
 }
-a:link{
+a:link {
   color: #888888;
   text-decoration: none;
 }
-a:hover{
+a:hover {
   color: #56caff;
   text-decoration: none;
 }
-a:visited{
+a:visited {
   color: #888888;
   text-decoration: none;
 }
-a:visited:hover{
+a:visited:hover {
   color: #56caff;
   text-decoration: none;
 }
-a:active{
+a:active {
   color: #5667ff;
 }
 </style>
