@@ -79,7 +79,7 @@ public class AuthControllers {
 	}
 
 	@GetMapping("/checkEmail")
-	public int checkEmail(String email){
+	public int checkEmail(@RequestParam String email){
 		return userService.checkEmail(email);
 	}
 
