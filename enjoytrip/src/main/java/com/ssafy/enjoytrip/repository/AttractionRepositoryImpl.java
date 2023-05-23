@@ -209,7 +209,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 //            dayList.add(info.getPlanDay());
 //        }
 
-        PlanDetailDto planDetailDto = new PlanDetailDto(planName,result);
+        PlanDetailDto planDetailDto = new PlanDetailDto(planName,(long)1,result);
 
         return planDetailDto;
 
