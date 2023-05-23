@@ -92,7 +92,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
         System.out.println("sql 처리 됨?");
         em.createNativeQuery(jpql).setParameter(1,plan_name )
-                .setParameter(2, 1).executeUpdate();
+                .setParameter(2, planDetailDto.getUser_id()).executeUpdate();
         System.out.println("dfdfasdfasdf"+planDetailDto.getPlan().size());
 
         Long plan_id =(Long)em.createNativeQuery(" SELECT LAST_INSERT_ID() from Plan").getSingleResult();
