@@ -24,8 +24,6 @@ public class UserRepositoryImpl implements UserRepository{
         Member member = em.find(Member.class,id);
         MemberDto memberDto = new MemberDto(
             member.getUsername(),
-            member.getAddress(),
-            member.getAge(),
             member.getPhone_number()
         );
         return memberDto;
@@ -50,21 +48,39 @@ public class UserRepositoryImpl implements UserRepository{
     @Transactional
     @Override
     public void signupUser(SignUpDto signUpDto) {
-        String jpql = "INSERT INTO user (email,password, created) VALUES(?,?,?)";
+        String jpql = "INSERT INTO user (email,password,permission ,created) VALUES(?,?,?,?)";
         em.createNativeQuery(jpql)
                 .setParameter(1, signUpDto.getEmail())
                 .setParameter(2, signUpDto.getPassword())
-                .setParameter(3, LocalDateTime.now())
+                .setParameter(3, 'M')
+                .setParameter(4, LocalDateTime.now())
                 .executeUpdate();
-        jpql = "insert into member select ?,?,?,?, u.user_id from user u where u.email = ? and u.password = ?";
-        em.createNativeQuery(jpql).setParameter(1, signUpDto.getAddress())
-                .setParameter(2,signUpDto.getAge())
-                .setParameter(3,signUpDto.getPhone_number())
-                .setParameter(4,signUpDto.getUsername())
-                .setParameter(5,signUpDto.getEmail())
-                .setParameter(6,signUpDto.getPassword())
+        Long user_id = (Long)em.createQuery("SELECT MAX(u.user_id) FROM User u")
+                .getSingleResult();
+        jpql = "insert into member( username, phone_number, user_id) values (?,?,?)";
+        em.createNativeQuery(jpql)
+                .setParameter(1,signUpDto.getUsername())
+                .setParameter(2,signUpDto.getPhone_number())
+                .setParameter(3,user_id)
                 .executeUpdate();
     }
+
+    public int checkEmail(String email){
+        String jpql = "select u.user_id from User u where u.email =:email";
+
+        try {
+            em.createQuery(jpql).setParameter("email",email)
+                    .getSingleResult();
+            return 1;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+
+    }
+
+
 
     public void signIn(SignUpDto signInDto){
         User user = em.createQuery("select u from User u where u.email = :email and u.password = :password",User.class)

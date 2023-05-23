@@ -25,4 +25,6 @@ public class UserServiceImpl implements UserService{
 
     public void signupUser(SignUpDto signUpDto){userRepository.signupUser(signUpDto);}
 
+    public int checkEmail(String email){return userRepository.checkEmail(email);}
+
 }
