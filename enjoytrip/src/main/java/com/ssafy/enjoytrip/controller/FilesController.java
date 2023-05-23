@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 @CrossOrigin("*")
 public class FilesController {
     @PostMapping("/upload")
-    public void uploadFile(@RequestPart(value="file",required = false) MultipartFile files, @RequestBody Long user_id){
+    public void uploadFile(@RequestPart MultipartFile files){
 
         String sourceFileName = files.getOriginalFilename();
         String path = "C:/Users/SSAFY/Desktop/pairpjtfinal/enjoy/enjoytrip/enjoytrip/src/main/resources/images";
