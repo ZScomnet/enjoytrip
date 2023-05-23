@@ -19,4 +19,7 @@ public interface UserRepository {
 
     public void signupUser(SignUpDto signUpDto);
 
+
+    public int checkEmail(String email);
+
 }
