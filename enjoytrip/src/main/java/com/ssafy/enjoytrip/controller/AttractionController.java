@@ -100,5 +100,11 @@ public class AttractionController {
         return attractionService.getNewAllPlanLists();
     }
 
+    @GetMapping("/LikeAttractionList/{page}")//like순 정렬
+    public List<AttractionInfo> LikeAttractionList(@PathVariable int page){
+        return attractionService.LikeAttractionList(page);
+    }
+
+
 
 }

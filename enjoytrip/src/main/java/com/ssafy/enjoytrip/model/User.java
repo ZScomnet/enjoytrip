@@ -3,6 +3,9 @@ package com.ssafy.enjoytrip.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -14,6 +17,8 @@ public class User {
     private Long user_id;
     private String email;
     private String password;
+
+    @ColumnDefault("M")
     private char permission;
-    private String created;
+    private LocalDateTime created;
 }

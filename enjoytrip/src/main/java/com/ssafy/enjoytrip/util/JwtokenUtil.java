@@ -3,7 +3,7 @@ package com.ssafy.enjoytrip.util;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
-import com.ssafy.enjoytrip.model.Member;
+import com.ssafy.enjoytrip.dto.SignInDto;
 import org.springframework.stereotype.Component;
 
 
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class JwtokenUtil {
-	private final String SECRET_KEY = "EnjoyTripSecretKey";
+	private final String SECRET_KEY = "EnjoyTripSecretKeyfffffffffffffff";
 
 	public boolean validateToken(String token) {
 		try {
@@ -27,15 +27,15 @@ public class JwtokenUtil {
 			return false;
 		}
 }
-	public String createToken(Member member, int expirationSecond) throws UnsupportedEncodingException {
+	public String createToken(SignInDto signInDto, int expirationSecond) throws UnsupportedEncodingException {
 
 		String token = Jwts.builder()
 				//header 
 				.setHeaderParam("typ", "JWT")
 				.setHeaderParam("alg","HS256")
 				//payload
-				.claim("id", member.getUser_id())
-				.claim("name", member.getUsername())
+				.claim("id", signInDto.getUser_id())
+				.claim("name", signInDto.getUsername())
 				.setExpiration( new Date(System.currentTimeMillis() + 1000 * expirationSecond) )
 				//singature
 				.signWith(SignatureAlgorithm.HS256, SECRET_KEY.getBytes("UTF-8"))

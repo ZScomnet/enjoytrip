@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.service;
 
 import com.ssafy.enjoytrip.dto.MemberDto;
+import com.ssafy.enjoytrip.dto.SignUpDto;
 import com.ssafy.enjoytrip.model.Member;
 import com.ssafy.enjoytrip.model.User;
 import com.ssafy.enjoytrip.repository.UserRepository;
@@ -20,7 +21,8 @@ public class UserServiceImpl implements UserService{
         return userRepository.getMemberInfoById(id);
     }
 
-    public Member login(Member member) {return userRepository.login(member);}
+    public Long login(User user) {return userRepository.login(user);}
 
+    public void signupUser(SignUpDto signUpDto){userRepository.signupUser(signUpDto);}
 
 }

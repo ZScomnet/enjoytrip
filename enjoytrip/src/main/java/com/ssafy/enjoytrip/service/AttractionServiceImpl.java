@@ -77,4 +77,8 @@ public class AttractionServiceImpl implements AttractionService{
         return  attractionRepository.getNewAllPlanLists();
     }
 
+    public List<AttractionInfo> LikeAttractionList(int page){
+        return  attractionRepository.LikeAttractionList(page);
+    }
+
 }

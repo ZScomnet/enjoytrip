@@ -49,6 +49,9 @@ public interface AttractionRepository {
 
     public List<MyPlanListsDto> getNewAllPlanLists();
 
+    public List<AttractionInfo> LikeAttractionList(int page);
+
+
 
 
 

@@ -40,4 +40,6 @@ public interface AttractionService {
 
     public List<MyPlanListsDto> getNewAllPlanLists();
 
+    public List<AttractionInfo> LikeAttractionList(int page);
+
 }
