@@ -53,6 +53,12 @@ public class AttractionController {
         attractionService.deletelikes(plan_id,user_id);
     }
 
+    @GetMapping("/plan/{plan_id}/likeCnt")
+    public Long LikeCnt(@PathVariable int plan_id){
+        return attractionService.LikeCnt(plan_id);
+    }
+
+
 
 //    @PutMapping("/plan/insertPlan")
 //    public void insertPlan(@RequestBody AttractionDto attractionDto){
@@ -104,6 +110,7 @@ public class AttractionController {
     public List<AttractionInfo> LikeAttractionList(@PathVariable int page){
         return attractionService.LikeAttractionList(page);
     }
+
 
 
 

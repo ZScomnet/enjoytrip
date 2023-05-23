@@ -6,6 +6,7 @@ import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Board;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.PlanInfo;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,8 @@ public interface AttractionRepository {
     public void insertlikes(int plan_id, Long user_id);
 
     public void deletelikes(int plan_id, Long user_id);
+
+    public Long LikeCnt(@PathVariable int plan_id);
 
 
 

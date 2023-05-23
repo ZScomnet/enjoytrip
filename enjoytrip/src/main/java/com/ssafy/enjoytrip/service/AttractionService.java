@@ -5,6 +5,7 @@ import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.User;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +23,9 @@ public interface AttractionService {
     public void insertlikes(int plan_id, Long user_id);
 
     public void deletelikes(int plan_id, Long user_id);
+
+    public Long LikeCnt(@PathVariable int plan_id);
+
 
 
 //    public Plan insertPlan(String plan_name, Long user_id);

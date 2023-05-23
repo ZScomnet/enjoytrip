@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -73,6 +74,17 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         em.clear();
     }
 
+    public Long LikeCnt(@PathVariable int plan_id){
+        String jpql = "select count(*) from likes where plan_id=:planId group by plan_id";
+        Long num = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
+                .getSingleResult();
+        em.clear();
+
+        return num;
+    }
+
+
+
     //    @Transactional
 //    public Plan insertPlan(String plan_name, Long user_id){
 //        String jpql = "INSERT INTO Plan (plan_name, user_id) VALUES(?,?)";
@@ -111,6 +123,12 @@ public class AttractionRepositoryImpl implements AttractionRepository {
                         .setParameter(3, i+1)
                         .setParameter(4, j+1)
                         .executeUpdate();
+                if(i==0&j==0){
+                    jpql = "update Plan pl set thumbnail=(select first_image from attraction_info where content_id=?) where plan_id=LAST_INSERT_ID()";
+                    em.createNativeQuery(jpql).setParameter(1, tour.getId())
+                            .executeUpdate();
+
+                }
             }
         }
         em.clear();
@@ -119,7 +137,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     @Transactional
     @Override
     public void deletePlan(String plan_name, Long user_id){
-        String jpql = "update Plan pl set blocked=true where pl.id =:userId and pl.plan_name=:planName  ";
+        String jpql = "update Plan pl set blocked=true where pl.id =:userId and pl.plan_name=:planName";
         System.out.println("delete 체크 완료");
         em.createQuery(jpql).setParameter("userId", user_id)
                 .setParameter("planName",plan_name).executeUpdate();
