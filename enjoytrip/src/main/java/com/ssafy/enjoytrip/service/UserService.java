@@ -14,6 +14,9 @@ public interface UserService {
 
     public void signupUser(SignUpDto signUpDto);
 
+    public int checkEmail(String email);
+
+
 //    public void signIn();
 //    public void updateInfo(MemberDto memberDto);
 //    public void updatePassword();

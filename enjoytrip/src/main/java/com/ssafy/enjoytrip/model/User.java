@@ -18,7 +18,6 @@ public class User {
     private String email;
     private String password;
 
-    @ColumnDefault("M")
     private char permission;
     private LocalDateTime created;
 }

@@ -16,9 +16,5 @@ public class SignUpDto {
     @NonNull
     private String username;
     @NonNull
-    private String address;
-    @NonNull
-    private int age;
-    @NonNull
     private String phone_number;
 }
