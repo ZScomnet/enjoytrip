@@ -23,4 +23,7 @@ public class Plan {
     @Column(columnDefinition = "TINYINT(1)")
     private boolean blocked;
 
+    private String thumbnail;
+
+
 }

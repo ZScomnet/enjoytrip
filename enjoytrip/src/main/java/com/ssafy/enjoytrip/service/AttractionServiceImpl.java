@@ -8,6 +8,7 @@ import com.ssafy.enjoytrip.model.User;
 import com.ssafy.enjoytrip.repository.AttractionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,6 +43,11 @@ public class AttractionServiceImpl implements AttractionService{
     public void deletelikes(int plan_id, Long user_id){
         attractionRepository.deletelikes(plan_id, user_id);
     }
+
+    public Long LikeCnt(@PathVariable int plan_id){
+        return attractionRepository.LikeCnt(plan_id);
+    }
+
 
 
 //    public Plan insertPlan(String plan_name, Long user_id){
