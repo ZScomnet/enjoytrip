@@ -1,9 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container px-4 px-lg-5">
-      <router-link to="/home" class="navbar-brand">
-        <!-- <img
-          src="https://github.com/enjoytripProject/enjoytrip/assets/48237348/d67d02e8-bae5-4a71-ae8d-5fcfdb606bee" /> -->
+      <router-link to="/" class="navbar-brand">
         <img :src="require('@/assets/images/mainlogo.png')" />
       </router-link>
       <button
@@ -17,40 +15,25 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <!-- <ul class="navbar-nav">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/plan">플랜</router-link>
-          </li>
-          <li class="nav-item">
-            <a @click="board" class="nav-link" href="#">게시판</a>
-          </li>
-          <li class="nav-item">
-            <a @click="tour" class="nav-link" href="#">관광지</a>
-          </li>
-          <li class="nav-item">
-            <a @click="logout" class="nav-link" href="#">로그아웃</a>
-          </li>
-        </ul> -->
         <ul v-if="!token" class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" to="/login">로그인</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/sign-up">회원가입</router-link>
+            <router-link class="nav-link" to="/auth"
+              >로그인/회원가입</router-link
+            >
           </li>
         </ul>
         <ul v-else class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" to="/plan">플랜</router-link>
+            <router-link class="nav-link" :to="plan">나의 플랜</router-link>
           </li>
           <li class="nav-item">
-            <a @click="board" class="nav-link" href="/board">게시판</a>
+            <router-link class="nav-link" to="/board">게시판</router-link>
           </li>
           <li class="nav-item">
-            <a @click="tour" class="nav-link" href="/tour">관광지</a>
+            <router-link class="nav-link" to="/rank">랭킹</router-link>
           </li>
           <li class="nav-item">
-            <a @click="logout" class="nav-link">로그아웃</a>
+            <a href="/" class="nav-link" @click="logout">로그아웃</a>
           </li>
         </ul>
       </div>
@@ -69,9 +52,6 @@ export default {
     home() {
       console.log("home");
     },
-    plan() {
-      console.log("plan");
-    },
     board() {
       console.log("board");
     },
@@ -80,12 +60,15 @@ export default {
     },
     logout() {
       this.$store.dispatch("logout");
-      this.$router.push("/home");
+      this.$router.push("/");
     },
   },
   computed: {
     token() {
       return this.$store.state.token;
+    },
+    plan() {
+      return `/plan/${this.$store.state.userInfo.username}`;
     },
   },
 };
@@ -93,6 +76,25 @@ export default {
 
 <style scoped>
 nav {
-  box-shadow: 0px 3px 2px #888888;
+  box-shadow: 0px #888888;
+}
+a:link {
+  color: #888888;
+  text-decoration: none;
+}
+a:hover {
+  color: #56caff;
+  text-decoration: none;
+}
+a:visited {
+  color: #888888;
+  text-decoration: none;
+}
+a:visited:hover {
+  color: #56caff;
+  text-decoration: none;
+}
+a:active {
+  color: #5667ff;
 }
 </style>
