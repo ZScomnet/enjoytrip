@@ -13,8 +13,8 @@ public class PlanDetailDto {
     private String planTitle;
     private Long user_id;
     private List<List<AttractionInfo>> plan;
-    public PlanDetailDto(String planTitle, List<List<AttractionInfo>> plan) {
-        this.planTitle = planTitle;
-        this.plan = plan;
-    }
+//    public PlanDetailDto(String planTitle, List<List<AttractionInfo>> plan) {
+//        this.planTitle = planTitle;
+//        this.plan = plan;
+//    }
 }
