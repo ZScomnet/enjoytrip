@@ -30,51 +30,57 @@
             <img :src="require('@/assets/images/image1.jpg')" alt="" class="image">
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/logo.jpg')" alt="">
+              <img :src="require('@/assets/images/profile.png')" alt="">
             </div>
             <div class="main-text">
               <p>
-                username : ssafy <br>
-                Plan-title : 즐거운 대전 여행
+                username : username <br>
+                Plan-title : {{ this.plans[0][1]}}
               </p>
             </div>
             <div class="like">
-              <p>Like : 395</p>
+              <p>Like : 좋아요 수</p>
             </div>
             <div class="plan-btn">
-              <a href="#">Learn More</a>
+              <a @click="linkPlan(plan[0])">확인하기</a>
             </div>
           </div>
           <div class="second plan">
             <img :src="require('@/assets/images/image2.png')" alt="" class="image">
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/logo.jpg')" alt="">
+              <img :src="require('@/assets/images/profile.png')" alt="">
             </div>
             <div class="main-text">
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+              <p>
+                username : username <br>
+                Plan-title : {{ this.plans[1][1]}}
+              </p>
             </div>
             <div class="like">
-              <p>30.11.2022</p>
+              <p>Like : 좋아요 수</p>
             </div>
             <div class="plan-btn">
-              <a href="#">Learn More</a>
+              <a @click="linkPlan(plan[1])">확인하기</a>
             </div>
           </div>
           <div class="third plan">
             <img :src="require('@/assets/images/image3.jpg')" alt="" class="image">
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/logo.jpg')" alt="">
+              <img :src="require('@/assets/images/profile.png')" alt="">
             </div>
             <div class="main-text">
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+              <p>
+                username : username <br>
+                Plan-title : {{ this.plans[2][1]}}
+              </p>
             </div>
             <div class="like">
-              <p>30.11.2022</p>
+              <p>Like : 좋아요 수</p>
             </div>
             <div class="plan-btn">
-              <a href="#">Learn More</a>
+              <a @click="linkPlan(plan[2])">확인하기</a>
             </div>
           </div>
           <div class="normal plan">
@@ -111,35 +117,27 @@ export default {
 
   data(){
     return {
-      boardGroup: [],
-      boardList: [],
+      status: 0, // 0이면 좋아요 순, 1이면 플랜 순
+      plans: [],
 
     };
   },
   created(){
-    http.get("/board/getBoardGroup")
+    http.get("/attraction/allPlanLists")
     .then((res)=>{
-      this.boardGroup = res.data;
-      
+      this.plans=res.data;
+      console.log(this.plans);
     });
-    if(this.$route.params.idx){
-      http.get("/board/getCategoryBoard/"+this.$route.params.idx)
-      .then((res)=>{
-        this.boardList = res.data;
-      });
-    }else{
-      http.get("/board/getAllBoardList")
-      .then((res)=>{
-        this.boardList = res.data;
-      });
-    }
+    
   },
   methods:{
-    pushWritePage(){
-      this.$router.push("/board/write");
-    },
-    pushDetailPage(idx){
-      this.$router.push("/board/detail/"+idx);
+    linkPlan(planInfo){
+      this.$router.push("/plan/"+planInfo+"/"+plan)
+    }
+  },
+  computed:{
+    userInfo(){
+      return this.$store.state.userInfo;
     }
   }
 

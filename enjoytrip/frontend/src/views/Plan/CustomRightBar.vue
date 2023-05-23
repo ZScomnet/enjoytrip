@@ -101,6 +101,7 @@ export default {
       if (!this.$route.params.username && !this.$route.params.plan_id) {
         http.post("/attraction/plan", {
           planTitle: this.$store.state.planTitle,
+          user_id: this.$store.state.userInfo.user_id,
           plan: this.$store.state.plan,
         });
         this.$router.push("/plan/" + this.userInfo.username);

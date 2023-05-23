@@ -18,11 +18,7 @@ const routes = [
   },
 
   // Plan Route
-  { // 
-    path: "/plan",
-    name: "my_plan",
-    component: () => import("@/views/PlanList.vue"),
-  },{ // 플랜 새로 만들기 페이지
+  { // 플랜 새로 만들기 페이지
     path: "/plan/edit",
     name: "plan_edit",
     component: () => import("@/views/KakaoMap.vue"),
