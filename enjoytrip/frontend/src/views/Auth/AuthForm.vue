@@ -11,6 +11,7 @@
         </button>
       </div>
       <form
+        @submit.prevent="signIn"
         id="login"
         action=""
         class="input-group"
@@ -43,38 +44,50 @@
             <button class="emailSubmit" @click="findPassword">Send</button>
           </div>
         </div>
-        <button class="submit" @click="signIn">Login</button>
+        <button type="submit" class="button">Login</button>
       </form>
       <form
+        @submit.prevent="signUp"
         id="register"
         action=""
         class="input-group"
         :style="{ left: registerFormPos + 'px' }"
-        @click="signUp">
+        style="top: 120px">
         <input
           type="text"
-          :class="email"
+          v-model="signUpEmail"
           class="input-field"
           placeholder="Email"
+          :disabled="isDisabled"
           required />
+        <h6 class="email-check" @click="emailCheck">이메일 중복 체크</h6>
         <input
           type="password"
+          v-model="signUpPassword"
           class="input-field"
           placeholder="Password"
           required />
         <input
-          type="email"
+          type="text"
+          v-model="username"
           class="input-field"
           placeholder="NickName"
           required />
-        <input type="text" class="input-field" placeholder="Tel" required />
-        <button class="submit">REGISTER</button>
+        <input
+          type="text"
+          v-model="phone_number"
+          class="input-field"
+          placeholder="Tel ( without '-' )"
+          required />
+        <button type="submit" class="button">REGISTER</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import http from "@/util/http.js";
+import jwtDecode from "jwt-decode";
 export default {
   data() {
     return {
@@ -83,8 +96,13 @@ export default {
       loginFormPos: 50,
       registerFormPos: 450,
       modalOpen: false,
+      isDisabled: false,
       email: "",
       password: "",
+      signUpEmail: "",
+      signUpPassword: "",
+      username: "",
+      phone_number: "",
       findEmail: "",
     };
   },
@@ -100,15 +118,56 @@ export default {
       this.registerFormPos = 50;
     },
     signIn() {
-      if (this.email === "" && this.password === "") {
-        alert("Failed login!");
-      } else {
-        this.$store.dispatch("login");
-        this.$router.push("/");
-      }
+      http
+        .post("/auth/login", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((res) => {
+          let data = jwtDecode(res.data.token);
+          this.$store.dispatch("login", {
+            userInfo: {
+              user_id: data.id,
+              username: data.name,
+              state: res.data.state,
+            },
+            token: res.data.token,
+          });
+          this.$router.push("/");
+        })
+        .catch(() => {
+          alert("이메일이나 비밀번호를 다시 확인해주세요.");
+        });
     },
     signUp() {
       // 회원가입 요청
+      if (!this.isDisabled) alert("이메일 중복체크를 확인해 주세요!");
+      else {
+        http
+          .post("/auth/signup", {
+            email: this.signUpEmail,
+            password: this.signUpPassword,
+            username: this.username,
+            phone_number: this.phone_number,
+          })
+          .then(() => {
+            alert("회원가입이 완료됐습니다.");
+            this.$router.go(0);
+          })
+          .catch(() => {
+            alert("에러가 발생하였습니다.");
+          });
+      }
+    },
+    emailCheck() {
+      // 이메일 중복체크 여부 반환
+      http.get("/auth/checkEmail?email=" + this.signUpEmail).then((res) => {
+        if (res.data === 1) {
+          alert("이미 사용하고 있는 이메일입니다.");
+        } else if (confirm("사용 가능한 이메일입니다. 사용하시겠습니까?")) {
+          this.isDisabled = true;
+        }
+      });
     },
     openModal() {
       this.modalOpen = true;
@@ -232,6 +291,11 @@ export default {
   border-radius: 30px;
   transition: 0.5s;
 }
+.email-check {
+  color: #888888;
+  padding: 5px 0;
+  cursor: pointer;
+}
 .social-icons {
   margin: 30px auto;
   text-align: center;
@@ -255,7 +319,7 @@ export default {
   outline: none;
   background: transparent;
 }
-.submit {
+.button {
   width: 100%;
   padding: 10px 30px;
   cursor: pointer;
@@ -267,11 +331,11 @@ export default {
   border-radius: 30px;
 }
 .emailSubmit {
-  width: 20%;
+  width: 40%;
   padding: 10px 30px;
   cursor: pointer;
   display: block;
-  margin: auto;
+  margin: 10px auto;
   background: linear-gradient(to right, #00d0ff, #00a6ff1d);
   border: 0;
   outline: none;

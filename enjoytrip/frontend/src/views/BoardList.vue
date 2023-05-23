@@ -70,6 +70,17 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="pagination">
+                <ul>
+                  <li v-for="page in pageCount" :key="page">
+                    <button
+                      @click="changePage(page)"
+                      :class="{ active: currentPage === page }">
+                      {{ page }}
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -101,6 +112,8 @@ export default {
       boardGroup: [],
       boardList: [],
       loading: false,
+      currentPage: 1, // 현재 페이지
+      boardPerPage: 2, // 한 페이지당 보여질 게시글
     };
   },
   created() {
@@ -127,6 +140,19 @@ export default {
     },
     pushDetailPage(idx) {
       this.$router.push("/board/detail/" + idx);
+    },
+    changePage(page) {
+      this.currentPage = page;
+    },
+  },
+  computed: {
+    pageCount() {
+      return Math.ceil(this.boardList.length / this.boardPerPage);
+    },
+    displayedBoards() {
+      const start = (this.currentPage - 1) * this.boardPerPage;
+      const end = start + this.boardPerPage;
+      return this.boardList.slice(start, end);
     },
   },
 };

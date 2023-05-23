@@ -74,6 +74,7 @@ export default {
       .get("/attraction/myplanLists/" + this.$route.params.username)
       .then((res) => {
         this.myPlan = res.data;
+        console.log(this.myPlan);
       });
   },
   computed: {

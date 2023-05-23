@@ -71,14 +71,11 @@ export default new Vuex.Store({
   },
   actions: {
     // 비동기 통신 method
-    login(context, loginInfo) {
-      console.log(loginInfo);
+    login(context, payload) {
+      console.log(payload);
       // id, pw 정보를 갖고 서버에 로그인 요청
-      context.commit("SET_USER_INFO", {
-        user_id: 1,
-        username: "ssafy",
-      });
-      context.commit("SET_TOKEN", "ssafy");
+      context.commit("SET_USER_INFO", payload.userInfo);
+      context.commit("SET_TOKEN", payload.token);
       // http
       //   .post("/auth/login", loginInfo)
       //   // 로그인 성공 -> userInfo, token 세팅
