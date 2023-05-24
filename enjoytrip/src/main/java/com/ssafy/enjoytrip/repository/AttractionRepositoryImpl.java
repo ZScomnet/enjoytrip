@@ -74,7 +74,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         em.clear();
     }
 
-    public Long LikeCnt(@PathVariable int plan_id){
+    public Long LikeCnt(int plan_id){
         String jpql = "select count(*) from likes where plan_id=:planId group by plan_id";
         Long num = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
                 .getSingleResult();
@@ -82,6 +82,20 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 
         return num;
     }
+
+    public Long checkLike(Long user_id, int plan_id){
+        String jpql = "select count(*) from likes where plan_id=:planId and user_id=:userId";
+        Long num = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
+                .setParameter("userId", user_id)
+                .getSingleResult();
+        em.clear();
+        System.out.println(num);
+
+        return num;
+    }
+
+
+
 
 
 

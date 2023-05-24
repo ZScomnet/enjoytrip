@@ -1,5 +1,10 @@
 spring:
-
+  servlet:
+    multipart:
+      enabled: true
+      location: C:/SSAFY/enjoytripImg
+      max-request-size: 30MB
+      max-file-size: 10MB
   mail:
     host: smtp.gmail.com # 1
     port: 587 # 2
@@ -17,13 +22,13 @@ spring:
     username: ssafy
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
-    data: classpath:data.sql
+#    data: classpath:data.sql
 #    data: classpath:data.sql
   jpa:
     hibernate:
-#      ddl-auto: none
+      ddl-auto: none
 #      ddl-auto: create
-      ddl-auto: create
+#      ddl-auto: create
 
     properties:
       hibernate:
@@ -33,13 +38,15 @@ spring:
     defer-datasource-initialization: true
   sql:
     init:
-      mode: always
+#      mode: always
 #      mode: always
       encoding: UTF-8
 
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
-
+part4:
+  upload:
+    path: C:/Users/gkstj/Desktop/FINALPairPjt/enjoytrip/enjoytrip/src/main/resources/profileimg
 server:
   port: 8080

@@ -26,6 +26,8 @@ public interface AttractionService {
 
     public Long LikeCnt(@PathVariable int plan_id);
 
+    public Long checkLike(Long user_id, int plan_id);
+
 
 
 //    public Plan insertPlan(String plan_name, Long user_id);
