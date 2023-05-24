@@ -131,9 +131,10 @@ export default {
       // 플랜 스크랩해오기
       http.post("/attraction/plan", {
         planTitle: this.$store.state.planTitle,
+        user_id: this.userInfo.user_id,
         plan: this.$store.state.plan,
       });
-      this.$router.push("/plan/" + this.userInfo.name);
+      this.$router.push("/plan/" + this.userInfo.username);
     },
     moveMap(tour) {
       const mapOption = new window.kakao.maps.LatLng(

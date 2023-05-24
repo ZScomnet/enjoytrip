@@ -1,10 +1,10 @@
 <template>
   <!-- Section-->
-  <section class="py-5">
+  <section v-if="loading" class="py-5">
     <header class="py-5">
       <div class="profile-container">
         <img
-          :src="require('@/assets/images/profile.png')"
+          :src="pictureURI"
           class="profile-image" />
         <div class="profile-detail">
           <h1 class="display-4 fw-bolder">{{ this.$route.params.username }}</h1>
@@ -47,7 +47,7 @@
         </div>
       </div>
     </header>
-    <div v-if="loading" class="container px-4 px-lg-5 mt-5">
+    <div class="container px-4 px-lg-5 mt-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
         <div v-for="(plan, idx) in myPlan" :key="idx" class="col mb-5">
           <div class="card h-100">
@@ -116,8 +116,15 @@ export default {
           this.getLikePoint(this.myPlan[i][0],i);
           this.isLike(this.myPlan[i][0], i);
         }
-        this.loading = true;
       });
+    http
+    .get("/file/getProfileImg/"+ this.userInfo.username)
+    .then((res) => {
+      if(res.data !== 'http://localhost:8080/null') this.pictureURI = res.data;
+      this.loading = true;
+    }).catch((err)=>{
+      console.log(err);
+    });
   },
   computed: {
     userInfo() {
@@ -146,9 +153,13 @@ export default {
         })
         .then((res) => {
           console.log(res.data);
+          alert("사진 변경에 성공하셨습니다.");
+          this.$router.go(0);
         })
         .catch((err) => {
           console.log(err);
+          alert("ERROR!!");
+          this.$router.go(0);
         });
     },
     async getLikePoint(plan_id, idx) {
