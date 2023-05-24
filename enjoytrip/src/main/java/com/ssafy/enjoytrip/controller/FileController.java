@@ -8,7 +8,7 @@ import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.boot.autoconfigure.cassandra.CassandraProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +67,7 @@ public class FileController {
     }
 
 //    @GetMapping("/File/{username}")
-//    public ResponseEntity<?> getProfileImg (@PathVariable String username) throws FileNotFoundException {
+//    public ResponseEntity<?> getProfileImg (@PathVariable String username) throws IOException {
 //        String memberImg = fileService.getProfileImg(username);
 //        InputStream inputStream = new FileInputStream(memberImg); //accountDto.profileImgPath());
 //        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
