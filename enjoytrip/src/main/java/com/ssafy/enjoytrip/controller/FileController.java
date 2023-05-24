@@ -6,6 +6,7 @@ import com.ssafy.enjoytrip.dto.FilesDto;
 import com.ssafy.enjoytrip.model.Member;
 import com.ssafy.enjoytrip.service.FileService;
 import jakarta.mail.Multipart;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -30,13 +31,13 @@ import java.util.UUID;
 @RequestMapping("/file")
 public class FileController {
 
-//    @Value("${part4.upload.path}") // application.properties의 변수
-    private String uploadPath = "C:/Users/SSAFY/Desktop/pairpjtfinal/enjoy/enjoytrip/enjoytrip/src/main/resources/profileimg";
-
+//    private String uploadPath = "C:/profileimg";
+    private String uploadPath = System.getProperty("user.dir")+"/src/main/resources/profileimg/";
     private final FileService fileService;
 
-    @PatchMapping("/uploadFile/{user_id}")
+    @PostMapping("/uploadFile/{user_id}")
     public ResponseEntity<?> uploadFile(@RequestPart MultipartFile uploadFile, @PathVariable Long user_id){
+
 
         System.out.println(uploadFile);
         // 이미지 파일만 업로드 가능
@@ -54,7 +55,7 @@ public class FileController {
 
         //저장할 파일 이름
         String saveName = "profileImg"+'_' + user_id + extensionName;
-        Path savePath = Paths.get(uploadPath + File.separator + File.separator + saveName);
+        Path savePath = Paths.get(uploadPath  + saveName);
 
         try {
             uploadFile.transferTo(savePath);// 실제 이미지 저장
@@ -68,11 +69,14 @@ public class FileController {
     }
 
     @GetMapping("/getProfileImg/{username}")
-    public ResponseEntity<?> getProfileImg (@PathVariable String username) throws IOException {
-        String memberImg = fileService.getProfileImg(username);
-        InputStream inputStream = new FileInputStream(memberImg); //accountDto.profileImgPath());
-        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
-        inputStream.close();
+    public ResponseEntity<?> getProfileImg (@PathVariable String username, HttpServletRequest request) throws IOException {
+        String path=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
+//        System.out.println("515454654"+path);
+        String memberImg = path+fileService.getProfileImg(username);
+//        InputStream inputStream = new FileInputStream(memberImg); //accountDto.profileImgPath());
+//        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
+//        inputStream.close();
+
 //        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
         return new ResponseEntity<>(memberImg, HttpStatus.OK);
 
