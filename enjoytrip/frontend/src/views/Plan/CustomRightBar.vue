@@ -182,8 +182,10 @@ export default {
           planTitle: this.$store.state.planTitle,
           user_id: this.$store.state.userInfo.user_id,
           plan: this.$store.state.plan,
-        });
-        this.$router.push("/plan/" + this.userInfo.username);
+        }).then(()=>{
+          alert("플랜이 등록되었습니다.")
+          this.$router.push("/plan/" + this.userInfo.username);
+      });
       } else {
         http.post(
           "/attraction/myplanUpdateList/" + this.$route.params.plan_id,
@@ -192,9 +194,9 @@ export default {
             plan: this.$store.state.plan,
           }
         ).then(()=>{
-          alert("플랜이 등록되었습니다.");
+          alert("플랜이 수정되었습니다.");
         this.$router.push("/plan/" + this.userInfo.username);
-      });
+      }).catch((err)=> alert("ERROR! : " + err));
       }
     },
   },
