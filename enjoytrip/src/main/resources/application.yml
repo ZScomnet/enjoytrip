@@ -1,5 +1,10 @@
 spring:
-
+  servlet:
+    multipart:
+      enabled: true
+      location: C:/SSAFY/enjoytripImg
+      max-request-size: 30MB
+      max-file-size: 10MB
   mail:
     host: smtp.gmail.com # 1
     port: 587 # 2
@@ -40,6 +45,8 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
-
+part4:
+  upload:
+    path: C:/Users/gkstj/Desktop/FINALPairPjt/enjoytrip/enjoytrip/src/main/resources/profileimg
 server:
   port: 8080
