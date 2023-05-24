@@ -303,7 +303,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     public List<MyPlanListsDto> getAllPlanLists(){
 //        String jpql = "select p.plan_id ,p.plan_name from Plan p join  Member m on p.user_id = m.user_id";
 
-        String jpql ="select p.plan_id, plan_name from Plan p left join  Member m on p.user_id = m.user_id left join  likes l on p.plan_id = l.plan_id group by plan_id order by count(*) desc";
+        String jpql ="select p.plan_id, plan_name, thumbnail from Plan p left join  Member m on p.user_id = m.user_id left join  likes l on p.plan_id = l.plan_id group by plan_id order by count(*) desc";
 
         List<MyPlanListsDto> allPlanListsDto =  (List<MyPlanListsDto>)em.createNativeQuery(jpql)
                 .getResultList();

@@ -52,7 +52,7 @@
         <div v-for="(plan, idx) in myPlan" :key="idx" class="col mb-5">
           <div class="card h-100">
             <!-- Product image-->
-            <img v-if="plan[2] !== null" class="card-img-top" :src="plan[2]" />
+            <img v-if="plan[2] !== ''" class="card-img-top" :src="plan[2]" />
             <img
               v-else
               class="card-img-top"

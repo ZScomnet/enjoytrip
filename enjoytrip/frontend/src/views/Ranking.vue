@@ -1,5 +1,5 @@
 <template>
-  <div class="total-rank-form">
+  <div v-if="loading" class="total-rank-form">
     <div class="notice">
       <div class="page-title">
         <div class="rank-form">
@@ -15,7 +15,13 @@
         <div class="rank-form">
           <div class="first plan">
             <img
-              :src="require('@/assets/images/image1.jpg')"
+              v-if="plans[0][2] !== ''"
+              :src="plans[0][2]"
+              alt=""
+              class="image" />
+              <img
+              v-else
+              :src="require('@/assets/images/empty.jpg')"
               alt=""
               class="image" />
             <div class="text"></div>
@@ -24,12 +30,12 @@
             </div>
             <div class="main-text">
               <p>
-                username : username <br />
-                Plan-title : {{ this.plans[0][1] }}
+                username : {{ plansUsername[0] }} <br />
+                Plan-title : {{ plans[0][1] }}
               </p>
             </div>
             <div class="like">
-              <p>Like : 좋아요 수</p>
+              <p>Like : {{ plansGoods[0] }}</p>
             </div>
             <div class="plan-btn">
               <a @click="linkPlan(plan[0])">확인하기</a>
@@ -37,7 +43,7 @@
           </div>
           <div class="second plan">
             <img
-              :src="require('@/assets/images/image2.png')"
+              :src="plans[1][2]"
               alt=""
               class="image" />
             <div class="text"></div>
@@ -46,12 +52,12 @@
             </div>
             <div class="main-text">
               <p>
-                username : username <br />
-                Plan-title : {{ this.plans[1][1] }}
+                username : {{ plansUsername[1] }} <br />
+                Plan-title : {{ plans[1][1] }}
               </p>
             </div>
             <div class="like">
-              <p>Like : 좋아요 수</p>
+              <p>Like : {{ plansGoods[1] }}</p>
             </div>
             <div class="plan-btn">
               <a @click="linkPlan(plan[1])">확인하기</a>
@@ -59,7 +65,7 @@
           </div>
           <div class="third plan">
             <img
-              :src="require('@/assets/images/image3.jpg')"
+              :src="plans[2][2]"
               alt=""
               class="image" />
             <div class="text"></div>
@@ -68,34 +74,46 @@
             </div>
             <div class="main-text">
               <p>
-                username : username <br />
-                Plan-title : {{ this.plans[2][1] }}
+                username : {{ plansUsername[2] }} <br />
+                Plan-title : {{ plans[2][1] }}
               </p>
             </div>
             <div class="like">
-              <p>Like : 좋아요 수</p>
+              <p>Like : {{ plansGoods[2] }}</p>
             </div>
             <div class="plan-btn">
               <a @click="linkPlan(plan[2])">확인하기</a>
             </div>
           </div>
-          <div class="normal plan">
-            <img
-              :src="require('@/assets/images/empty.jpg')"
+          <div v-for="(plan, idx) in plans" :key=idx >
+            <div v-if="idx > 2" class="normal plan">
+              <img
+              v-if="plans[idx][2] !== ''"
+              :src="plans[idx][2]"
               alt=""
               class="image" />
-            <div class="text"></div>
-            <div class="logo">
-              <img :src="require('@/assets/images/logo.jpg')" alt="" />
-            </div>
-            <div class="main-text">
-              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-            </div>
-            <div class="like">
-              <p>30.11.2022</p>
-            </div>
-            <div class="plan-btn">
-              <a href="#">Learn More</a>
+              <img
+              v-else
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              class="image" 
+              style="width: 100%;"/>
+              <div class="text"></div>
+              <div class="logo">
+                <img :src="require('@/assets/images/profile.png')" alt="" />
+              </div>
+              <div class="main-text">
+                <p>
+                username : {{ plansUsername[idx] }} <br />
+                Plan-title : {{ plans[idx][1] }}
+              </p>
+              </div>
+              <div class="like">
+                <p>Like : {{ plansGoods[idx] }}</p>
+              </div>
+              <div class="plan-btn">
+                <a href="#">Learn More</a>
+              </div>
             </div>
           </div>
         </div>
@@ -113,18 +131,45 @@ export default {
     return {
       status: 0, // 0이면 좋아요 순, 1이면 플랜 순
       plans: [],
+      plansUsername: [],
+      plansGoods: [],
+      loading: false,
     };
   },
   created() {
     http.get("/attraction/allPlanLists").then((res) => {
       this.plans = res.data;
-      console.log(this.plans);
+      for(let i=0;i<this.plans.length;i++){
+        console.log(this.plans[i]);
+        this.plansUsername.push("");
+        this.plansGoods.push(0);
+      }
+        this.loading = true;
+        console.log(this.plans);
+      for(let i=0;i<this.plans.length;i++){
+        this.getPlanUsername(this.plans[i][0],i);
+        this.getPlanGood(this.plans[i][0],i);
+      }
     });
   },
   methods: {
     // linkPlan(planInfo) {
     //   // this.$router.push("/plan/"+planInfo+"/"+plan)
     // },
+    getPlanUsername(plan_id,idx){
+      http.get("/attraction/plan/"+plan_id+"/planRank")
+      .then((res)=>{
+        this.plansUsername.splice(idx,1,res.data);
+        console.log(res.data);
+      })
+    },
+    getPlanGood(plan_id,idx){
+      http.get("/attraction/plan/"+plan_id+"/likeCnt")
+      .then((res)=>{
+        this.plansGoods.splice(idx,1,res.data);
+        console.log(res.data);
+      })
+    }
   },
   computed: {
     userInfo() {
