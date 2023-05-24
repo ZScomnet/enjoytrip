@@ -70,7 +70,7 @@ public class AttractionController {
     }
 
     @GetMapping("/plan/{plan_id}/planRank")
-    public Long planRank(@PathVariable int plan_id){
+    public String planRank(@PathVariable int plan_id){
          return  attractionService.planRank(plan_id);
     }
 

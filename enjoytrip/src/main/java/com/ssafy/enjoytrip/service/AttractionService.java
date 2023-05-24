@@ -28,7 +28,7 @@ public interface AttractionService {
 
     public Long checkLike(Long user_id, int plan_id);
 
-    public Long planRank(int plan_id);
+    public String planRank(int plan_id);
 
 
 
