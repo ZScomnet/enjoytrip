@@ -7,7 +7,7 @@
           :src="require('@/assets/images/profile.png')"
           class="profile-image" />
         <div class="profile-detail">
-          <h1 class="display-4 fw-bolder">{{ userInfo.username }}</h1>
+          <h1 class="display-4 fw-bolder">{{ this.$route.params.username }}</h1>
           <h5>Plan : {{ myPlan.length }}</h5>
           <button
             v-if="userInfo.username == this.$route.params.username"
@@ -63,8 +63,8 @@
                 <!-- Product name-->
                 <h5 cl ass="fw-bolder">{{ plan[1] }}</h5>
                 <!-- Product price-->
-                {{ getLikePoint(plan[0]) }}
-                <span v-if="myGoods[idx]">Like : {{ myGoods[idx] }}</span>
+
+                Like : {{ myGoods[idx] }}
               </div>
             </div>
             <!-- Product actions-->
@@ -76,7 +76,9 @@
                   @click="viewPlan(plan[0])">
                   View Plan
                 </button>
-                <h3 @click="like(plan[0])">♥</h3>
+                <h3 @click="like(plan[0])" style="color: red; cursor: pointer">
+                  {{ isLikes[idx] }}
+                </h3>
               </div>
             </div>
           </div>
@@ -93,6 +95,7 @@ export default {
     return {
       myPlan: [],
       myGoods: [],
+      isLikes: [],
       modalOpen: false,
       pictureURI:
         "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
@@ -104,6 +107,12 @@ export default {
       .get("/attraction/myplanLists/" + this.$route.params.username)
       .then((res) => {
         this.myPlan = res.data;
+        for (let i = 0; i < this.myPlan.length; i++) {
+          this.getLikePoint(this.myPlan[i][0]);
+          this.isLikes.push("");
+        }
+        for (let i = 0; i < this.myPlan.length; i++)
+          this.isLike(this.myPlan[i][0], i);
       });
   },
   computed: {
@@ -122,8 +131,10 @@ export default {
       // 프로필 사진 등록
       const frm = new FormData();
       var photoFile = document.getElementById("photo");
+      console.log(photoFile.files);
       frm.append("uploadFile", photoFile.files[0]);
-      return http
+
+      http
         .post("/file/uploadFile/" + this.userInfo.user_id, frm, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -136,11 +147,14 @@ export default {
           console.log(err);
         });
     },
-    getLikePoint(plan_id) {
+    async getLikePoint(plan_id) {
       // 좋아요 수 요청
-      http.get("/attraction/plan/" + plan_id + "/likeCnt").then((res) => {
+      try {
+        let res = await http.get("/attraction/plan/" + plan_id + "/likeCnt");
         this.myGoods.push(res.data);
-      });
+      } catch (err) {
+        this.myGoods.push(0);
+      }
     },
     previewImage(event) {
       const input = event.target;
@@ -184,6 +198,13 @@ export default {
     },
     closeModal() {
       this.modalOpen = false;
+    },
+    async isLike(plan_id, idx) {
+      let isLike = await http.get(
+        "/attraction/plan/" + plan_id + "/checkLike/" + this.userInfo.user_id
+      ); // 0이면 안누른 상태, 1이면 누른 상태
+      if (isLike.data === 0) this.isLikes.splice(idx, 1, "♡");
+      else this.isLikes.splice(idx, 1, "♥");
     },
     like(plan_id) {
       // 좋아요 여부를 판단해야함. 이 때 필요한 것은 좋아요를 했는지 안했는 지 여부
