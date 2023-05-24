@@ -9,4 +9,5 @@ import lombok.Setter;
 public class MyPlanListsDto {
     Long plan_id;
     String plan_name;
+    String thumbnail;
 }

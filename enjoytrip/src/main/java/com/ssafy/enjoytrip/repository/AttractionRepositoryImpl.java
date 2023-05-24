@@ -279,7 +279,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     }
 
     public List<MyPlanListsDto> myplanLists(String username){
-        String jpql = "select p.plan_id ,p.plan_name from Plan p join  Member m on p.user_id = m.user_id where m.username =:username";
+        String jpql = "select p.plan_id ,p.plan_name p.thumbnail from Plan p join  Member m on p.user_id = m.user_id where m.username =:username";
         List<MyPlanListsDto> myPlanListsDto =  (List<MyPlanListsDto>)em.createNativeQuery(jpql)
                 .setParameter("username", username)
                 .getResultList();
