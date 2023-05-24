@@ -34,11 +34,14 @@ public class WebMvcConfig implements WebMvcConfigurer{
 //		registry.addInterceptor(interceptor).excludePathPatterns("/**/auth/**");
 	}
 
+
+	private String connectPath = "/profileImg/**";
+	private String resourcePath = "file:///C:/profileimg/";
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/profileimg/**")
-				.addResourceLocations("/resources/");
+		registry.addResourceHandler(connectPath)
+				.addResourceLocations(resourcePath);
 	}
-
 
 }
