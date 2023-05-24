@@ -13,21 +13,6 @@
       <!-- board seach area -->
       <div id="board-search">
         <div class="rank-form">
-          <div class="search-window">
-            <form action="">
-              <div class="search-wrap">
-                <input
-                  id="search"
-                  type="search"
-                  name=""
-                  placeholder="검색어를 입력해주세요."
-                  value="" />
-                <button type="submit" class="btn btn-dark">검색</button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="rank-form">
           <div class="first plan">
             <img
               :src="require('@/assets/images/image1.jpg')"

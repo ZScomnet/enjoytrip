@@ -38,8 +38,9 @@
                 type="file"
                 class="input-field"
                 @change="previewImage"
+                name="photo"
+                id="photo"
                 required />
-
               <button class="btn btn-info" @click="updateUserInfo">Send</button>
             </div>
           </div>
@@ -119,11 +120,11 @@ export default {
     },
     updateUserInfo() {
       // 프로필 사진 등록
-      const uploadFile = new FormData();
-      uploadFile.append("image", this.picture);
-      console.log(this.picture);
+      const frm = new FormData();
+      var photoFile = document.getElementById("photo");
+      frm.append("uploadFile", photoFile.files[0]);
       return http
-        .post("/file/uploadFile/" + this.userInfo.user_id, uploadFile, {
+        .post("/file/uploadFile/" + this.userInfo.user_id, frm, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
