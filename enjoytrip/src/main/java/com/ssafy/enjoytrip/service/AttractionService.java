@@ -50,4 +50,7 @@ public interface AttractionService {
 
     public List<AttractionInfo> LikeAttractionList(int page);
 
+    public String getDescription(Long content_id);
+
+
 }

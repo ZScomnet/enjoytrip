@@ -63,6 +63,7 @@ public interface AttractionRepository {
 
 
 
+    public String getDescription(Long content_id);
 
 
 }

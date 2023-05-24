@@ -321,4 +321,13 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     }
 
 
+    public String getDescription(Long content_id){
+        AttractionDescription attractionDescription = em.find(AttractionDescription.class, content_id);
+        String overView = attractionDescription.getOverview();
+
+        return overView;
+    }
+
+
+
 }

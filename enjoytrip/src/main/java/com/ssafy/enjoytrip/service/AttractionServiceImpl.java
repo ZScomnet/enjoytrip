@@ -92,4 +92,8 @@ public class AttractionServiceImpl implements AttractionService{
         return  attractionRepository.LikeAttractionList(page);
     }
 
+    public String getDescription(Long content_id) {
+        return attractionRepository.getDescription(content_id);
+    }
+
 }
