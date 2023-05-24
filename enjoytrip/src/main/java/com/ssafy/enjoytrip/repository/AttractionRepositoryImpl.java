@@ -78,11 +78,11 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     public Long LikeCnt(int plan_id){
         String jpql = "select count(*) from likes where plan_id=:planId group by plan_id";
         try {
-        Long num = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
-                .getSingleResult();
-        em.clear();
+            Long num = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
+                    .getSingleResult();
+            em.clear();
 
-        return num;
+            return num;
 
         }catch (Exception e){
             e.printStackTrace();
@@ -273,6 +273,7 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 //        System.out.println("sql 처리 됨?");
         em.createQuery(jpql).setParameter("planId",plan_id ).executeUpdate();
 
+
         for (int i=0;i<planDetailDto.getPlan().size();i++) {
             for(int j=0;j<planDetailDto.getPlan().get(i).size();j++) {
                 String jpql2 = "INSERT INTO Plan_Info (plan_id, content_id, plan_day, plan_day_idx)  VALUES(?,?,?,?)";
@@ -282,6 +283,16 @@ public class AttractionRepositoryImpl implements AttractionRepository {
                         .setParameter(3, i+1)
                         .setParameter(4, j+1)
                         .executeUpdate();
+
+                if(i==0&j==0){
+                    jpql = "update Plan pl set thumbnail=(select ai.first_image from attraction_info ai where ai.content_id=?) where plan_id=?";
+                    System.out.println("contentId : "+tour.getId());
+                    em.createNativeQuery(jpql).setParameter(1, tour.getId())
+                            .setParameter(2, plan_id)
+                            .executeUpdate();
+
+                }
+
             }
         }
         em.clear();
