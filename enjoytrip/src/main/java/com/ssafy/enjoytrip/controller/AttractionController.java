@@ -60,8 +60,8 @@ public class AttractionController {
 
     //좋아요 여부 했는지 안했는지 여부에 따라 판단
     //있으면 1 없으면 0
-    @GetMapping("/plan/{plan_id}/checkLike")
-    public Long checkLike(@PathVariable int plan_id, @RequestBody Long user_id){
+    @GetMapping("/plan/{plan_id}/checkLike/{user_id}")
+    public Long checkLike(@PathVariable int plan_id, @PathVariable Long user_id){
         Long num = attractionService.checkLike(user_id,plan_id);
         if(num!=0){
             return 1L;

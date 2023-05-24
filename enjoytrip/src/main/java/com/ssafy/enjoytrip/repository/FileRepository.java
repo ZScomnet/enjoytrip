@@ -2,7 +2,7 @@
 //
 //
 //public interface FileRepository {
-//    public void uploadFile(Board board);
+//    public void uploadFile(String savePath);
 //
 //
 //}
