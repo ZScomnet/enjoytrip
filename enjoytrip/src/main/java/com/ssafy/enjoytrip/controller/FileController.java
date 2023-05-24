@@ -4,6 +4,7 @@ package com.ssafy.enjoytrip.controller;
 import com.ssafy.enjoytrip.dto.FilesDto;
 //import com.ssafy.enjoytrip.service.FilesService;
 import com.ssafy.enjoytrip.model.Member;
+import com.ssafy.enjoytrip.service.FileService;
 import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -32,6 +33,7 @@ public class FileController {
 //    @Value("${part4.upload.path}") // application.properties의 변수
     private String uploadPath = "C:/Users/SSAFY/Desktop/pairpjtfinal/enjoy/enjoytrip/enjoytrip/src/main/resources/profileimg";
 
+    private final FileService fileService;
 
     @PostMapping("/uploadFile/{user_id}")
     public ResponseEntity<?> uploadFile(MultipartFile uploadFile, @PathVariable Long user_id){
@@ -52,12 +54,12 @@ public class FileController {
 
         //저장할 파일 이름
         String saveName = uploadPath + File.separator + File.separator + "profileImg"+'_' + user_id + extensionName;
-
+        log.error(saveName);
         Path savePath = Paths.get(saveName);
 
         try {
             uploadFile.transferTo(savePath);// 실제 이미지 저장
-
+            fileService.uploadFile(saveName,user_id);
             System.out.printf("저장 완료");
         }catch (IOException e){
             e.printStackTrace();
@@ -66,13 +68,13 @@ public class FileController {
 
     }
 
-//    @GetMapping("/File/{username}")
-//    public ResponseEntity<?> getProfileImg (@PathVariable String username) throws IOException {
-//        String memberImg = fileService.getProfileImg(username);
-//        InputStream inputStream = new FileInputStream(memberImg); //accountDto.profileImgPath());
-//        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
-//        inputStream.close();
-//        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
-//    }
+    @GetMapping("/getProfileImg/{username}")
+    public ResponseEntity<?> getProfileImg (@PathVariable String username) throws IOException {
+        String memberImg = fileService.getProfileImg(username);
+        InputStream inputStream = new FileInputStream(memberImg); //accountDto.profileImgPath());
+        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
+        inputStream.close();
+        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+    }
 
 }

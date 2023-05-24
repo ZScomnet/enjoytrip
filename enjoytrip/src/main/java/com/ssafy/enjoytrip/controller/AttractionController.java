@@ -39,15 +39,15 @@ public class AttractionController {
         return attractionService.getTypeAttraction(type);
     }
 
-    @PutMapping("/plan/{plan_id}/like")
-    public void updateLike(@PathVariable int plan_id,@RequestBody Long user_id){
+    @PutMapping("/plan/{plan_id}/like/{user_id}")
+    public void updateLike(@PathVariable int plan_id,@PathVariable Long user_id){
 //        attractionService.like(plan_id);
         System.out.println("userid : "+user_id);
         attractionService.insertlikes(plan_id,user_id);
     }
 
-    @DeleteMapping("/plan/{plan_id}/deleteLike")
-    public void deleteLike(@PathVariable int plan_id,@RequestBody Long user_id){
+    @DeleteMapping("/plan/{plan_id}/deleteLike/{user_id}")
+    public void deleteLike(@PathVariable int plan_id,@PathVariable Long user_id){
 //        attractionService.like(plan_id);
         System.out.println("userid : "+user_id);
         attractionService.deletelikes(plan_id,user_id);
