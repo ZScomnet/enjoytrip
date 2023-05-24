@@ -1,4 +1,7 @@
 spring:
+  web:
+    resources:
+      static-locations: classpath:/profileimg
   servlet:
     multipart:
       enabled: true

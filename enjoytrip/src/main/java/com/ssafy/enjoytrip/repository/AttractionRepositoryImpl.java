@@ -6,6 +6,7 @@ import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,11 +77,17 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 
     public Long LikeCnt(int plan_id){
         String jpql = "select count(*) from likes where plan_id=:planId group by plan_id";
+        try {
         Long num = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
                 .getSingleResult();
         em.clear();
 
         return num;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0L;
+        }
     }
 
     public Long checkLike(Long user_id, int plan_id){
@@ -144,9 +151,13 @@ public class AttractionRepositoryImpl implements AttractionRepository {
                         .setParameter(3, i+1)
                         .setParameter(4, j+1)
                         .executeUpdate();
+                System.out.println("Theumbnail 처리 됨?"+i+" "+j);
                 if(i==0&j==0){
-                    jpql = "update Plan pl set thumbnail=(select first_image from attraction_info where content_id=?) where plan_id=LAST_INSERT_ID()";
+                    jpql = "update Plan pl set thumbnail=(select first_image from attraction_info where content_id=?) where plan_id=?";
+                    System.out.println("contentId : "+tour.getId());
+                    System.out.println(jpql.toString());
                     em.createNativeQuery(jpql).setParameter(1, tour.getId())
+                            .setParameter(2, plan_id)
                             .executeUpdate();
 
                 }
