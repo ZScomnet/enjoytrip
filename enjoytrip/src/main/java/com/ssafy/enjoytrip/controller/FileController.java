@@ -33,8 +33,6 @@ public class FileController {
 //    @Value("${part4.upload.path}") // application.properties의 변수
     private String uploadPath = "C:/Users/SSAFY/Desktop/pairpjtfinal/enjoy/enjoytrip/enjoytrip/src/main/resources/profileimg";
 
-
-
     private final FileService fileService;
 
     @PatchMapping("/uploadFile/{user_id}")
