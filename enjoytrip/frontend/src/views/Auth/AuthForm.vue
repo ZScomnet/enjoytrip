@@ -177,6 +177,9 @@ export default {
     },
     findPassword() {
       // 비밀번호 찾기 이메일 전송
+      http.patch("/mail/send/" + this.findEmail).then((res) => {
+        console.log(res);
+      });
     },
   },
 };

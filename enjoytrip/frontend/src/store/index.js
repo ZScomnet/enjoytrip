@@ -11,11 +11,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   plugins: [createVuexPersistedState()],
+  attractions: [],
   state: {
     // 저장할 정보
     userInfo: {}, // 유저의 정보
     token: null, // jwt
-    attractions: {},
     planTitle: "",
     plan: [],
     selectedDay: 0,

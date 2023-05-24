@@ -22,7 +22,7 @@
         <div class="container mt-5">
           <!-- Card -->
           <div class="card_scroll">
-            <div v-for="result in resultData" :key="result.id" class="card">
+            <div v-for="(result, idx) in resultData" :key="idx" class="card">
               <div class="row">
                 <div class="col-md-4" @click="moveMap(result)">
                   <img
@@ -35,15 +35,28 @@
                     class="img-field" />
                 </div>
                 <div class="col-md-8">
-                  <h5 style="text-align: center">{{ result.title }}</h5>
-                  <b-button @click="insertPlan(result)"> 플랜 추가 </b-button>
-                  <b-button @click="introModal"> 정보 보기 </b-button>
-                  <div v-if="modalOpen" class="modal">
+                  <h5 style="text-align: center; margin-top: 15px">
+                    {{ result.title }}
+                  </h5>
+                  <div style="display: flex; justify-content: center">
+                    <b-button @click="insertPlan(result)" style="width: 40%">
+                      플랜 추가
+                    </b-button>
+                    <b-button
+                      @click="openModal(idx)"
+                      style="width: 40%; margin-left: 10px">
+                      정보 보기
+                    </b-button>
+                  </div>
+                  <div v-if="modalOpen[idx]" class="modal">
                     <div
                       class="animate__animated animate__fadeInDown"
                       id="modal-content">
-                      <h1 class="close" @click="closeModal">&times;</h1>
-                      TEXT
+                      <h1 class="close" @click="closeModal(idx)">&times;</h1>
+                      <h3>{{ result.title }}</h3>
+                      <p>
+                        {{ result.title }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -68,10 +81,8 @@ export default {
       isOpen: true,
       inputValue: "",
       resultData: [],
-      markerPosition: [],
-      marker: [],
-      infoWindow: [],
-      modalOpen: false,
+      marker: null,
+      modalOpen: [],
       pos: 400,
     };
   },
@@ -82,68 +93,35 @@ export default {
       this.pos = this.isOpen ? 400 : 0;
     },
     moveMap(result) {
+      if (this.marker !== null) this.marker.setMap(null);
       const mapOption = new window.kakao.maps.LatLng(
         result["latitude"],
         result["longitude"]
       );
-
+      var imageSrc =
+          "https://cdn.icon-icons.com/icons2/567/PNG/512/marker_icon-icons.com_54388.png", // 마커이미지의 주소입니다
+        imageSize = new window.kakao.maps.Size(34, 40), // 마커이미지의 크기입니다
+        imageOption = { offset: new window.kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+      var markerImage = new window.kakao.maps.MarkerImage(
+        imageSrc,
+        imageSize,
+        imageOption
+      );
       this.map.setCenter(mapOption);
+      this.marker = new window.kakao.maps.Marker({
+        position: mapOption,
+        image: markerImage,
+      });
+      this.marker.setMap(this.map); // 마커를 지도에 표시
     },
     searchTour() {
+      this.modalOpen = [];
       this.resultData = this.$store.attractions.filter((el) => {
         return el.addr1.includes(this.inputValue);
       });
-      for (let i = 0; i < this.marker.length; i++) this.marker[i].setMap(null);
-      if (this.resultData.length == 0) {
-        this.markerPosition = null;
-        this.marker = null;
-        this.infoWindow = null;
-        return;
-      } else {
-        this.markerPosition = [];
-        this.marker = [];
-        this.infoWindow = [];
-      }
-      console.log(this.resultData);
-      const mapOption = new window.kakao.maps.LatLng(
-        this.resultData[0]["latitude"],
-        this.resultData[0]["longitude"]
-      );
-
-      this.map.setCenter(mapOption);
-
-      for (let i = 0; i < this.resultData.length; i++) {
-        // 검색 결과들 마커를 생성
-        this.markerPosition.push(
-          new window.kakao.maps.LatLng(
-            this.resultData[i]["latitude"],
-            this.resultData[i]["longitude"]
-          )
-        );
-        this.marker.push(
-          new window.kakao.maps.Marker({
-            position: this.markerPosition[i],
-          })
-        );
-        this.marker[i].setMap(this.map); // 마커를 지도에 표시
-        var iwContent =
-          '<div style="padding: 7px;">' + "\t" + this.plan[i].title + "</div>";
-
-        this.infoWindow.push(iwContent);
-        var infowindow = new window.kakao.maps.InfoWindow({
-          content: this.infoWindow[i],
-        });
-        // 마커에 마우스오버 이벤트를 등록합니다
-        window.kakao.maps.event.addListener(this.marker[i], "mouseover", () => {
-          // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
-          infowindow.open(this.map, this.marker[i]);
-        });
-        // 마커에 마우스아웃 이벤트를 등록합니다
-        window.kakao.maps.event.addListener(this.marker[i], "mouseout", () => {
-          // 마커에 마우스아웃 이벤트가 발생하면 인포윈도우를 제거합니다
-          infowindow.close();
-        });
-      }
+      for (let i = 0; i < this.resultData.length; i++)
+        this.modalOpen.push(false);
     },
     insertPlan(plan) {
       // 관광지 추가
@@ -152,7 +130,12 @@ export default {
         tourInfo: plan,
       });
     },
-    introModal() {},
+    openModal(idx) {
+      this.modalOpen.splice(idx, 1, true);
+    },
+    closeModal(idx) {
+      this.modalOpen.splice(idx, 1, false);
+    },
   },
   props: ["map"],
   computed: {
@@ -221,11 +204,43 @@ h1 {
   border-radius: 10px;
 }
 .card_scroll::-webkit-scrollbar-track {
-  background: #00000057;
   border-radius: 10px;
 }
 .card_scroll {
   overflow-y: scroll;
   max-height: 75vh;
+}
+
+.modal {
+  display: block;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+#modal-content {
+  background-color: #fefefe;
+  margin-top: 10%;
+  margin-left: 30%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+  > .close {
+    position: absolute;
+    top: -5px;
+    color: #aaa;
+    right: 0;
+    font-size: 50px;
+    font-weight: bold;
+  }
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
