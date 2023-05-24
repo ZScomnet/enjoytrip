@@ -17,13 +17,13 @@ spring:
     username: ssafy
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
-    data: classpath:data.sql
+#    data: classpath:data.sql
 #    data: classpath:data.sql
   jpa:
     hibernate:
-#      ddl-auto: none
+      ddl-auto: none
 #      ddl-auto: create
-      ddl-auto: create
+#      ddl-auto: create
 
     properties:
       hibernate:
@@ -33,7 +33,7 @@ spring:
     defer-datasource-initialization: true
   sql:
     init:
-      mode: always
+#      mode: always
 #      mode: always
       encoding: UTF-8
 

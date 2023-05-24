@@ -31,7 +31,9 @@ public interface AttractionRepository {
 
     public void deletelikes(int plan_id, Long user_id);
 
-    public Long LikeCnt(@PathVariable int plan_id);
+    public Long LikeCnt(int plan_id);
+
+    public Long checkLike(Long user_id, int plan_id);
 
 
 
@@ -51,6 +53,8 @@ public interface AttractionRepository {
     public List<MyPlanListsDto> getAllPlanLists();
 
     public List<MyPlanListsDto> getNewAllPlanLists();
+
+
 
     public List<AttractionInfo> LikeAttractionList(int page);
 
