@@ -35,6 +35,7 @@ public interface AttractionRepository {
 
     public Long checkLike(Long user_id, int plan_id);
 
+    public String planRank(int plan_id);
 
 
 //    public Plan insertPlan(String plan_name, Long user_id);

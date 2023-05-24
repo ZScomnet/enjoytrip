@@ -94,6 +94,13 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         return num;
     }
 
+    public String planRank(int plan_id){
+        String jpql = "select m.username from member m join plan p on m.user_id=p.user_id where p.plan_id =:planId ";
+        String userName = (String)em.createNativeQuery(jpql).setParameter("planId", plan_id)
+                .getSingleResult();
+        em.clear();
+        return userName;
+    }
 
 
 
