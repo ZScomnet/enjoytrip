@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
@@ -32,5 +33,12 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		//해당 요청을 제외한 나머지 요청들 인터셉트
 //		registry.addInterceptor(interceptor).excludePathPatterns("/**/auth/**");
 	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/profileimg/**")
+				.addResourceLocations("/resources/");
+	}
+
 
 }

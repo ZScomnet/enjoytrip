@@ -33,10 +33,12 @@ public class FileController {
 //    @Value("${part4.upload.path}") // application.properties의 변수
     private String uploadPath = "C:/Users/SSAFY/Desktop/pairpjtfinal/enjoy/enjoytrip/enjoytrip/src/main/resources/profileimg";
 
+
+
     private final FileService fileService;
 
-    @PostMapping("/uploadFile/{user_id}")
-    public ResponseEntity<?> uploadFile(MultipartFile uploadFile, @PathVariable Long user_id){
+    @PatchMapping("/uploadFile/{user_id}")
+    public ResponseEntity<?> uploadFile(@RequestPart MultipartFile uploadFile, @PathVariable Long user_id){
 
         System.out.println(uploadFile);
         // 이미지 파일만 업로드 가능
@@ -53,9 +55,8 @@ public class FileController {
         String uuid = UUID.randomUUID().toString();
 
         //저장할 파일 이름
-        String saveName = uploadPath + File.separator + File.separator + "profileImg"+'_' + user_id + extensionName;
-        log.error(saveName);
-        Path savePath = Paths.get(saveName);
+        String saveName = "profileImg"+'_' + user_id + extensionName;
+        Path savePath = Paths.get(uploadPath + File.separator + File.separator + saveName);
 
         try {
             uploadFile.transferTo(savePath);// 실제 이미지 저장
