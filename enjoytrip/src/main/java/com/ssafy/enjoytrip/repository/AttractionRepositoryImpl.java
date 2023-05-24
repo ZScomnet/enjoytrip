@@ -94,6 +94,13 @@ public class AttractionRepositoryImpl implements AttractionRepository {
         return num;
     }
 
+    public Long planRank(int plan_id){
+        String jpql = "select user_id from Plan where plan_id=:planId ";
+        Long userId = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
+                .getSingleResult();
+        em.clear();
+        return userId;
+    }
 
 
 

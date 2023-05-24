@@ -50,6 +50,9 @@ public class AttractionServiceImpl implements AttractionService{
 
     public Long checkLike(Long user_id, int plan_id){return  attractionRepository.checkLike(user_id,plan_id);}
 
+    public Long planRank(int plan_id){return attractionRepository.planRank(plan_id);}
+
+
 
 
 //    public Plan insertPlan(String plan_name, Long user_id){

@@ -69,6 +69,11 @@ public class AttractionController {
 
     }
 
+    @GetMapping("/plan/{plan_id}/planRank")
+    public Long planRank(@PathVariable int plan_id){
+         return  attractionService.planRank(plan_id);
+    }
+
 //    @PutMapping("/plan/insertPlan")
 //    public void insertPlan(@RequestBody AttractionDto attractionDto){
 //        Plan plan =attractionService.insertPlan(attractionDto.getPlan_name(),attractionDto.getUser_id());

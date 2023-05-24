@@ -19,7 +19,6 @@ import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
-@RestControllerd
 @RequiredArgsConstructor
 @RequestMapping("/file")
 public class FileController {
