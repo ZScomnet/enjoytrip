@@ -24,12 +24,12 @@ public class FileRepositoryImpl implements FileRepository{
     }
 
     public String getProfileImg(String username){
-        String jpql = "select m from Member m where m.username =?";
+        String jpql = "select m.profileimg from Member m where m.username =:userName";
 
-        Member member= em.createQuery(jpql, Member.class).setParameter(1,username)
+        String profileImg= (String)em.createNativeQuery(jpql).setParameter("userName",username)
                 .getSingleResult();
         em.clear();
-        String profileImg = member.getProfileimg();
+//        String profileImg = member.getProfileimg();
         return profileImg;
     }
 

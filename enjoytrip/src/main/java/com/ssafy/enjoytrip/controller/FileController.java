@@ -74,7 +74,9 @@ public class FileController {
         InputStream inputStream = new FileInputStream(memberImg); //accountDto.profileImgPath());
         byte[] imageByteArray = IOUtils.toByteArray(inputStream);
         inputStream.close();
-        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+//        return new ResponseEntity<>(imageByteArray, HttpStatus.OK);
+        return new ResponseEntity<>(memberImg, HttpStatus.OK);
+
     }
 
 }
