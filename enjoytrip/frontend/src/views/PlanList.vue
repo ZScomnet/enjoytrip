@@ -22,19 +22,27 @@
             프로필 수정
           </button>
           <div v-if="modalOpen" class="modal">
-          <div class="animate__animated animate__fadeInDown" id="modal-content">
-            <h1 class="close" @click="closeModal">&times;</h1>
-            <h3>프로필 사진 등록</h3>
-            <img :src="pictureURI" :style="{ maxWidth: '500px', maxHeight: '500px', margin: 'auto'}"><br>
-            <input
-              type="file"
-              class="input-field"
-              @change="previewImage"
-              required />
+            <div
+              class="animate__animated animate__fadeInDown"
+              id="modal-content">
+              <h1 class="close" @click="closeModal">&times;</h1>
+              <h3>프로필 사진 등록</h3>
+              <img
+                :src="pictureURI"
+                :style="{
+                  maxWidth: '500px',
+                  maxHeight: '500px',
+                  margin: 'auto',
+                }" /><br />
+              <input
+                type="file"
+                class="input-field"
+                @change="previewImage"
+                required />
 
-            <button class="btn btn-info" @click="updateUserInfo">Send</button>
+              <button class="btn btn-info" @click="updateUserInfo">Send</button>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </header>
@@ -82,7 +90,8 @@ export default {
     return {
       myPlan: [],
       modalOpen: false,
-      pictureURI: "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
+      pictureURI:
+        "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
     };
   },
   created() {
@@ -107,11 +116,11 @@ export default {
     updateUserInfo() {
       // 프로필 사진 등록
     },
-    getLikePoint(plan_id){
+    getLikePoint(plan_id) {
       // 좋아요 수 요청
       console.log(plan_id);
     },
-    previewImage(event){
+    previewImage(event) {
       const input = event.target;
       const file = input.files[0];
       const reader = new FileReader();
@@ -121,8 +130,8 @@ export default {
         img.src = reader.result;
 
         img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           let width = img.width;
@@ -144,10 +153,10 @@ export default {
           canvas.height = height;
           ctx.drawImage(img, 0, 0, width, height);
           console.log(this.pictureURI);
-          this.pictureURI = canvas.toDataURL('image/jpeg');
+          this.pictureURI = canvas.toDataURL("image/jpeg");
           console.log(this.pictureURI);
-        }
-      }
+        };
+      };
       reader.readAsDataURL(file);
     },
     openModal() {
@@ -156,14 +165,13 @@ export default {
     closeModal() {
       this.modalOpen = false;
     },
-    like(){
+    like() {
       // 좋아요 여부를 판단해야함. 이 때 필요한 것은 좋아요를 했는지 안했는 지 여부
       // like를 합쳐야함 로직은
       // 1. like를 했는지 http:요청 (plan_id, user_id 2개 보냄)select로 판단
       // 2. select로 결과 존재 시 해당 like 삭제, 결과 없을 시 like 추가
       // 3. alert로 변화
-
-    }
+    },
   },
 };
 </script>
@@ -183,7 +191,7 @@ export default {
     left: 0;
   }
 }
-button{
+button {
   margin: 10px;
 }
 .modal {

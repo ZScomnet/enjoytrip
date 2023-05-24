@@ -14,11 +14,12 @@
       <div id="board-search">
         <div class="container">
           <div class="search-window">
-            <form action="">
+            <form @submit.prevent="search">
               <div class="search-wrap">
                 <label for="search" class="blind">공지사항 내용 검색</label>
                 <input
                   id="search"
+                  v-model="searchValue"
                   type="search"
                   name=""
                   placeholder="검색어를 입력해주세요."
@@ -54,30 +55,38 @@
                   <tr>
                     <th scope="col" class="th-num">번호</th>
                     <th scope="col" class="th-title">제목</th>
+                    <th scope="col" class="th-num">작성자</th>
                     <th scope="col" class="th-date">등록일</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
-                    v-for="board in boardList"
-                    :key="board.id"
+                    v-for="(board, idx) in boardList"
+                    :key="idx"
                     @click="pushDetailPage(board.id)">
-                    <td>{{ board.id }}</td>
-                    <th>
-                      <a href="#"> {{ board.title }}</a>
+                    <td v-if="isRange(idx)">{{ board.id }}</td>
+                    <th v-if="isRange(idx)">
+                      {{ board.title }}
                     </th>
-                    <td>{{ board.created }}</td>
+                    <td v-if="isRange(idx)">{{ board.author }}</td>
+                    <td v-if="isRange(idx)">
+                      {{ board.created.slice(0, 10) }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
               <div class="pagination">
                 <ul>
                   <li v-for="page in pageCount" :key="page">
-                    <button
+                    <h4
                       @click="changePage(page)"
-                      :class="{ active: currentPage === page }">
+                      :class="{ active: currentPage === page }"
+                      :style="{
+                        color: currentPage === page ? '#56caff' : '#333333',
+                      }"
+                      style="cursor: pointer">
                       {{ page }}
-                    </button>
+                    </h4>
                   </li>
                 </ul>
               </div>
@@ -111,9 +120,11 @@ export default {
     return {
       boardGroup: [],
       boardList: [],
+      allBoardList: [],
+      searchValue: "",
       loading: false,
       currentPage: 1, // 현재 페이지
-      boardPerPage: 2, // 한 페이지당 보여질 게시글
+      boardPerPage: 10, // 한 페이지당 보여질 게시글
     };
   },
   created() {
@@ -126,10 +137,12 @@ export default {
       http
         .get("/board/getCategoryBoard/" + this.$route.params.idx)
         .then((res) => {
+          this.allBoardList = res.data;
           this.boardList = res.data;
         });
     } else {
       http.get("/board/getAllBoardList").then((res) => {
+        this.allBoardList = res.data;
         this.boardList = res.data;
       });
     }
@@ -143,6 +156,17 @@ export default {
     },
     changePage(page) {
       this.currentPage = page;
+    },
+    isRange(idx) {
+      return (
+        (this.currentPage - 1) * this.boardPerPage <= idx &&
+        idx < (this.currentPage - 1) * this.boardPerPage + this.boardPerPage
+      );
+    },
+    search() {
+      this.boardList = this.allBoardList.filter((board) => {
+        return board.title.includes(this.searchValue);
+      });
     },
   },
   computed: {
@@ -161,6 +185,14 @@ export default {
 <style lang="scss" scoped>
 .total-container {
   justify-content: space-between;
+}
+ul {
+  list-style: none;
+  margin: 10px auto;
+}
+li {
+  float: left;
+  margin: 10px;
 }
 .board-types {
   > a:link {

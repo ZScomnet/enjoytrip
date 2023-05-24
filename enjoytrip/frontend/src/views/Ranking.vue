@@ -3,8 +3,10 @@
     <div class="notice">
       <div class="page-title">
         <div class="rank-form">
-          <h1 align="center"> 랭킹 </h1>
-          <h5 align="center"><span>좋아요 순</span> <span>플랜 선택 순</span></h5>
+          <h1 align="center">랭킹</h1>
+          <h5 align="center">
+            <span>좋아요 순</span> <span>플랜 선택 순</span>
+          </h5>
         </div>
       </div>
 
@@ -27,15 +29,18 @@
         </div>
         <div class="rank-form">
           <div class="first plan">
-            <img :src="require('@/assets/images/image1.jpg')" alt="" class="image">
+            <img
+              :src="require('@/assets/images/image1.jpg')"
+              alt=""
+              class="image" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/profile.png')" alt="">
+              <img :src="require('@/assets/images/profile.png')" alt="" />
             </div>
             <div class="main-text">
               <p>
-                username : username <br>
-                Plan-title : {{ this.plans[0][1]}}
+                username : username <br />
+                Plan-title : {{ this.plans[0][1] }}
               </p>
             </div>
             <div class="like">
@@ -46,15 +51,18 @@
             </div>
           </div>
           <div class="second plan">
-            <img :src="require('@/assets/images/image2.png')" alt="" class="image">
+            <img
+              :src="require('@/assets/images/image2.png')"
+              alt=""
+              class="image" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/profile.png')" alt="">
+              <img :src="require('@/assets/images/profile.png')" alt="" />
             </div>
             <div class="main-text">
               <p>
-                username : username <br>
-                Plan-title : {{ this.plans[1][1]}}
+                username : username <br />
+                Plan-title : {{ this.plans[1][1] }}
               </p>
             </div>
             <div class="like">
@@ -65,15 +73,18 @@
             </div>
           </div>
           <div class="third plan">
-            <img :src="require('@/assets/images/image3.jpg')" alt="" class="image">
+            <img
+              :src="require('@/assets/images/image3.jpg')"
+              alt=""
+              class="image" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/profile.png')" alt="">
+              <img :src="require('@/assets/images/profile.png')" alt="" />
             </div>
             <div class="main-text">
               <p>
-                username : username <br>
-                Plan-title : {{ this.plans[2][1]}}
+                username : username <br />
+                Plan-title : {{ this.plans[2][1] }}
               </p>
             </div>
             <div class="like">
@@ -84,10 +95,13 @@
             </div>
           </div>
           <div class="normal plan">
-            <img :src="require('@/assets/images/empty.jpg')" alt="" class="image">
+            <img
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              class="image" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/logo.jpg')" alt="">
+              <img :src="require('@/assets/images/logo.jpg')" alt="" />
             </div>
             <div class="main-text">
               <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
@@ -101,12 +115,8 @@
           </div>
         </div>
         <!-- pagination area -->
-      <div class="rank-form">
-        pagination
+        <div class="rank-form">pagination</div>
       </div>
-      </div>
-
-      
     </div>
   </div>
 </template>
@@ -114,44 +124,39 @@
 <script>
 import http from "@/util/http.js";
 export default {
-
-  data(){
+  data() {
     return {
       status: 0, // 0이면 좋아요 순, 1이면 플랜 순
       plans: [],
-
     };
   },
-  created(){
-    http.get("/attraction/allPlanLists")
-    .then((res)=>{
-      this.plans=res.data;
+  created() {
+    http.get("/attraction/allPlanLists").then((res) => {
+      this.plans = res.data;
       console.log(this.plans);
     });
-    
   },
-  methods:{
-    linkPlan(planInfo){
-      this.$router.push("/plan/"+planInfo+"/"+plan)
-    }
+  methods: {
+    // linkPlan(planInfo) {
+    //   // this.$router.push("/plan/"+planInfo+"/"+plan)
+    // },
   },
-  computed:{
-    userInfo(){
+  computed: {
+    userInfo() {
       return this.$store.state.userInfo;
-    }
-  }
-
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-h5{
+h5 {
   margin: 30px;
 }
-span{
+span {
   margin: 0 30px;
 }
-p{
+p {
   text-align: left;
 }
 table {
@@ -274,9 +279,7 @@ table {
 // Card CSS
 
 * {
-
-text-align: center;
-
+  text-align: center;
 }
 
 body {
@@ -292,7 +295,7 @@ body {
   min-width: 400px;
   height: 400px;
   border-radius: 30px;
-  overflow:hidden;
+  overflow: hidden;
   box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
   margin: 30px;
 }
@@ -302,7 +305,7 @@ body {
 }
 
 .text {
-  background-image: linear-gradient(0deg , #04a3ff, #a3cff7);
+  background-image: linear-gradient(0deg, #04a3ff, #a3cff7);
   border-radius: 30px;
   position: absolute;
   top: 55%;
@@ -313,13 +316,13 @@ body {
 }
 
 .first .text {
-  background-image: linear-gradient(-20deg , #bb7413, #e7d25c);
+  background-image: linear-gradient(-20deg, #bb7413, #e7d25c);
 }
-.second .text{
-  background-image: linear-gradient(-20deg , #969696, #ebebeb);
+.second .text {
+  background-image: linear-gradient(-20deg, #969696, #ebebeb);
 }
-.third .text{
-  background-image: linear-gradient(-20deg , #543325, #b4571d);
+.third .text {
+  background-image: linear-gradient(-20deg, #543325, #b4571d);
 }
 
 .logo {
@@ -330,7 +333,7 @@ body {
   position: absolute;
   bottom: 30%;
   left: 30px;
-  overflow:hidden;
+  overflow: hidden;
   box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.7);
 }
 
@@ -356,7 +359,7 @@ body {
   animation: button-anim 2s ease 0s infinite normal forwards;
 }
 
-.plan-btn:hover{
+.plan-btn:hover {
   animation: none;
 }
 
@@ -376,10 +379,10 @@ body {
   height: 14px;
   position: fixed;
   color: #fff;
-  background: #0077B5;
+  background: #0077b5;
   padding: 10px;
   border-radius: 50%;
-  top:5px;
-  right:5px;
+  top: 5px;
+  right: 5px;
 }
 </style>
