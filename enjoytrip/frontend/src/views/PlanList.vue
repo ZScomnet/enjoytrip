@@ -47,12 +47,12 @@
         </div>
       </div>
     </header>
-    <div class="container px-4 px-lg-5 mt-5">
+    <div v-if="loading" class="container px-4 px-lg-5 mt-5">
       <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
         <div v-for="(plan, idx) in myPlan" :key="idx" class="col mb-5">
           <div class="card h-100">
             <!-- Product image-->
-            <img v-if="plan[2] !== ''" class="card-img-top" :src="plan[2]" />
+            <img v-if="plan[2] !== null" class="card-img-top" :src="plan[2]" />
             <img
               v-else
               class="card-img-top"
@@ -100,6 +100,7 @@ export default {
       pictureURI:
         "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
       picture: null,
+      loading: false,
     };
   },
   created() {
@@ -108,11 +109,14 @@ export default {
       .then((res) => {
         this.myPlan = res.data;
         for (let i = 0; i < this.myPlan.length; i++) {
-          this.getLikePoint(this.myPlan[i][0]);
+          this.myGoods.push(0);
           this.isLikes.push("");
         }
-        for (let i = 0; i < this.myPlan.length; i++)
+        for (let i = 0; i < this.myPlan.length; i++){
+          this.getLikePoint(this.myPlan[i][0],i);
           this.isLike(this.myPlan[i][0], i);
+        }
+        this.loading = true;
       });
   },
   computed: {
@@ -147,13 +151,13 @@ export default {
           console.log(err);
         });
     },
-    async getLikePoint(plan_id) {
+    async getLikePoint(plan_id, idx) {
       // 좋아요 수 요청
       try {
         let res = await http.get("/attraction/plan/" + plan_id + "/likeCnt");
-        this.myGoods.push(res.data);
+        this.myGoods.splice(idx,1,res.data);
       } catch (err) {
-        this.myGoods.push(0);
+        this.myGoods.splice(idx,1,0);
       }
     },
     previewImage(event) {

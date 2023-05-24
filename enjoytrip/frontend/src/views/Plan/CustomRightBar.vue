@@ -191,8 +191,10 @@ export default {
             planTitle: this.$store.state.planTitle,
             plan: this.$store.state.plan,
           }
-        );
+        ).then(()=>{
+          alert("플랜이 등록되었습니다.");
         this.$router.push("/plan/" + this.userInfo.username);
+      });
       }
     },
   },
