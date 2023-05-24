@@ -51,17 +51,19 @@
         <div v-for="(plan, idx) in myPlan" :key="idx" class="col mb-5">
           <div class="card h-100">
             <!-- Product image-->
+            <img v-if="plan[2] !== ''" class="card-img-top" :src="plan[2]" />
             <img
+              v-else
               class="card-img-top"
-              :src="require('@/assets/images/empty.jpg')"
-              alt="..." />
+              :src="require('@/assets/images/empty.jpg')" />
             <!-- Product details-->
             <div class="card-body p-4">
               <div class="text-center">
                 <!-- Product name-->
                 <h5 cl ass="fw-bolder">{{ plan[1] }}</h5>
                 <!-- Product price-->
-                Like : {{ getLikePoint(plan[0]) }}
+                {{ getLikePoint(plan[0]) }}
+                <span v-if="myGoods[idx]">Like : {{ myGoods[idx] }}</span>
               </div>
             </div>
             <!-- Product actions-->
@@ -73,7 +75,7 @@
                   @click="viewPlan(plan[0])">
                   View Plan
                 </button>
-                <h3 @click="like">♥</h3>
+                <h3 @click="like(plan[0])">♥</h3>
               </div>
             </div>
           </div>
@@ -89,9 +91,11 @@ export default {
   data() {
     return {
       myPlan: [],
+      myGoods: [],
       modalOpen: false,
       pictureURI:
         "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
+      picture: null,
     };
   },
   created() {
@@ -115,16 +119,33 @@ export default {
     },
     updateUserInfo() {
       // 프로필 사진 등록
+      const uploadFile = new FormData();
+      uploadFile.append("image", this.picture);
+      console.log(this.picture);
+      return http
+        .post("/file/uploadFile/" + this.userInfo.user_id, uploadFile, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     getLikePoint(plan_id) {
       // 좋아요 수 요청
-      console.log(plan_id);
+      http.get("/attraction/plan/" + plan_id + "/likeCnt").then((res) => {
+        this.myGoods.push(res.data);
+      });
     },
     previewImage(event) {
       const input = event.target;
       const file = input.files[0];
       const reader = new FileReader();
-
+      this.picture = event.target.files[0];
       reader.onload = () => {
         const img = new Image();
         img.src = reader.result;
@@ -152,9 +173,7 @@ export default {
           canvas.width = width;
           canvas.height = height;
           ctx.drawImage(img, 0, 0, width, height);
-          console.log(this.pictureURI);
           this.pictureURI = canvas.toDataURL("image/jpeg");
-          console.log(this.pictureURI);
         };
       };
       reader.readAsDataURL(file);
@@ -165,12 +184,46 @@ export default {
     closeModal() {
       this.modalOpen = false;
     },
-    like() {
+    like(plan_id) {
       // 좋아요 여부를 판단해야함. 이 때 필요한 것은 좋아요를 했는지 안했는 지 여부
       // like를 합쳐야함 로직은
       // 1. like를 했는지 http:요청 (plan_id, user_id 2개 보냄)select로 판단
       // 2. select로 결과 존재 시 해당 like 삭제, 결과 없을 시 like 추가
       // 3. alert로 변화
+      http
+        .get(
+          "/attraction/plan/" + plan_id + "/checkLike/" + this.userInfo.user_id
+        )
+        .then((res) => {
+          if (res.data == 0) {
+            http
+              .put(
+                "/attraction/plan/" + plan_id + "/like/" + this.userInfo.user_id
+              )
+              .then(() => {
+                alert("추천하셨습니다.");
+                this.$router.go(0);
+              })
+              .catch(() => {
+                alert("ERROR!");
+              });
+          } else {
+            http
+              .delete(
+                "/attraction/plan/" +
+                  plan_id +
+                  "/deleteLike/" +
+                  this.userInfo.user_id
+              )
+              .then(() => {
+                alert("추천을 취소하셨습니다.");
+                this.$router.go(0);
+              })
+              .catch(() => {
+                alert("ERROR!");
+              });
+          }
+        });
     },
   },
 };
