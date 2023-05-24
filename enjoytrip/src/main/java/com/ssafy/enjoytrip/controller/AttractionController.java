@@ -126,6 +126,11 @@ public class AttractionController {
     }
 
 
+    @GetMapping("/getDescription/{content_id}")//like순 정렬
+    public String LikeAttractionList(@PathVariable Long content_id){
+        return attractionService.getDescription(content_id);
+    }
+
 
 
 }
