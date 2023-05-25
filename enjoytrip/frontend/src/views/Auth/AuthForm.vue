@@ -27,26 +27,24 @@
           class="input-field"
           placeholder="Password" />
 
-        <a class="find-password" @click="openModal">
-          비밀번호를 잊으셨나요?
-        </a>
-        
+        <a class="find-password" @click="openModal"> 비밀번호를 잊으셨나요? </a>
+
         <button type="submit" class="button">Login</button>
       </form>
       <div v-if="modalOpen" class="modal">
-          <div class="animate__animated animate__fadeInDown" id="modal-content">
-            <h1 class="close" @click="closeModal">&times;</h1>
-            <h3>비밀번호 찾기</h3>
-            <input
-              type="text"
-              v-model="findEmail"
-              class="input-field"
-              placeholder="Email"
-              required />
+        <div class="animate__animated animate__fadeInDown" id="modal-content">
+          <h1 class="close" @click="closeModal">&times;</h1>
+          <h3>비밀번호 찾기</h3>
+          <input
+            type="text"
+            v-model="findEmail"
+            class="input-field"
+            placeholder="Email"
+            required />
 
-            <button class="emailSubmit" @click="findPassword">Send</button>
-          </div>
+          <button class="emailSubmit" @click="findPassword">Send</button>
         </div>
+      </div>
       <form
         @submit.prevent="signUp"
         id="register"
@@ -180,7 +178,7 @@ export default {
       // 비밀번호 찾기 이메일 전송
       http.patch("/mail/send/" + this.findEmail).then(() => {
         alert("임시 비밀번호를 해당 이메일로 전송하였습니다.");
-        this.$route.go(0);
+        this.$router.go(0);
       });
     },
   },

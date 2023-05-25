@@ -3,7 +3,9 @@
     <div :class="{ 'side-bar': isOpen }">
       <h1>{{ this.planTitle }}</h1>
       <div class="search-area" :class="{ hide: !isOpen }">
-        <b-button @click="copyPlan"> 스크랩하기 </b-button>
+        <b-button @click="copyPlan" style="width: 80%; margin-left: 10%">
+          스크랩하기
+        </b-button>
       </div>
       <div class="plan-area" :class="{ hide: !isOpen }">
         <div class="search-items"></div>
@@ -60,6 +62,23 @@ export default {
       markerPosition: [],
       marker: [],
       infoWindow: [],
+      markers: [],
+      images: [
+        "travel-marker01.png",
+        "travel-marker02.png",
+        "travel-marker03.png",
+        "travel-marker04.png",
+        "travel-marker05.png",
+        "travel-marker06.png",
+        "travel-marker07.png",
+        "travel-marker08.png",
+        "travel-marker09.png",
+        "travel-marker10.png",
+        "travel-marker11.png",
+        "travel-marker12.png",
+        "travel-marker13.png",
+        "travel-marker14.png",
+      ],
     };
   },
   created() {
@@ -70,12 +89,10 @@ export default {
       .then((res) => {
         this.planTitle = res.data.planTitle;
         this.plan = res.data.plan;
-        console.log(this.plan);
         let idx = 0;
         for (let i = 0; i < this.plan.length; i++) {
           // 마커를 표시할 위치입니다
           for (let j = 0; j < this.plan[i].length; j++) {
-            console.log(this.plan[i][j]);
             var position = new window.kakao.maps.LatLng(
               this.plan[i][j].latitude,
               this.plan[i][j].longitude
@@ -129,12 +146,51 @@ export default {
     },
     copyPlan() {
       // 플랜 스크랩해오기
-      http.post("/attraction/plan", {
-        planTitle: this.$store.state.planTitle,
-        user_id: this.userInfo.user_id,
-        plan: this.$store.state.plan,
-      });
-      this.$router.push("/plan/" + this.userInfo.username);
+      http
+        .post("/attraction/plan", {
+          planTitle: this.$store.state.planTitle,
+          user_id: this.userInfo.user_id,
+          plan: this.$store.state.plan,
+        })
+        .then(() => {
+          alert("스크랩에 성공했습니다. 마이페이지로 이동합니다.");
+          this.$router.push("/plan/" + this.userInfo.username);
+        });
+    },
+    selectPlan(idx) {
+      if (this.plan.length === 0) return;
+      if (this.markers) {
+        for (let i = 0; i < this.markers.length; i++)
+          this.markers[i].setMap(null);
+        this.markers = [];
+      }
+      // 관광지 추가할 날 선택
+      this.$store.commit("SELECT_DAY", idx);
+      const tourlist = this.plan[this.selectedDay];
+      for (let i = 0; i < tourlist.length; i++) {
+        const mapOption = new window.kakao.maps.LatLng(
+          tourlist[i]["latitude"],
+          tourlist[i]["longitude"]
+        );
+        var imageSrc = require("@/assets/images/" + this.images[i]), // 마커이미지의 주소입니다
+          imageSize = new window.kakao.maps.Size(34, 40), // 마커이미지의 크기입니다
+          imageOption = { offset: new window.kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+        console.log(imageSrc);
+        var markerImage = new window.kakao.maps.MarkerImage(
+          imageSrc,
+          imageSize,
+          imageOption
+        );
+        this.map.setCenter(mapOption);
+        this.markers.push(
+          new window.kakao.maps.Marker({
+            position: mapOption,
+            image: markerImage,
+          })
+        );
+        this.markers[i].setMap(this.map); // 마커를 지도에 표시
+      }
     },
     moveMap(tour) {
       const mapOption = new window.kakao.maps.LatLng(

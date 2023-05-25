@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserService {
     public List<User> getAllUser();
     public MemberDto getMemberInfoById(Long id);
+    public MemberDto getMemberInfoByUsername(String username);
     public Long login(User user);
 
     public void signupUser(SignUpDto signUpDto);

@@ -11,6 +11,8 @@ public interface UserRepository {
     public List<User> getAllUser();
     public MemberDto getMemberInfoById(Long id);
 
+    public MemberDto getMemberInfoByUsername(String username);
+
     public Long login(User user);
 
 //    public void signIn();

@@ -4,8 +4,14 @@
       <h1 class="left-side-bar-title" :class="{ hide: !isOpen }">Profile</h1>
       <div class="search-area" :class="{ hide: !isOpen }">
         <img
-          :src="require('@/assets/images/profile.png')"
-          class="profile-image" />
+          :src="pictureURI"
+          class="img-field"
+          style="width: 80%; margin-left: 10%; height: 300px" />
+      </div>
+      <div class="search-area" :class="{ hide: !isOpen }" style="margin: 10%">
+        <h3>Planner : {{ profile.username }}</h3>
+        <h3>Tel : {{ profile.phone_number }}</h3>
+        <h3 @click="routeMyPage">>> Profile Page</h3>
       </div>
       <div :class="{ hide: !isOpen }">
         <div class="container mt-5">
@@ -13,6 +19,7 @@
           <div class="card_scroll"></div>
         </div>
       </div>
+
       <button class="side-bar-btn" @click="leftClick">
         {{ isOpen ? "<" : ">" }}
       </button>
@@ -21,6 +28,7 @@
 </template>
 
 <script>
+import http from "@/util/http.js";
 export default {
   name: "ReadLeftBar",
   components: {},
@@ -28,12 +36,22 @@ export default {
     return {
       isOpen: true,
       inputValue: "",
-      resultData: [],
-      markerPosition: [],
-      marker: [],
+      profile: [],
+      pictureURI:
+        "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
     };
   },
-  created() {},
+  created() {
+    http.get("/user/info/" + this.$route.params.username).then((res) => {
+      this.profile = res.data;
+      http.get("/file/getProfileImg/" + this.profile.username).then((res) => {
+        if (res.data === null || res.data === "")
+          this.pictureURI =
+            "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png";
+        else this.pictureURI = res.data;
+      });
+    });
+  },
   methods: {
     leftClick() {
       this.isOpen = this.isOpen ? false : true;
@@ -52,6 +70,9 @@ export default {
         day: this.$store.state.selectedDay,
         tourInfo: plan,
       });
+    },
+    routeMyPage() {
+      this.$route.push("/plan/" + this.profile.username);
     },
   },
   props: ["map"],

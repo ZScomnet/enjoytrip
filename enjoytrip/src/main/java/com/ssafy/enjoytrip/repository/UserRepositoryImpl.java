@@ -23,12 +23,23 @@ public class UserRepositoryImpl implements UserRepository{
     public MemberDto getMemberInfoById(Long id){
         Member member = em.find(Member.class,id);
         MemberDto memberDto = new MemberDto(
+                member.getUser_id(),
             member.getUsername(),
-            member.getPhone_number()
+            member.getPhone_number(),
+                member.getProfileimg()
         );
         return memberDto;
     }
 
+    public MemberDto getMemberInfoByUsername(String username){
+        System.out.println("SELECT B.* FROM member as B LEFT JOIN user as A on B.user_id = A.user_id\n" +
+                "where B.username = " +"\""+username+"\"");
+        List<Object[]> result = em.createNativeQuery("SELECT B.* FROM member as B LEFT JOIN user as A on B.user_id = A.user_id where B.username = ?")
+                .setParameter(1,username)
+                        .getResultList();
+
+        return new MemberDto((Long)result.get(0)[3],result.get(0)[2].toString(),result.get(0)[0].toString(),result.get(0)[1].toString());
+    }
     @Override
     public Long login(User user) {
         String jpql = "select u.user_id from User u where u.email =:email and u.password =:pw";

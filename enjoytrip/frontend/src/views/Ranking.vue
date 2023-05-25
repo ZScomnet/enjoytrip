@@ -1,11 +1,12 @@
 <template>
-  <div v-if="loading" class="total-rank-form">
+  <div v-if="!loading" class="total-rank-form">
     <div class="notice">
       <div class="page-title">
         <div class="rank-form">
           <h1 align="center">랭킹</h1>
           <h5 align="center">
             <span
+              style="cursor: pointer"
               @click="setStatusGood"
               :style="{
                 color: status === 0 ? '#56caff' : '#333333',
@@ -13,6 +14,7 @@
               >좋아요 순</span
             >
             <span
+              style="cursor: pointer"
               @click="setStatusSelect"
               :style="{
                 color: status === 1 ? '#56caff' : '#333333',
@@ -28,131 +30,137 @@
         <div class="rank-form">
           <div class="first plan">
             <img
-              v-if="plans[0][2] === '' || plans[0][2] === null"
+              v-if="plan_ranks[0][2] === '' || plan_ranks[0][2] === null"
               :src="require('@/assets/images/empty.jpg')"
               alt=""
               style="width: 100%"
               class="image" />
             <img
               v-else
-              :src="plans[0][2]"
+              :src="plan_ranks[0][2]"
               alt=""
               class="image"
               style="width: 100%" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/profile.png')" alt="" />
+              <img :src="plan_ranks[0][6]" alt="" width="100%" height="100%" />
             </div>
             <div class="main-text">
               <p>
-                username : {{ plansUsername[0] }} <br />
-                Plan-title : {{ plans[0][1] }}
+                username : {{ plan_ranks[0][3] }} <br />
+                Plan-title : {{ plan_ranks[0][1] }}
               </p>
             </div>
             <div class="like">
-              <p>Like : {{ plansGoods[0] }}</p>
+              <p>Like : {{ plan_ranks[0][5] }}</p>
             </div>
             <div class="plan-btn">
-              <a href="#" @click="linkPlan(plansUsername[0], plans[0][0])"
+              <a
+                style="cursor: pointer"
+                @click="linkPlan(plan_ranks[0][3], plan_ranks[0][0])"
                 >확인하기</a
               >
             </div>
           </div>
           <div class="second plan">
             <img
-              v-if="plans[1][2] === '' || plans[1][2] === null"
+              v-if="plan_ranks[1][2] === '' || plan_ranks[1][2] === null"
               :src="require('@/assets/images/empty.jpg')"
               alt=""
               style="width: 100%"
               class="image" />
             <img
               v-else
-              :src="plans[1][2]"
+              :src="plan_ranks[1][2]"
               alt=""
               class="image"
               style="width: 100%" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/profile.png')" alt="" />
+              <img :src="plan_ranks[1][6]" alt="" width="100%" height="100%" />
             </div>
             <div class="main-text">
               <p>
-                username : {{ plansUsername[1] }} <br />
-                Plan-title : {{ plans[1][1] }}
+                username : {{ plan_ranks[1][3] }} <br />
+                Plan-title : {{ plan_ranks[1][1] }}
               </p>
             </div>
             <div class="like">
-              <p>Like : {{ plansGoods[1] }}</p>
+              <p>Like : {{ plan_ranks[1][5] }}</p>
             </div>
             <div class="plan-btn">
-              <a href="#" @click="linkPlan(plansUsername[1], plans[1][0])"
+              <a
+                style="cursor: pointer"
+                @click="linkPlan(plan_ranks[1][3], plan_ranks[1][0])"
                 >확인하기</a
               >
             </div>
           </div>
           <div class="third plan">
             <img
-              v-if="plans[2][2] === '' || plans[2][2] === null"
+              v-if="plan_ranks[2][2] === '' || plan_ranks[2][2] === null"
               :src="require('@/assets/images/empty.jpg')"
               alt=""
               style="width: 100%"
               class="image" />
             <img
               v-else
-              :src="plans[2][2]"
+              :src="plan_ranks[2][2]"
               alt=""
               class="image"
               style="width: 100%" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/profile.png')" alt="" />
+              <img :src="plan_ranks[2][6]" alt="" width="100%" height="100%" />
             </div>
             <div class="main-text">
               <p>
-                username : {{ plansUsername[2] }} <br />
-                Plan-title : {{ plans[2][1] }}
+                username : {{ plan_ranks[2][3] }} <br />
+                Plan-title : {{ plan_ranks[2][1] }}
               </p>
             </div>
             <div class="like">
-              <p>Like : {{ plansGoods[2] }}</p>
+              <p>Like : {{ plan_ranks[2][5] }}</p>
             </div>
             <div class="plan-btn">
-              <a href="#" @click="linkPlan(plansUsername[2], plans[2][0])"
+              <a
+                style="cursor: pointer"
+                @click="linkPlan(plan_ranks[2][3], plan_ranks[2][0])"
                 >확인하기</a
               >
             </div>
           </div>
           <div
-            v-for="(plan, idx) in plans.slice(3)"
+            v-for="(plan, idx) in plan_ranks.slice(3)"
             :key="idx"
             class="normal plan">
             <img
-              v-if="plans[idx][2] === '' || plans[idx][2] === null"
+              v-if="plan[2] === '' || plan[2] === null"
               :src="require('@/assets/images/empty.jpg')"
               alt=""
               style="width: 100%"
               class="image" />
             <img
               v-else
-              :src="plans[idx][2]"
+              :src="plan[2]"
               alt=""
               class="image"
               style="width: 100%" />
             <div class="text"></div>
             <div class="logo">
-              <img :src="require('@/assets/images/profile.png')" alt="" />
+              <img :src="plan[6]" alt="" width="100%" height="100%" />
             </div>
             <div class="main-text">
               <p>
-                username : {{ plansUsername[idx] }} <br />
-                Plan-title : {{ plans[idx][1] }}
+                username : {{ plan[3] }} <br />
+                Plan-title : {{ plan[1] }}
               </p>
             </div>
             <div class="like">
-              <p>Like : {{ plansGoods[idx] }}</p>
+              <p>Like : {{ plan[5] }}</p>
             </div>
             <div class="plan-btn">
-              <a href="#" @click="linkPlan(plansUsername[idx], plans[idx][0])"
+              <a style="cursor: pointer" @click="linkPlan(plan[3], plan[0])"
                 >확인하기</a
               >
             </div>
@@ -177,14 +185,32 @@
             <div class="text"></div>
             <div class="main-text">
               <p>
-                title : {{ attr_ranks[0][3] }} <br />
-                address : {{ attr_ranks[0][4] }}
+                title :
+                {{
+                  attr_ranks[0][3].length > 10
+                    ? attr_ranks[0][3].slice(0, 10) + "..."
+                    : attr_ranks[0][3]
+                }}
+                <br />
+                address :
+                {{
+                  attr_ranks[0][4].length > 10
+                    ? attr_ranks[0][4].slice(0, 10) + "..."
+                    : attr_ranks[0][4]
+                }}
               </p>
             </div>
             <div class="like">
               <p>Pick : {{ attr_ranks[0][1] }}</p>
             </div>
+            <div
+              class="plan-btn"
+              style="cursor: pointer"
+              @click="openModal(0, attr_ranks[0][0])">
+              상세보기
+            </div>
           </div>
+
           <div class="second plan">
             <img
               v-if="attr_ranks[1][2] === '' || attr_ranks[1][2] === null"
@@ -201,12 +227,29 @@
             <div class="text"></div>
             <div class="main-text">
               <p>
-                title : {{ attr_ranks[1][3] }} <br />
-                address : {{ attr_ranks[1][4] }}
+                title :
+                {{
+                  attr_ranks[1][3].length > 10
+                    ? attr_ranks[1][3].slice(0, 10) + "..."
+                    : attr_ranks[1][3]
+                }}
+                <br />
+                address :
+                {{
+                  attr_ranks[1][4].length > 10
+                    ? attr_ranks[1][4].slice(0, 10) + "..."
+                    : attr_ranks[1][4]
+                }}
               </p>
             </div>
             <div class="like">
               <p>Pick : {{ attr_ranks[1][1] }}</p>
+            </div>
+            <div
+              class="plan-btn"
+              style="cursor: pointer"
+              @click="openModal(1, attr_ranks[1][0])">
+              상세보기
             </div>
           </div>
           <div class="third plan">
@@ -225,12 +268,29 @@
             <div class="text"></div>
             <div class="main-text">
               <p>
-                title : {{ attr_ranks[2][3] }} <br />
-                address : {{ attr_ranks[2][4] }}
+                title :
+                {{
+                  attr_ranks[2][3].length > 10
+                    ? attr_ranks[2][3].slice(0, 10) + "..."
+                    : attr_ranks[2][3]
+                }}
+                <br />
+                address :
+                {{
+                  attr_ranks[2][4].length > 10
+                    ? attr_ranks[2][4].slice(0, 10) + "..."
+                    : attr_ranks[2][4]
+                }}
               </p>
             </div>
             <div class="like">
               <p>Pick : {{ attr_ranks[2][1] }}</p>
+            </div>
+            <div
+              class="plan-btn"
+              style="cursor: pointer"
+              @click="openModal(2, attr_ranks[2][0])">
+              상세보기
             </div>
           </div>
           <div
@@ -252,13 +312,58 @@
             <div class="text"></div>
             <div class="main-text">
               <p>
-                title : {{ rank[3] }} <br />
-                address : {{ rank[4] }}
+                title :
+                {{
+                  rank[3].length > 10 ? rank[3].slice(0, 10) + "..." : rank[3]
+                }}
+                <br />
+                address :
+                {{
+                  rank[4].length > 10 ? rank[4].slice(0, 10) + "..." : rank[4]
+                }}
               </p>
             </div>
             <div class="like">
               <p>Pick : {{ rank[1] }}</p>
             </div>
+            <div
+              class="plan-btn"
+              style="cursor: pointer"
+              @click="openModal(idx + 3, attr_ranks[idx + 3][0])">
+              상세보기
+            </div>
+          </div>
+        </div>
+        <div v-if="modal" class="modal">
+          <div class="animate__animated animate__fadeInDown" id="modal-content">
+            <h1 class="close" @click="closeModal">&times;</h1>
+            <h3>{{ modalTitle }}</h3>
+            <img
+              v-if="modalImg !== ''"
+              :src="modalImg"
+              class="image"
+              style="
+                width: 80%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                margin-left: 10%;
+                margin-right: 10%;
+              " />
+            <img
+              v-else
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              class="image"
+              style="
+                width: 80%;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                margin-left: 10%;
+                margin-right: 10%;
+              " />
+            <p>
+              {{ overview }}
+            </p>
           </div>
         </div>
       </div>
@@ -272,43 +377,56 @@ export default {
   data() {
     return {
       status: 0, // 0이면 좋아요 순, 1이면 플랜 순
-      plans: [],
-      plansUsername: [],
-      plansGoods: [],
+      plan_ranks: [],
       attr_ranks: [],
+      modal: false,
+      modalTitle: "",
+      modalImg: "",
+      overview: "",
       loading: false,
     };
   },
   created() {
+    this.loading = true;
     http.get("/attraction/allPlanLists").then((res) => {
-      this.plans = res.data;
-      for (let i = 0; i < this.plans.length; i++) {
-        this.plansUsername.push("");
-        this.plansGoods.push(0);
+      this.plan_ranks = res.data;
+      for (let i = 0; i < this.plan_ranks.length; i++) {
+        if (this.plan_ranks[i][6] !== null && this.plan_ranks[i][6] !== "")
+          this.plan_ranks[i][6] =
+            "http://localhost:8080/" + this.plan_ranks[i][6];
+        else {
+          this.plan_ranks[i][6] =
+            "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png";
+        }
       }
-      this.loading = true;
-      for (let i = 0; i < this.plans.length; i++) {
-        this.getPlanUsername(this.plans[i][0], i);
-        this.getPlanGood(this.plans[i][0], i);
-      }
+      this.loading = false;
     });
     http.get("/attraction/ranking/attr").then((res) => {
       this.attr_ranks = res.data;
-      console.log(this.attr_ranks);
     });
   },
   methods: {
     linkPlan(username, plan_id) {
       this.$router.push("/plan/" + username + "/" + plan_id);
     },
-    getPlanUsername(plan_id, idx) {
-      http.get("/attraction/plan/" + plan_id + "/planRank").then((res) => {
-        this.plansUsername.splice(idx, 1, res.data);
-      });
-    },
     getPlanGood(plan_id, idx) {
       http.get("/attraction/plan/" + plan_id + "/likeCnt").then((res) => {
-        this.plansGoods.splice(idx, 1, res.data);
+        this.plan_ranks.splice(idx, 1, res.data);
+      });
+    },
+    getProfileImg(username, idx) {
+      http.get("/file/getProfileImg/" + username).then((res) => {
+        if (res.data === "http://localhost:8080/null") {
+          this.plan_ranks_profile.splice(
+            idx,
+            1,
+            "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png"
+          );
+        } else {
+          this.plan_ranks_profile.splice(idx, 1, res.data);
+        }
+
+        console.log(this.plan_ranks_profile);
       });
     },
     setStatusGood() {
@@ -316,6 +434,17 @@ export default {
     },
     setStatusSelect() {
       this.status = 1;
+    },
+    openModal(idx, content_id) {
+      this.modal = true;
+      this.modalTitle = this.attr_ranks[idx][3];
+      this.modalImg = this.attr_ranks[idx][2];
+      http
+        .get("/attraction/getDescription/" + content_id)
+        .then((res) => (this.overview = res.data));
+    },
+    closeModal() {
+      this.modal = false;
     },
   },
   computed: {
@@ -561,5 +690,37 @@ body {
   border-radius: 50%;
   top: 5px;
   right: 5px;
+}
+.modal {
+  display: block;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+#modal-content {
+  background-color: #fefefe;
+  margin-top: 10%;
+  margin-left: 30%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+  > .close {
+    position: absolute;
+    top: -5px;
+    color: #aaa;
+    right: 0;
+    font-size: 50px;
+    font-weight: bold;
+  }
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

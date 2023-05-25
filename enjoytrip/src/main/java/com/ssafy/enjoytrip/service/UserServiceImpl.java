@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService{
     public MemberDto getMemberInfoById(Long id){
         return userRepository.getMemberInfoById(id);
     }
+    public MemberDto getMemberInfoByUsername(String username) {return userRepository.getMemberInfoByUsername(username);}
 
     public Long login(User user) {return userRepository.login(user);}
 

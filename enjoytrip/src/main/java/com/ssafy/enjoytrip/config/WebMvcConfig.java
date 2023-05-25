@@ -25,7 +25,8 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		//해당 요청 인터셉트
 		registry.addInterceptor(interceptor).addPathPatterns("/**/attraction/**")
 				.addPathPatterns("/**/attraction/**")
-				.addPathPatterns("/**/board/**");
+				.addPathPatterns("/**/board/**")
+				.addPathPatterns("/**/user/**");
 
 		//제외 path
 		//		.excludePathPatterns("/signUp", "/signIn");
