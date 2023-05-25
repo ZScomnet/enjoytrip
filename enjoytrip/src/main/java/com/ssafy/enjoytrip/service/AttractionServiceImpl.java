@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.service;
 import com.ssafy.enjoytrip.dto.AttractionRankingDto;
 import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
+import com.ssafy.enjoytrip.dto.PlanRankingDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Plan;
 import com.ssafy.enjoytrip.model.User;
@@ -81,7 +82,7 @@ public class AttractionServiceImpl implements AttractionService{
        return attractionRepository.myplanLists(username);
     }
 
-    public List<MyPlanListsDto> getAllPlanLists(){
+    public List<PlanRankingDto> getAllPlanLists(){
         return attractionRepository.getAllPlanLists();
     }
 

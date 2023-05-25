@@ -89,13 +89,18 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 
     public Long checkLike(Long user_id, int plan_id){
         String jpql = "select count(*) from likes where plan_id=:planId and user_id=:userId";
-        Long num = (Long)em.createNativeQuery(jpql).setParameter("planId", plan_id)
-                .setParameter("userId", user_id)
-                .getSingleResult();
-        em.clear();
-        System.out.println(num);
+        try {
+            Long num = (Long) em.createNativeQuery(jpql).setParameter("planId", plan_id)
+                    .setParameter("userId", user_id)
+                    .getSingleResult();
+            em.clear();
+            System.out.println(num);
 
-        return num;
+            return num;
+        }catch( Exception e ){
+            e.printStackTrace();
+            return 0L;
+        }
     }
 
     public String planRank(int plan_id){
@@ -308,12 +313,17 @@ public class AttractionRepositoryImpl implements AttractionRepository {
     }
 
 
-    public List<MyPlanListsDto> getAllPlanLists(){
+    public List<PlanRankingDto> getAllPlanLists(){
 //        String jpql = "select p.plan_id ,p.plan_name from Plan p join  Member m on p.user_id = m.user_id";
 
-        String jpql ="select p.plan_id, plan_name, thumbnail from Plan p left join  Member m on p.user_id = m.user_id left join  likes l on p.plan_id = l.plan_id group by plan_id order by count(*) desc";
+        String jpql ="SELECT A.plan_id, A.plan_name, A.thumbnail,B.username, A.user_id, IFNULL(C.cnt,0) as count,B.profileimg FROM plan AS A" +
+        " left join member AS B on A.user_id = B.user_id" +
+        " left join ( SELECT plan_id, ISNULL(count(plan_id)),0,count(plan_id) as cnt FROM likes" +
+        " group by plan_id) AS C on A.plan_id = C.plan_id" +
+        " order by count desc";
 
-        List<MyPlanListsDto> allPlanListsDto =  (List<MyPlanListsDto>)em.createNativeQuery(jpql)
+
+        List<PlanRankingDto> allPlanListsDto =  (List<PlanRankingDto>)em.createNativeQuery(jpql)
                 .getResultList();
         System.out.println(allPlanListsDto);
 
@@ -330,13 +340,15 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 
     public List<AttractionInfo> LikeAttractionList(int page){
         String jpql =  "select  ai.* from attraction_info as ai left join plan_info as pi on pi.content_id = ai.content_id\n" +
-                "group by ai.content_id order by count(*) desc limit ?,?";
-        List<AttractionInfo> likeAttractionList = em.createNativeQuery(jpql)
-                .setParameter(1,(page-1)*100)
-                .setParameter(2,100)
-                .getResultList();
-
-        return likeAttractionList;
+                "group by ai.content_id order by count(*) desc";
+        try {
+            List<AttractionInfo> likeAttractionList = em.createNativeQuery(jpql)
+                    .getResultList();
+            return likeAttractionList;
+        }catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

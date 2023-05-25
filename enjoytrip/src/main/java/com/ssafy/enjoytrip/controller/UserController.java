@@ -24,5 +24,6 @@ public class UserController {
     public MemberDto getMemberById(@PathVariable Long id){
         return userService.getMemberInfoById(id);
     }
-
+    @GetMapping("/info/{username}")
+    public MemberDto getMemberInfoByUsername(@PathVariable String username) {return userService.getMemberInfoByUsername(username);}
 }

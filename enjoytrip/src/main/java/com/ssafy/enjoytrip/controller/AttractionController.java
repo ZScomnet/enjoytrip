@@ -1,9 +1,6 @@
 package com.ssafy.enjoytrip.controller;
 
-import com.ssafy.enjoytrip.dto.AttractionDto;
-import com.ssafy.enjoytrip.dto.AttractionRankingDto;
-import com.ssafy.enjoytrip.dto.PlanDetailDto;
-import com.ssafy.enjoytrip.dto.MyPlanListsDto;
+import com.ssafy.enjoytrip.dto.*;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Member;
 import com.ssafy.enjoytrip.service.AttractionService;
@@ -112,7 +109,7 @@ public class AttractionController {
     }
 
     @GetMapping("/allPlanLists")//like순 정렬
-    public List<MyPlanListsDto> getAllPlanLists(){
+    public List<PlanRankingDto> getAllPlanLists(){
         return attractionService.getAllPlanLists();
     }
 

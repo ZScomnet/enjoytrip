@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.repository;
 import com.ssafy.enjoytrip.dto.AttractionRankingDto;
 import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
+import com.ssafy.enjoytrip.dto.PlanRankingDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
 import com.ssafy.enjoytrip.model.Board;
 import com.ssafy.enjoytrip.model.Plan;
@@ -52,7 +53,7 @@ public interface AttractionRepository {
 
     public List<MyPlanListsDto> myplanLists(String usename);
 
-    public List<MyPlanListsDto> getAllPlanLists();
+    public List<PlanRankingDto> getAllPlanLists();
 
     public List<MyPlanListsDto> getNewAllPlanLists();
 
