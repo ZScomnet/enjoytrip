@@ -5,25 +5,40 @@
         <div class="rank-form">
           <h1 align="center">랭킹</h1>
           <h5 align="center">
-            <span>좋아요 순</span> <span>플랜 선택 순</span>
+            <span
+              @click="setStatusGood"
+              :style="{
+                color: status === 0 ? '#56caff' : '#333333',
+              }"
+              >좋아요 순</span
+            >
+            <span
+              @click="setStatusSelect"
+              :style="{
+                color: status === 1 ? '#56caff' : '#333333',
+              }"
+              >플랜 선택 순</span
+            >
           </h5>
         </div>
       </div>
 
       <!-- board seach area -->
-      <div id="board-search">
+      <div v-if="status === 0" id="board-search">
         <div class="rank-form">
           <div class="first plan">
             <img
-              v-if="plans[0][2] !== ''"
-              :src="plans[0][2]"
-              alt=""
-              class="image" />
-              <img
-              v-else
+              v-if="plans[0][2] === '' || plans[0][2] === null"
               :src="require('@/assets/images/empty.jpg')"
               alt=""
+              style="width: 100%"
               class="image" />
+            <img
+              v-else
+              :src="plans[0][2]"
+              alt=""
+              class="image"
+              style="width: 100%" />
             <div class="text"></div>
             <div class="logo">
               <img :src="require('@/assets/images/profile.png')" alt="" />
@@ -38,14 +53,24 @@
               <p>Like : {{ plansGoods[0] }}</p>
             </div>
             <div class="plan-btn">
-              <a @click="linkPlan(plan[0])">확인하기</a>
+              <a href="#" @click="linkPlan(plansUsername[0], plans[0][0])"
+                >확인하기</a
+              >
             </div>
           </div>
           <div class="second plan">
             <img
+              v-if="plans[1][2] === '' || plans[1][2] === null"
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              style="width: 100%"
+              class="image" />
+            <img
+              v-else
               :src="plans[1][2]"
               alt=""
-              class="image" />
+              class="image"
+              style="width: 100%" />
             <div class="text"></div>
             <div class="logo">
               <img :src="require('@/assets/images/profile.png')" alt="" />
@@ -60,14 +85,24 @@
               <p>Like : {{ plansGoods[1] }}</p>
             </div>
             <div class="plan-btn">
-              <a @click="linkPlan(plan[1])">확인하기</a>
+              <a href="#" @click="linkPlan(plansUsername[1], plans[1][0])"
+                >확인하기</a
+              >
             </div>
           </div>
           <div class="third plan">
             <img
+              v-if="plans[2][2] === '' || plans[2][2] === null"
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              style="width: 100%"
+              class="image" />
+            <img
+              v-else
               :src="plans[2][2]"
               alt=""
-              class="image" />
+              class="image"
+              style="width: 100%" />
             <div class="text"></div>
             <div class="logo">
               <img :src="require('@/assets/images/profile.png')" alt="" />
@@ -82,43 +117,150 @@
               <p>Like : {{ plansGoods[2] }}</p>
             </div>
             <div class="plan-btn">
-              <a @click="linkPlan(plan[2])">확인하기</a>
+              <a href="#" @click="linkPlan(plansUsername[2], plans[2][0])"
+                >확인하기</a
+              >
             </div>
           </div>
-          <div v-for="(plan, idx) in plans" :key=idx >
-            <div v-if="idx > 2" class="normal plan">
-              <img
-              v-if="plans[idx][2] !== ''"
-              :src="plans[idx][2]"
-              alt=""
-              class="image" />
-              <img
-              v-else
+          <div
+            v-for="(plan, idx) in plans.slice(3)"
+            :key="idx"
+            class="normal plan">
+            <img
+              v-if="plans[idx][2] === '' || plans[idx][2] === null"
               :src="require('@/assets/images/empty.jpg')"
               alt=""
-              class="image" 
-              style="width: 100%;"/>
-              <div class="text"></div>
-              <div class="logo">
-                <img :src="require('@/assets/images/profile.png')" alt="" />
-              </div>
-              <div class="main-text">
-                <p>
+              style="width: 100%"
+              class="image" />
+            <img
+              v-else
+              :src="plans[idx][2]"
+              alt=""
+              class="image"
+              style="width: 100%" />
+            <div class="text"></div>
+            <div class="logo">
+              <img :src="require('@/assets/images/profile.png')" alt="" />
+            </div>
+            <div class="main-text">
+              <p>
                 username : {{ plansUsername[idx] }} <br />
                 Plan-title : {{ plans[idx][1] }}
               </p>
-              </div>
-              <div class="like">
-                <p>Like : {{ plansGoods[idx] }}</p>
-              </div>
-              <div class="plan-btn">
-                <a href="#">Learn More</a>
-              </div>
+            </div>
+            <div class="like">
+              <p>Like : {{ plansGoods[idx] }}</p>
+            </div>
+            <div class="plan-btn">
+              <a href="#" @click="linkPlan(plansUsername[idx], plans[idx][0])"
+                >확인하기</a
+              >
             </div>
           </div>
         </div>
-        <!-- pagination area -->
-        <div class="rank-form">pagination</div>
+      </div>
+      <div v-else id="board-search">
+        <div class="rank-form">
+          <div class="first plan">
+            <img
+              v-if="attr_ranks[0][2] === '' || attr_ranks[0][2] === null"
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              style="width: 100%"
+              class="image" />
+            <img
+              v-else
+              :src="attr_ranks[0][2]"
+              alt=""
+              class="image"
+              style="width: 100%" />
+            <div class="text"></div>
+            <div class="main-text">
+              <p>
+                title : {{ attr_ranks[0][3] }} <br />
+                address : {{ attr_ranks[0][4] }}
+              </p>
+            </div>
+            <div class="like">
+              <p>Pick : {{ attr_ranks[0][1] }}</p>
+            </div>
+          </div>
+          <div class="second plan">
+            <img
+              v-if="attr_ranks[1][2] === '' || attr_ranks[1][2] === null"
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              style="width: 100%"
+              class="image" />
+            <img
+              v-else
+              :src="attr_ranks[1][2]"
+              alt=""
+              class="image"
+              style="width: 100%" />
+            <div class="text"></div>
+            <div class="main-text">
+              <p>
+                title : {{ attr_ranks[1][3] }} <br />
+                address : {{ attr_ranks[1][4] }}
+              </p>
+            </div>
+            <div class="like">
+              <p>Pick : {{ attr_ranks[1][1] }}</p>
+            </div>
+          </div>
+          <div class="third plan">
+            <img
+              v-if="attr_ranks[2][2] === '' || attr_ranks[2][2] === null"
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              style="width: 100%"
+              class="image" />
+            <img
+              v-else
+              :src="attr_ranks[2][2]"
+              alt=""
+              class="image"
+              style="width: 100%" />
+            <div class="text"></div>
+            <div class="main-text">
+              <p>
+                title : {{ attr_ranks[2][3] }} <br />
+                address : {{ attr_ranks[2][4] }}
+              </p>
+            </div>
+            <div class="like">
+              <p>Pick : {{ attr_ranks[2][1] }}</p>
+            </div>
+          </div>
+          <div
+            v-for="(rank, idx) in attr_ranks.slice(3)"
+            :key="idx"
+            class="normal plan">
+            <img
+              v-if="rank[2] === '' || rank[2] === null"
+              :src="require('@/assets/images/empty.jpg')"
+              alt=""
+              style="width: 100%"
+              class="image" />
+            <img
+              v-else
+              :src="rank[2]"
+              alt=""
+              class="image"
+              style="width: 100%" />
+            <div class="text"></div>
+            <div class="main-text">
+              <p>
+                title : {{ rank[3] }} <br />
+                address : {{ rank[4] }}
+              </p>
+            </div>
+            <div class="like">
+              <p>Pick : {{ rank[1] }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -133,43 +275,48 @@ export default {
       plans: [],
       plansUsername: [],
       plansGoods: [],
+      attr_ranks: [],
       loading: false,
     };
   },
   created() {
     http.get("/attraction/allPlanLists").then((res) => {
       this.plans = res.data;
-      for(let i=0;i<this.plans.length;i++){
-        console.log(this.plans[i]);
+      for (let i = 0; i < this.plans.length; i++) {
         this.plansUsername.push("");
         this.plansGoods.push(0);
       }
-        this.loading = true;
-        console.log(this.plans);
-      for(let i=0;i<this.plans.length;i++){
-        this.getPlanUsername(this.plans[i][0],i);
-        this.getPlanGood(this.plans[i][0],i);
+      this.loading = true;
+      for (let i = 0; i < this.plans.length; i++) {
+        this.getPlanUsername(this.plans[i][0], i);
+        this.getPlanGood(this.plans[i][0], i);
       }
+    });
+    http.get("/attraction/ranking/attr").then((res) => {
+      this.attr_ranks = res.data;
+      console.log(this.attr_ranks);
     });
   },
   methods: {
-    // linkPlan(planInfo) {
-    //   // this.$router.push("/plan/"+planInfo+"/"+plan)
-    // },
-    getPlanUsername(plan_id,idx){
-      http.get("/attraction/plan/"+plan_id+"/planRank")
-      .then((res)=>{
-        this.plansUsername.splice(idx,1,res.data);
-        console.log(res.data);
-      })
+    linkPlan(username, plan_id) {
+      this.$router.push("/plan/" + username + "/" + plan_id);
     },
-    getPlanGood(plan_id,idx){
-      http.get("/attraction/plan/"+plan_id+"/likeCnt")
-      .then((res)=>{
-        this.plansGoods.splice(idx,1,res.data);
-        console.log(res.data);
-      })
-    }
+    getPlanUsername(plan_id, idx) {
+      http.get("/attraction/plan/" + plan_id + "/planRank").then((res) => {
+        this.plansUsername.splice(idx, 1, res.data);
+      });
+    },
+    getPlanGood(plan_id, idx) {
+      http.get("/attraction/plan/" + plan_id + "/likeCnt").then((res) => {
+        this.plansGoods.splice(idx, 1, res.data);
+      });
+    },
+    setStatusGood() {
+      this.status = 0;
+    },
+    setStatusSelect() {
+      this.status = 1;
+    },
   },
   computed: {
     userInfo() {

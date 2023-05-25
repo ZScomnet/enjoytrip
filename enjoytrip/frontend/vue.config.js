@@ -15,4 +15,14 @@ module.exports = defineConfig({
   //   },
   // },
   transpileDependencies: true,
+  chainWebpack: (config) => {
+    // 정적 파일에 해시 추가
+    config.output.filename('[name].[hash].js').end();
+
+    // 정적 파일 캐싱 비활성화
+    config.plugin('html').tap((args) => {
+      args[0].hash = false;
+      return args;
+    });
+  },
 });

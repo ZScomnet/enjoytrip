@@ -1,9 +1,6 @@
 package com.ssafy.enjoytrip.repository;
 
-import com.ssafy.enjoytrip.dto.AttractionDto;
-import com.ssafy.enjoytrip.dto.GetMyListDto;
-import com.ssafy.enjoytrip.dto.MyPlanListsDto;
-import com.ssafy.enjoytrip.dto.PlanDetailDto;
+import com.ssafy.enjoytrip.dto.*;
 import com.ssafy.enjoytrip.model.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -349,7 +346,14 @@ public class AttractionRepositoryImpl implements AttractionRepository {
 
         return overView;
     }
-
+    public List<AttractionRankingDto> getAttractionRanking(){
+        String jpql = "SELECT B.content_id, B.count,A.first_image, A.title, A.addr1 FROM attraction_info A " +
+                "INNER JOIN (SELECT P.content_id, COUNT(P.content_id) AS count FROM plan_info P GROUP BY P.content_id) B " +
+                "ON A.content_id = B.content_id " +
+                "ORDER BY B.count DESC";
+        List<AttractionRankingDto> result = em.createNativeQuery(jpql).getResultList();
+        return result;
+    }
 
 
 }

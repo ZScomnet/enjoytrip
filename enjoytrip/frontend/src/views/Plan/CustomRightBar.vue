@@ -12,7 +12,7 @@
 
       <BInput
         :class="{ hide: !isOpen }"
-        v-model="this.planTitle"
+        v-model="title"
         v-else
         placeholder="플랜명을 입력해주세요.."
         @keyup="setPlanTitle(title)"
@@ -68,7 +68,7 @@
                   </div>
                   <div class="col-md-8">
                     <h4 style="text-align: center">{{ tour.title }}</h4>
-                    <b-button @click="deleteTour(tourIdx, idx)">
+                    <b-button @click="deleteTour(tourIdx, idx)" style="width: 70%; display: flex; justify-content: center; margin: auto; margin-top : 10px">
                       삭제
                     </b-button>
                   </div>

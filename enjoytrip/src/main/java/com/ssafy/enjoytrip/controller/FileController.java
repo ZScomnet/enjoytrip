@@ -33,6 +33,7 @@ public class FileController {
 
 //    private String uploadPath = "C:/profileimg";
     private String uploadPath = System.getProperty("user.dir")+"/src/main/resources/profileimg/";
+    private String uploadPath2 = System.getProperty("user.dir")+"/build/resources/main/profileimg/";
     private final FileService fileService;
 
     @PostMapping("/uploadFile/{user_id}")
@@ -56,15 +57,18 @@ public class FileController {
         //저장할 파일 이름
         String saveName = "profileImg"+'_' + user_id + extensionName;
         Path savePath = Paths.get(uploadPath  + saveName);
+        Path savePath2 = Paths.get(uploadPath2  + saveName);
 
         try {
             uploadFile.transferTo(savePath);// 실제 이미지 저장
+            uploadFile.transferTo(savePath2);
             fileService.uploadFile(saveName,user_id);
             System.out.printf("저장 완료");
         }catch (IOException e){
             e.printStackTrace();
         }
         return new ResponseEntity<Void>(HttpStatus.OK);
+
 
     }
 

@@ -54,8 +54,20 @@
                       id="modal-content">
                       <h1 class="close" @click="closeModal(idx)">&times;</h1>
                       <h3>{{ result.title }}</h3>
+                      <img
+                        v-if="result.firstImage !== ''"
+                        :src="result.firstImage"
+                        alt=""
+                        class="image" 
+                        style="width: 80%; margin-top: 10px; margin-bottom: 10px; margin-left: 10%; margin-right: 10%;"/>
+                      <img
+                        v-else
+                        :src="require('@/assets/images/empty.jpg')"
+                        alt=""
+                        class="image" 
+                        style="width: 80%; margin-top: 10px; margin-bottom: 10px; margin-left: 10%; margin-right: 10%;"/>
                       <p>
-                        {{ result.title }}
+                        {{ overview }}
                       </p>
                     </div>
                   </div>
@@ -73,6 +85,7 @@
 </template>
 
 <script>
+import http from "@/util/http.js";
 export default {
   name: "CustomLeftBar",
   components: {},
@@ -83,6 +96,7 @@ export default {
       resultData: [],
       marker: null,
       modalOpen: [],
+      overview: "",
       pos: 400,
     };
   },
@@ -118,6 +132,7 @@ export default {
     searchTour() {
       this.modalOpen = [];
       this.resultData = this.$store.attractions.filter((el) => {
+        
         return el.addr1.includes(this.inputValue);
       });
       for (let i = 0; i < this.resultData.length; i++)
@@ -132,6 +147,8 @@ export default {
     },
     openModal(idx) {
       this.modalOpen.splice(idx, 1, true);
+      http.get("/attraction/getDescription/"+this.resultData[idx].id)
+      .then((res) => this.overview = res.data);
     },
     closeModal(idx) {
       this.modalOpen.splice(idx, 1, false);
