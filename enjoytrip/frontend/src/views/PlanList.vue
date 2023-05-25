@@ -4,7 +4,7 @@
     <header class="py-5">
       <div class="profile-container">
         <img
-          :src="pictureURI"
+          :src="`${originalURI}?ver=${new Date().toLocaleString()}`"
           class="profile-image" />
         <div class="profile-detail">
           <h1 class="display-4 fw-bolder">{{ this.$route.params.username }}</h1>
@@ -97,6 +97,8 @@ export default {
       myGoods: [],
       isLikes: [],
       modalOpen: false,
+      originalURI:
+        "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
       pictureURI:
         "https://pixlok.com/wp-content/uploads/2022/02/Profile-Icon-SVG-09856789.png",
       picture: null,
@@ -112,19 +114,21 @@ export default {
           this.myGoods.push(0);
           this.isLikes.push("");
         }
-        for (let i = 0; i < this.myPlan.length; i++){
-          this.getLikePoint(this.myPlan[i][0],i);
+        for (let i = 0; i < this.myPlan.length; i++) {
+          this.getLikePoint(this.myPlan[i][0], i);
           this.isLike(this.myPlan[i][0], i);
         }
       });
     http
-    .get("/file/getProfileImg/"+ this.userInfo.username)
-    .then((res) => {
-      if(res.data !== 'http://localhost:8080/null') this.pictureURI = res.data;
-      this.loading = true;
-    }).catch((err)=>{
-      console.log(err);
-    });
+      .get("/file/getProfileImg/" + this.userInfo.username)
+      .then((res) => {
+        if (res.data !== "http://localhost:8080/null")
+          this.originalURI = res.data;
+        this.loading = true;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   computed: {
     userInfo() {
@@ -166,9 +170,9 @@ export default {
       // 좋아요 수 요청
       try {
         let res = await http.get("/attraction/plan/" + plan_id + "/likeCnt");
-        this.myGoods.splice(idx,1,res.data);
+        this.myGoods.splice(idx, 1, res.data);
       } catch (err) {
-        this.myGoods.splice(idx,1,0);
+        this.myGoods.splice(idx, 1, 0);
       }
     },
     previewImage(event) {

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.repository;
 
+import com.ssafy.enjoytrip.dto.AttractionRankingDto;
 import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
@@ -65,5 +66,5 @@ public interface AttractionRepository {
 
     public String getDescription(Long content_id);
 
-
+    public List<AttractionRankingDto> getAttractionRanking();
 }

@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.controller;
 
 import com.ssafy.enjoytrip.dto.AttractionDto;
+import com.ssafy.enjoytrip.dto.AttractionRankingDto;
 import com.ssafy.enjoytrip.dto.PlanDetailDto;
 import com.ssafy.enjoytrip.dto.MyPlanListsDto;
 import com.ssafy.enjoytrip.model.AttractionInfo;
@@ -130,7 +131,9 @@ public class AttractionController {
     public String LikeAttractionList(@PathVariable Long content_id){
         return attractionService.getDescription(content_id);
     }
-
-
+    @GetMapping("/ranking/attr")
+    public List<AttractionRankingDto> getAttractionRanking() {
+        return attractionService.getAttractionRanking();
+    }
 
 }
