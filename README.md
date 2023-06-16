@@ -1,6 +1,9 @@
 # enjoytrip
 SSAFY 대전 8반 관통프로젝트 4조
-
+- 주요 역할
+  - Frontend 담당 (Vue.js)
+  - Git Organization 관리
+  - 프로젝트 총 설계 담당
 ---
 Backend : SpringBoot (Gradle - Groovy)
 > Version : 3.06 <br>
